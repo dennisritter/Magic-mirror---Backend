@@ -1,0 +1,15 @@
+{
+  "name": "perna/perna-api",
+  "description": "RESTful API for Perna smart dashboard",
+  "keywords": [
+    "api",
+    "backend"
+  ],
+  "require": {
+    "php": ">=7.0",
+    "zendframework/zendframework": "~2.5",
+    "alcaeus/mongo-php-adapter": "^1.0",
+    "doctrine/doctrine-mongo-odm-module": "dev-master",
+    "zfr/zfr-rest": "^0.5.0"
+  }
+}
