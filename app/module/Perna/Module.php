@@ -22,9 +22,16 @@ class Module {
 
 	/** Returns the module config */
 	public function getConfig () : array {
-		return [
-			'router' => $this->getConfigFor('router')
+		$configMap = [
+			'router' => 'router',
+			'service_manager' => 'service-manager'
 		];
+
+		foreach ( $configMap as &$key ) {
+			$key = $this->getConfigFor( $key );
+		}
+
+		return $configMap;
 	}
 
 	/** Returns the config array for Zend Loader */
