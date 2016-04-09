@@ -8,8 +8,8 @@ php:
 php_version: "{% if php.ppa == 'php-7.0' %}php7.0{% else %}php5{% endif %}"
 php_config_prefix: "{% if php.ppa == 'php-7.0' %}/etc/php/7.0{% else %}/etc/php5{% endif %}"
 
-php_xdebug_remote_enable: "false"
-php_xdebug_remote_connect_back: "false"
+php_xdebug_remote_enable: "true"
+php_xdebug_remote_connect_back: "true"
 php_xdebug_remote_host: localhost
 php_xdebug_remote_port: "9000"
 php_xdebug_remote_log: /tmp/xdebug.log
