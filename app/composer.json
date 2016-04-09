@@ -1,0 +1,12 @@
+{
+  "name": "perna/perna-api",
+  "description": "RESTful API for Perna smart dashboard",
+  "keywords": [
+    "api",
+    "backend"
+  ],
+  "require": {
+    "php": ">=7.0",
+    "zendframework/zendframework": "~2.5"
+  }
+}
