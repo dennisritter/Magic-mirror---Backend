@@ -1,0 +1,5 @@
+---
+nginx:
+    docroot: "/vagrant"
+    servername: "myApp.vb"
+    php_socket: "/var/run/php5-fpm.sock"

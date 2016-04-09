@@ -1,0 +1,37 @@
+---
+- name: Add ppa Repository
+  become: yes
+  apt_repository: repo=ppa:ondrej/php
+
+- name: Ensure packages database is up to date
+  become: yes
+  apt: update_cache=yes
+
+- name: Install php
+  become: yes
+  apt: pkg="{{php_version}}" state=latest
+
+- name: Install php-fpm
+  become: yes
+  apt: pkg="{{php_version}}-fpm" state=latest
+
+- name: Install PHP Packages
+  become: yes
+  apt: pkg={{ item }} state=latest
+  with_items: php.packages
+  when: php.packages is defined
+
+- name: Install Xdebug
+  apt:
+    name: php-xdebug
+    state: latest
+  when: xdebug_install | default(false)
+
+- name: xdebug configuration file
+  template:
+    src: xdebug.ini.j2
+    dest: /etc/php/7.0/mods-available/xdebug.ini
+  when: xdebug_install | default(false)
+
+- include: configure.yml
+- include: pecl.yml
