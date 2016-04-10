@@ -20,3 +20,19 @@
 
 - name: MongoDB | Insure deamon is running correctly
   service: name=mongodb state=started
+
+- name: MongoDB | Install pip package manager
+  apt:
+    name: python-pip
+    state: present
+
+- name: MongoDB | Install pymongo
+  pip:
+    name: pymongo
+    version: 2.4.2
+
+- name: MongoDB | Create Database and User
+  mongodb_user:
+    database: '{{mongodb.database}}'
+    user: '{{mongodb.user}}'
+    password: '{{mongodb.password}}'
