@@ -3,6 +3,7 @@
   sudo: true
   vars_files:
     - vars/all.yml
+    - vars/vault.yml
   roles:
     - server
     - vagrant_local
