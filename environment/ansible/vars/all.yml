@@ -15,7 +15,6 @@ nginx:
 mongodb:
     install: '1'
     user: 'perna'
-    password: 'spiegelvogelSS2016'
     database: 'perna'
 php:
     install: '1'
