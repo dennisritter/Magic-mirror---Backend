@@ -1,4 +1,7 @@
 <?php
+
+use Doctrine\ODM\MongoDB\Mapping\Driver\AnnotationDriver;
+
 return [
 	'doctrine' => [
 		'connection' => [
@@ -30,12 +33,6 @@ return [
 				'default_db'         => null,
 
 				'logger'             => null
-			]
-		],
-
-		'driver' => [
-			'perna' => [
-				'drivers' => [ ]
 			]
 		],
 
