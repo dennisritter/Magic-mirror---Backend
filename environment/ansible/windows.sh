@@ -24,6 +24,10 @@ sudo add-apt-repository -y ppa:ansible/ansible
 sudo apt-get update
 sudo apt-get install -y ansible
 
+# Install pip and pymongo
+sudo apt-get install -y python-pip
+sudo pip install pymongo
+
 # Setup Ansible for Local Use and Run
 cp /vagrant/environment/ansible/inventories/dev /etc/ansible/hosts -f
 chmod 666 /etc/ansible/hosts
