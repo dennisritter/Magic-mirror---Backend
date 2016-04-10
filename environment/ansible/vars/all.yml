@@ -14,6 +14,9 @@ nginx:
     php_socket: /var/run/php/php7.0-fpm.sock
 mongodb:
     install: '1'
+    user: 'perna'
+    password: 'spiegelvogelSS2016'
+    database: 'perna'
 php:
     install: '1'
     ppa: php-7.0
