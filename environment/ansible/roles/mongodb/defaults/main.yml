@@ -2,5 +2,4 @@
 mongodb:
   install: '0'
   user: 'root'
-  password: 'root'
-  database: 'test'vagra
+  database: 'test'
