@@ -20,7 +20,7 @@ abstract class AbstractConsoleActionController extends AbstractActionController 
 	 * @inheritdoc
 	 * @throws    Exception If controller has not been dispatched from console
 	 */
-	public function onDispatch( MvcEvent $e ) : mixed {
+	public function onDispatch( MvcEvent $e ) {
 		$request = $e->getRequest();
 		if ( !$request instanceof ConsoleRequest )
 			throw new Exception("You may only run this action from a command line");
