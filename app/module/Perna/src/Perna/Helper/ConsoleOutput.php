@@ -1,6 +1,6 @@
 <?php
 
-namespace Api\Helper;
+namespace Perna\Helper;
 
 /**
  * Helper class for Console Output
