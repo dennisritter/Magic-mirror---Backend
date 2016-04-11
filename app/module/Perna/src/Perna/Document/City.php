@@ -58,4 +58,60 @@ class City {
 	 */
 	protected $location;
 
+	/**
+	 * @return int
+	 */
+	public function getId() : int {
+		return $this->id;
+	}
+
+	/**
+	 * @param int $id
+	 */
+	public function setId( int $id ) {
+		$this->id = $id;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getName() : string {
+		return $this->name;
+	}
+
+	/**
+	 * @param string $name
+	 */
+	public function setName( string $name ) {
+		$this->name = $name;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getCountryCode() : string {
+		return $this->countryCode;
+	}
+
+	/**
+	 * @param string $countryCode
+	 */
+	public function setCountryCode( string $countryCode ) {
+		$this->countryCode = $countryCode;
+	}
+
+	/**
+	 * @return Location
+	 */
+	public function getLocation() : Location {
+		return $this->location;
+	}
+
+	/**
+	 * @param Location $location
+	 */
+	public function setLocation( Location $location ) {
+		$this->location = $location;
+	}
+
 }
