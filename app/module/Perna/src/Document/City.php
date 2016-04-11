@@ -18,7 +18,8 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 class City {
 
 	/**
-	 * The primary identifier. According to Open Weather Map City Id.
+	 * The primary identifier.
+	 * According to Open Weather Map City Id.
 	 *
 	 * @ODM\Id(
 	 *   name="_id",
@@ -47,5 +48,14 @@ class City {
 	 * @var       string
 	 */
 	protected $countryCode;
+
+	/**
+	 * @ODM\EmbedOne(
+	 *   targetDocument="Location"
+	 * )
+	 *
+	 * @var       Location
+	 */
+	protected $location;
 
 }
