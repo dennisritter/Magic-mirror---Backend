@@ -8,11 +8,11 @@ return [
 			'class' => AnnotationDriver::class,
 			'cache' => 'array',
 			'paths' => [
-				__DIR__ . '/../../src/Perna/Document'
+				__DIR__ . '/../src/Perna/Document'
 			]
 		],
 
-		'perna' => [
+		'odm_default' => [
 			'drivers' => [
 				'Perna\Document' => 'perna_documents'
 			]
