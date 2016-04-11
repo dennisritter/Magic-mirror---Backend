@@ -1,4 +1,5 @@
 <?php
+
 return [
 	'doctrine' => [
 		'connection' => [
@@ -6,9 +7,9 @@ return [
 				'server'           => 'localhost',
 				'port'             => '27017',
 				'connectionString' => null,
-				'user'             => null,
-				'password'         => null,
-				'dbname'           => null,
+				'user'             => 'perna',
+				'password'         => 'spiegelvogelSS2015',
+				'dbname'           => 'perna',
 				'options'          => [ ]
 			],
 		],
@@ -27,15 +28,9 @@ return [
 				'hydrator_dir'       => 'data/DoctrineMongoODMModule/Hydrator',
 				'hydrator_namespace' => 'DoctrineMongoODMModule\Hydrator',
 
-				'default_db'         => null,
+				'default_db'         => 'perna',
 
 				'logger'             => null
-			]
-		],
-
-		'driver' => [
-			'perna' => [
-				'drivers' => [ ]
 			]
 		],
 
