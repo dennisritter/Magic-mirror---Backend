@@ -7,7 +7,7 @@ use Zend\ServiceManager\ServiceManager;
 return [
 	'factories' => [
 		DocumentManager::class => function ( ServiceManager $serviceManager ) : DocumentManager {
-			return $serviceManager->get('doctrine.documentmanager.perna');
+			return $serviceManager->get('doctrine.documentmanager.odm_default');
 		}
 	]
 ];
