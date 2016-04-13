@@ -27,7 +27,9 @@ class Module {
 			'service_manager' => 'service-manager',
 			'controllers' => 'controllers',
 			'doctrine' => 'doctrine',
-			'console' => 'console'
+			'console' => 'console',
+			'hydrators' => 'hydrators',
+			'input_filters' => 'input-filters'
 		];
 
 		foreach ( $configMap as &$key ) {
