@@ -28,4 +28,4 @@ sudo apt-get install -y ansible
 cp /vagrant/environment/ansible/inventories/dev /etc/ansible/hosts -f
 chmod 666 /etc/ansible/hosts
 cat /vagrant/environment/ansible/files/authorized_keys >> /home/vagrant/.ssh/authorized_keys
-sudo ansible-playbook /vagrant/environment/ansible/playbook.yml -e hostname=$1 --connection=local --ask-vault-pass
+sudo ansible-playbook /vagrant/environment/ansible/playbook.yml -e hostname=$1 --connection=local

@@ -16,6 +16,7 @@ mongodb:
     install: '1'
     user: 'perna'
     database: 'perna'
+    password: 'spiegelvogelSS2016'
 php:
     install: '1'
     ppa: php-7.0
