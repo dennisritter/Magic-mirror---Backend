@@ -1,7 +1,9 @@
 <?php
 
 namespace Perna\Controller\Console;
-use Doctrine\ODM\MongoDB\DocumentManager;
+
+use Perna\Service\CityImportService;
+use Zend\Console\Request as ConsoleRequest;
 
 /**
  * Controller for importing a cities dump to the cities DB collection
@@ -14,15 +16,18 @@ class ImportCitiesController extends AbstractConsoleActionController {
 	const ACTION_IMPORT_CITIES = 'importCities';
 
 	/**
-	 * @var       DocumentManager
+	 * @var       CityImportService
 	 */
-	protected $documentManager;
+	protected $importer;
 
-	public function __construct ( DocumentManager $documentManager ) {
-		$this->documentManager = $documentManager;
+	public function __construct ( CityImportService $cityImportService ) {
+		$this->importer = $cityImportService;
 	}
 
 	public function importCitiesAction () : string {
-		return "Hello World\r\n";
+		/** @var ConsoleRequest $request */
+		$request = $this->getRequest();
+		$filePath = $request->getParam('dumpPath');
+		$this->importer->importCitiesFromFile( $filePath );
 	}
 }
