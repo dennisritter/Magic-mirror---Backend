@@ -8,3 +8,8 @@
   shell: composer install
   args:
     chdir: /vagrant/app
+
+- name: Create / Update MongoDB schema
+  shell: ./doctrine-module odm:schema:create
+  args:
+    chdir: /vagrant/app/vendor/bin
