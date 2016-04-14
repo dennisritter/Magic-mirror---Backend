@@ -1,2 +1,10 @@
 ---
-# application tasks to be customized and to run after the main provision
+- name: Install composer
+  shell: curl -sS https://getcomposer.org/installer | sudo php -- --install-dir=/usr/local/bin --filename=composer
+  args:
+    creates: /usr/local/bin/composer
+
+- name: Install composer dependencies
+  shell: composer install
+  args:
+    chdir: /vagrant/app
