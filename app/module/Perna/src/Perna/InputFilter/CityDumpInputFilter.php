@@ -26,13 +26,13 @@ class CityDumpInputFilter extends InputFilter {
 		$this->add( $country );
 
 		$coordsFilter = new InputFilter();
-		$lan = new Input('lan');
-		$lan->getValidatorChain()->attach( new IsFloat() );
-		$coordsFilter->add( $lan );
+		$lat = new Input('lat');
+		$lat->getValidatorChain()->attach( new IsFloat() );
+		$coordsFilter->add( $lat );
 		$lon = new Input('lon');
 		$lon->getValidatorChain()->attach( new IsFloat() );
 		$coordsFilter->add( $lon );
 
-		$this->add( $coordsFilter );
+		$this->add( $coordsFilter, 'coord' );
  	}
 }

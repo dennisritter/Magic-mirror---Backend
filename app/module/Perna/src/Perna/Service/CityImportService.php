@@ -4,6 +4,7 @@ namespace Perna\Service;
 
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Exception;
+use Perna\Document\City;
 use Zend\Hydrator\HydratorInterface;
 use Zend\InputFilter\InputFilter;
 
@@ -44,9 +45,10 @@ class CityImportService {
 	 * The specified file must consist of per-line JSON strings containing city data
 	 *
 	 * @param     string    $filePath Path to the dump file
+	 * @return    int                 Number of cities that have been imported
 	 * @throws    Exception           If the file could not be found or read
 	 */
-	public function importCitiesFromFile ( $filePath ) {
+	public function importCitiesFromFile ( $filePath ) : int {
 		if ( !file_exists( $filePath ) )
 			throw new Exception("File {$filePath} does not exist");
 
@@ -54,7 +56,7 @@ class CityImportService {
 		if ( $handle === false )
 			throw new Exception("Could not read file {$filePath}.");
 
-		while ( !feof( $handle ) ) {
+		for ( $i = 0; !feof( $handle ); ++$i ) {
 			$line = fgets( $handle );
 
 			if ( $line === false )
@@ -62,7 +64,16 @@ class CityImportService {
 
 			$data = json_decode( $line, true );
 			$this->importCity( $data );
+
+			if ( $i % 100 === 0 && $i > 0 ) {
+				$this->documentManager->flush();
+				$this->documentManager->clear();
+			}
 		}
+
+		$this->documentManager->flush();
+
+		return $i;
 	}
 
 	/**
@@ -70,6 +81,14 @@ class CityImportService {
 	 * @param     array     $data     Associative array containing city data
 	 */
 	public function importCity ( array $data ) {
+		$this->inputFilter->setData( $data );
+		if ( !$this->inputFilter->isValid() )
+			return;
 
+		$id = $data['_id'];
+		$inDb = $this->documentManager->getRepository( City::class )->find( $id );
+		$city = $inDb instanceof City ? $inDb : new City();
+		$this->hydrator->hydrate( $data, $city );
+		$this->documentManager->persist( $city );
 	}
 }

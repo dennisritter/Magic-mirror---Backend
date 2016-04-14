@@ -22,8 +22,8 @@ class CityDumpHydrator implements HydratorInterface {
 			'name' => $object->getName(),
 			'country' => $object->getCountryCode(),
 			'coord' => [
-				'lon' => $object->getLocation()->getLongitude(),
-				'lat' => $object->getLocation()->getLatitude()
+				'lon' => $object->getLocation()[0],
+				'lat' => $object->getLocation()[1]
 			]
 		];
 	}
@@ -34,11 +34,8 @@ class CityDumpHydrator implements HydratorInterface {
 		$object->setId( $data['_id'] );
 		$object->setName( $data['name'] );
 		$object->setCountryCode( $data['country'] );
-		$location = new Location();
 		$coord = $data['coord'];
-		$location->setLatitude( $coord['lat'] );
-		$location->setLongitude( $coord['lon'] );
-		$object->setLocation( $location );
+		$object->setLocation([$coord['lon'], $coord['lat']]);
 
 		return $object;
 	}

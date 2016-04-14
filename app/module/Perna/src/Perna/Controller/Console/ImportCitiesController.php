@@ -28,6 +28,7 @@ class ImportCitiesController extends AbstractConsoleActionController {
 		/** @var ConsoleRequest $request */
 		$request = $this->getRequest();
 		$filePath = $request->getParam('dumpPath');
-		$this->importer->importCitiesFromFile( $filePath );
+		$numberCities = $this->importer->importCitiesFromFile( $filePath );
+		return "Imported {$numberCities} Cities.\r\n";
 	}
 }

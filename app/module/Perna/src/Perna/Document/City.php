@@ -11,6 +11,7 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
  *   db="perna",
  *   collection="cities"
  * )
+ * @ODM\Index(keys={"location"="2dsphere"})
  *
  * @author      Jannik Portz
  * @package     Perna\Document
@@ -50,11 +51,12 @@ class City {
 	protected $countryCode;
 
 	/**
-	 * @ODM\EmbedOne(
-	 *   targetDocument="Location"
+	 * @ODM\Field(
+	 *   name="location",
+	 *   type="collection"
 	 * )
 	 *
-	 * @var       Location
+	 * @var       array
 	 */
 	protected $location;
 
@@ -101,17 +103,16 @@ class City {
 	}
 
 	/**
-	 * @return Location
+	 * @return array
 	 */
-	public function getLocation() : Location {
+	public function getLocation() : array {
 		return $this->location;
 	}
 
 	/**
-	 * @param Location $location
+	 * @param array $location
 	 */
-	public function setLocation( Location $location ) {
+	public function setLocation( array $location ) {
 		$this->location = $location;
 	}
-
 }
