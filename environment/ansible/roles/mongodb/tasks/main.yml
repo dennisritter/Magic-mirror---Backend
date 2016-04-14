@@ -35,4 +35,4 @@
   mongodb_user:
     database: '{{mongodb.database}}'
     user: '{{mongodb.user}}'
-    password: '{{mongodb_password}}'
+    password: '{{mongodb.password}}'
