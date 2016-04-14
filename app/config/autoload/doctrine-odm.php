@@ -3,7 +3,7 @@
 return [
 	'doctrine' => [
 		'connection' => [
-			'perna' => [
+			'odm_default' => [
 				'server'           => 'localhost',
 				'port'             => '27017',
 				'connectionString' => null,
@@ -15,7 +15,7 @@ return [
 		],
 
 		'configuration' => [
-			'perna' => [
+			'odm_default' => [
 				'metadata_cache'     => 'array',
 
 				'driver'             => 'perna',
@@ -35,10 +35,10 @@ return [
 		],
 
 		'documentmanager' => [
-			'perna' => [
-				'connection'    => 'perna',
-				'configuration' => 'perna',
-				'eventmanager' => 'perna'
+			'odm_default' => [
+				'connection'    => 'odm_default',
+				'configuration' => 'odm_default',
+				'eventmanager' => 'odm_default'
 			]
 		],
 
