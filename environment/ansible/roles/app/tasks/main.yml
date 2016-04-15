@@ -42,6 +42,6 @@
 
 - name: Remove OpenWeatherMao cities dump file
   file:
-    path: /tmp/city.list.json.gz
+    path: /tmp/city.list.json
     state: absent
   when: has_cities.rc == 1
