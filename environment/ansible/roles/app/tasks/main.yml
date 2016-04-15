@@ -20,6 +20,10 @@
   register: has_cities
   failed_when: false
 
+- name: Remove previously downloaded dump
+  shell: sudo rm /tmp/city.list.*
+  failed_when: false
+
 - name: Download OpenWeatherMap cities dump
   get_url:
     url: "{{openWeatherMap.citiesDumpUrl}}"
