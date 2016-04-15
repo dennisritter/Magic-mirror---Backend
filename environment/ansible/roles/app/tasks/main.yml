@@ -20,6 +20,10 @@
   register: has_cities
   failed_when: false
 
+- name: Remove previously downloaded dump
+  shell: sudo rm /tmp/city.list.*
+  failed_when: false
+
 - name: Download OpenWeatherMap cities dump
   get_url:
     url: "{{openWeatherMap.citiesDumpUrl}}"
@@ -38,6 +42,6 @@
 
 - name: Remove OpenWeatherMao cities dump file
   file:
-    path: /tmp/city.list.json.gz
+    path: /tmp/city.list.json
     state: absent
   when: has_cities.rc == 1
