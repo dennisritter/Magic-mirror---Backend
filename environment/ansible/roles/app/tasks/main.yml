@@ -13,3 +13,31 @@
   shell: ./doctrine-module odm:schema:create
   args:
     chdir: /vagrant/app/vendor/bin
+
+- name: Check whether cities have already been imported
+  shell: test $(mongo perna --eval 'db.cities.count()' | tail -1) -gt 0
+  ignore_errors: true
+  register: has_cities
+  failed_when: false
+
+- name: Download OpenWeatherMap cities dump
+  get_url:
+    url: "{{openWeatherMap.citiesDumpUrl}}"
+    dest: /tmp/city.list.json.gz
+  when: has_cities.rc == 1
+
+- name: Unzip OpenWeatherMap cities dump
+  shell: gunzip /tmp/city.list.json.gz
+  when: has_cities.rc == 1
+
+- name: Import OpenWeatherMap cities dump
+  shell: php public/index.php import-cities /tmp/city.list.json
+  when: has_cities.rc == 1
+  args:
+    chdir: /vagrant/app
+
+- name: Remove OpenWeatherMao cities dump file
+  file:
+    path: /tmp/city.list.json.gz
+    state: absent
+  when: has_cities.rc == 1
