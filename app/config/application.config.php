@@ -12,6 +12,7 @@ return [
         'DoctrineMongoODMModule',
 	      'ZfrRest',
 	      'SwaggerModule',
+	      'SwaggerUI',
         'Perna',
         'Application'
     ],
