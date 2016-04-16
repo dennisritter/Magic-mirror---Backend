@@ -1,7 +1,7 @@
 ---
 server:
     install: '1'
-    packages: [git, vim, pkg-config, libssl-dev]
+    packages: [git, vim, pkg-config, libssl-dev, zip, unzip]
     timezone: Europe/Berlin
     locale: de_DE.UTF-8
 vagrant_local:
