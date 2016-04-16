@@ -11,6 +11,7 @@
     "alcaeus/mongo-php-adapter": "^1.0",
     "doctrine/doctrine-mongo-odm-module": "dev-master",
     "zfr/zfr-rest": "^0.5.0",
-    "outeredge/swagger-module": "^2.0"
+    "outeredge/swagger-module": "^2.0",
+    "kbrabrand/zf2-swagger-ui": "^1.0"
   }
 }
