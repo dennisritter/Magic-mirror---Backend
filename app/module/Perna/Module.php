@@ -5,9 +5,21 @@ namespace Perna;
 use Exception;
 use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
+use Swagger\Annotations as SWG;
 
 /**
  * Module Class for Perna API Module
+ *
+ * @SWG\Swagger(
+ *   schemes={"http"},
+ *   host="api.perna.dev",
+ *   basePath="v2",
+ *   @SWG\Info(
+ *    version="1.0.0",
+ *    title="Perna API",
+ *    description="RESTful API for Perna Smart Dashboars"
+ *   )
+ * )
  *
  * @author      Jannik Portz
  * @package     Perna
@@ -29,7 +41,8 @@ class Module {
 			'doctrine' => 'doctrine',
 			'console' => 'console',
 			'hydrators' => 'hydrators',
-			'input_filters' => 'input-filters'
+			'input_filters' => 'input-filters',
+			'swagger' => 'swagger'
 		];
 
 		foreach ( $configMap as &$key ) {

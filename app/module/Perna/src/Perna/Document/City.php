@@ -3,6 +3,7 @@
 namespace Perna\Document;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
+use Swagger\Annotations as SWG;
 
 /**
  * Document representing a City
@@ -12,6 +13,13 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
  *   collection="cities"
  * )
  * @ODM\Index(keys={"location"="2dsphere"})
+ *
+ * @SWG\Definition(
+ *   required={"id", "name", "countryCode", "location"},
+ *   @SWG\Xml(
+ *    name="City"
+ *   )
+ * )
  *
  * @author      Jannik Portz
  * @package     Perna\Document
@@ -27,34 +35,54 @@ class City {
 	 *   strategy="NONE",
 	 *   type="int"
 	 * )
+	 *
+	 * @SWG\Property(
+	 *   format="int32",
+	 *   example="1"
+	 * )
+	 *
 	 * @var       int
 	 */
 	protected $id;
 
 	/**
+	 * The name of the city in native language
+	 *
 	 * @ODM\Field(
 	 *   name="name",
 	 *   type="string"
 	 * )
+	 *
+	 * @SWG\Property()
 	 *
 	 * @var       string
 	 */
 	protected $name;
 
 	/**
+	 * Two-character country identifier
+	 *
 	 * @ODM\Field(
 	 *   name="countryCode",
 	 *   type="string"
 	 * )
+	 *
+	 * @SWG\Property
+	 *
 	 * @var       string
 	 */
 	protected $countryCode;
 
 	/**
+	 * Array containing Geo-Coordinates.
+	 * [latitude, longitude]
+	 *
 	 * @ODM\Field(
 	 *   name="location",
 	 *   type="collection"
 	 * )
+	 *
+	 * @SWG\Property()
 	 *
 	 * @var       array
 	 */
