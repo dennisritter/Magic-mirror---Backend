@@ -10,9 +10,15 @@ use Swagger\Annotations as SWG;
 /**
  * Module Class for Perna API Module
  *
- * @SWG\Info(
- *   title="Perna API",
- *   version="1.0.0"
+ * @SWG\Swagger(
+ *   schemes={"http"},
+ *   host="api.perna.dev",
+ *   basePath="v2",
+ *   @SWG\Info(
+ *    version="1.0.0",
+ *    title="Perna API",
+ *    description="RESTful API for Perna Smart Dashboars"
+ *   )
  * )
  *
  * @author      Jannik Portz
