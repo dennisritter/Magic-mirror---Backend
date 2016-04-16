@@ -29,7 +29,8 @@ class Module {
 			'doctrine' => 'doctrine',
 			'console' => 'console',
 			'hydrators' => 'hydrators',
-			'input_filters' => 'input-filters'
+			'input_filters' => 'input-filters',
+			'swagger' => 'swagger'
 		];
 
 		foreach ( $configMap as &$key ) {
