@@ -5,9 +5,15 @@ namespace Perna;
 use Exception;
 use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
+use Swagger\Annotations as SWG;
 
 /**
  * Module Class for Perna API Module
+ *
+ * @SWG\Info(
+ *   title="Perna API",
+ *   version="1.0.0"
+ * )
  *
  * @author      Jannik Portz
  * @package     Perna
