@@ -32,12 +32,7 @@
 
   <script type="text/javascript">
     $(function () {
-      var url = window.location.search.match(/url=([^&]+)/);
-      if (url && url.length > 1) {
-        url = decodeURIComponent(url[1]);
-      } else {
-        url = "http://petstore.swagger.io/v2/swagger.json";
-      }
+      var url = 'http://api.perna.dev/api/docs';
 
       hljs.configure({
         highlightSizeThreshold: 5000
