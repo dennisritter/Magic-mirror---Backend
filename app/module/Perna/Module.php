@@ -13,7 +13,7 @@ use Swagger\Annotations as SWG;
  * @SWG\Swagger(
  *    schemes={"http"},
  *    host="api.perna.dev",
- *    basePath="v1",
+ *    basePath="/v1",
  *    consumes={"application/json"},
  *    produces={"application/json"},
  *    @SWG\Info(
