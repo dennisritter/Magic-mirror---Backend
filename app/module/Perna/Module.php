@@ -11,14 +11,19 @@ use Swagger\Annotations as SWG;
  * Module Class for Perna API Module
  *
  * @SWG\Swagger(
- *   schemes={"http"},
- *   host="api.perna.dev",
- *   basePath="v2",
- *   @SWG\Info(
- *    version="1.0.0",
- *    title="Perna API",
- *    description="RESTful API for Perna Smart Dashboars"
- *   )
+ *    schemes={"http"},
+ *    host="api.perna.dev",
+ *    basePath="/v1",
+ *    consumes={"application/json"},
+ *    produces={"application/json"},
+ *    @SWG\Info(
+ *      version="1.0.0",
+ *      title="Perna API",
+ *      description="RESTful API for Perna Smart Dashboard"
+ *    ),
+ *    @SWG\Response(response="400", description="The provided data is invalid"),
+ *    @SWG\Response(response="200", description="Success"),
+ *    @SWG\Response(response="500", description="An internal server error occurred. No specific information available.")
  * )
  *
  * @author      Jannik Portz
@@ -42,7 +47,8 @@ class Module {
 			'console' => 'console',
 			'hydrators' => 'hydrators',
 			'input_filters' => 'input-filters',
-			'swagger' => 'swagger'
+			'swagger' => 'swagger',
+			'zfr_cors' => 'zfr-cors'
 		];
 
 		foreach ( $configMap as &$key ) {

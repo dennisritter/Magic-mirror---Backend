@@ -6,7 +6,16 @@
   become: yes
   apt: pkg=nginx state=latest update_cache=true
 
-- name: Change default nginx site
+- name: Add nginx host configuration files
   become: yes
-  template: src=default.tpl dest=/etc/nginx/sites-available/default
+  template: src=default.tpl dest=/etc/nginx/sites-available/{{item.servername}}.conf
   notify: restart nginx
+  with_items: nginx.hosts
+
+- name: Add nginx sites-enabled symlinks
+  become: yes
+  shell: ln -s /etc/nginx/sites-available/{{item.servername}}.conf /etc/nginx/sites-enabled/{{item.servername}}.conf
+  with_items: nginx.hosts
+  notify: restart nginx
+  args:
+    creates: /etc/nginx/sites-enabled/{{item.servername}}.conf
