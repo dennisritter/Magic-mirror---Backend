@@ -36,10 +36,7 @@ class City {
 	 *   type="int"
 	 * )
 	 *
-	 * @SWG\Property(
-	 *   format="int32",
-	 *   example="1"
-	 * )
+	 * @SWG\Property(property="id", type="int")
 	 *
 	 * @var       int
 	 */
@@ -53,7 +50,7 @@ class City {
 	 *   type="string"
 	 * )
 	 *
-	 * @SWG\Property()
+	 * @SWG\Property(property="name", type="string")
 	 *
 	 * @var       string
 	 */
@@ -67,7 +64,7 @@ class City {
 	 *   type="string"
 	 * )
 	 *
-	 * @SWG\Property
+	 * @SWG\Property()
 	 *
 	 * @var       string
 	 */
@@ -82,7 +79,11 @@ class City {
 	 *   type="collection"
 	 * )
 	 *
-	 * @SWG\Property()
+	 * @SWG\Property(
+	 *    property="location",
+	 *    type="array",
+	 *    @SWG\Items(type="float")
+	 * )
 	 *
 	 * @var       array
 	 */
