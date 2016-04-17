@@ -47,7 +47,8 @@ class Module {
 			'console' => 'console',
 			'hydrators' => 'hydrators',
 			'input_filters' => 'input-filters',
-			'swagger' => 'swagger'
+			'swagger' => 'swagger',
+			'zfr_cors' => 'zfr-cors'
 		];
 
 		foreach ( $configMap as &$key ) {
