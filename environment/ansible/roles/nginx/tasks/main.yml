@@ -17,3 +17,5 @@
   shell: ln -s /etc/nginx/sites-available/{{item.servername}}.conf /etc/nginx/sites-enabled/{{item.servername}}.conf
   with_items: nginx.hosts
   notify: restart nginx
+  args:
+    creates: /etc/nginx/sites-enabled/{{item.servername}}.conf
