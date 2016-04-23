@@ -5,6 +5,7 @@ use Perna\Hydrator\CityDumpHydrator;
 use Perna\InputFilter\CityDumpInputFilter;
 use Perna\Service\CityImportService;
 use Perna\Service\PasswordService;
+use Perna\Service\UserService;
 use Zend\Di\ServiceLocator;
 use Zend\ServiceManager\ServiceManager;
 
@@ -23,6 +24,15 @@ return [
 			$hydrator = $serviceManager->get('HydratorManager')->get( CityDumpHydrator::class );
 			$inputFilter = $serviceManager->get('InputFilterManager')->get( CityDumpInputFilter::class );
 			return new CityImportService( $dm, $hydrator, $inputFilter );
+		},
+		UserService::class => function ( ServiceManager $serviceManager ) : UserService {
+			/**
+			 * @var PasswordService $ps
+			 * @var DocumentManager $dm
+			 */
+			$ps = $serviceManager->get( PasswordService::class );
+			$dm = $serviceManager->get( DocumentManager::class );
+			return new UserService( $ps, $dm );
 		}
 	],
 	'invokables' => [

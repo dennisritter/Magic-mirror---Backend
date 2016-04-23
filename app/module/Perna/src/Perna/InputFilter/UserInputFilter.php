@@ -10,7 +10,9 @@ use Zend\Validator\StringLength;
 
 class UserInputFilter extends InputFilter {
 	
-	public function __construct() {
+	const REQUIRED_PASSWORD = self::class.'PasswordRequired';
+	
+	public function __construct( array $args ) {
 		$this->add( InputFactory::createNameInput('firstName') );
 
 		$this->add( InputFactory::createNameInput('lastName') );
@@ -25,6 +27,7 @@ class UserInputFilter extends InputFilter {
 		$password->getValidatorChain()->attach( new StringLength([
 				'min' => 6
 			]) );
+		$password->setRequired( $args[ 'passwordRequired' ] ?? false );
 		$this->add( $password );
 	}
 }
