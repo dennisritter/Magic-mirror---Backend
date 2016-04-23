@@ -1,10 +1,23 @@
 <?php
 
-namespace Perna\Api;
+namespace Perna\Controller;
 
+use Perna\Document\User;
+use Perna\Hydrator\UserHydrator;
+use Perna\InputFilter\UserInputFilter;
+use Perna\Service\UserService;
 use Swagger\Annotations as SWG;
 
-class UserController {
+class UserController extends AbstractApiController {
+
+	protected $userService;
+
+	protected $userHydrator;
+	
+	public function __construct( UserService $userService, UserHydrator $userHydrator ) {
+		$this->userService = $userService;
+		$this->userHydrator = $userHydrator;
+	}
 
 	/**
 	 * @SWG\Post(
@@ -26,6 +39,11 @@ class UserController {
 	 *    @SWG\Response(response="201", description="New user has successfully been created.")
 	 * )
 	 */
-	public function post () {}
-
+	public function post () {
+		$data = $this->validateIncomingData( UserInputFilter::REQUIRED_PASSWORD );
+		$user = new User();
+		$this->hydrateObject( UserHydrator::class, $user, $data );
+		$this->userService->register( $user, $data['password'] );
+		return $this->createDefaultViewModel( $this->userHydrator->extract( $user ) );
+	}
 }
