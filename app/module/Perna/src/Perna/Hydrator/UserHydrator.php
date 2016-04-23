@@ -14,6 +14,7 @@ class UserHydrator implements HydratorInterface {
 			'id' => $object->getId(),
 			'firstName' => $object->getFirstName(),
 			'lastName' => $object->getLastName(),
+			'email' => $object->getEmail(),
 			'lastLogin' => $object->getLastLogin()
 		];
 	}
