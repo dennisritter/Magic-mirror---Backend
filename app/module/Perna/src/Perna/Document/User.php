@@ -69,18 +69,6 @@ class User {
 	 */
 	protected $password;
 
-
-	/**
-	 * @ODM\Field(
-	 *   name="passwordSalt",
-	 *   type="string"
-	 * )
-	 * 
-	 * @var string
-	 */
-	protected $passwordSalt;
-
-
 	/**
 	 * @ODM\Field(
 	 *   name="lastLogin",
@@ -159,20 +147,6 @@ class User {
 	 */
 	public function setPassword( $password ) {
 		$this->password = $password;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getPasswordSalt() {
-		return $this->passwordSalt;
-	}
-
-	/**
-	 * @param mixed $passwordSalt
-	 */
-	public function setPasswordSalt( $passwordSalt ) {
-		$this->passwordSalt = $passwordSalt;
 	}
 
 	/**

@@ -1,13 +1,11 @@
 <?php
 
 use Doctrine\ODM\MongoDB\DocumentManager;
-use Doctrine\ODM\MongoDB\Mapping\Annotations\Document;
-use Doctrine\ODM\MongoDB\Tests\Functional\City;
 use Perna\Hydrator\CityDumpHydrator;
 use Perna\InputFilter\CityDumpInputFilter;
 use Perna\Service\CityImportService;
+use Perna\Service\PasswordService;
 use Zend\Di\ServiceLocator;
-use Zend\Json\Server\Smd\Service;
 use Zend\ServiceManager\ServiceManager;
 
 return [
@@ -26,5 +24,8 @@ return [
 			$inputFilter = $serviceManager->get('InputFilterManager')->get( CityDumpInputFilter::class );
 			return new CityImportService( $dm, $hydrator, $inputFilter );
 		}
+	],
+	'invokables' => [
+		PasswordService::class => PasswordService::class
 	]
 ];
