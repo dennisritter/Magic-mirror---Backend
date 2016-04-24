@@ -3,7 +3,6 @@
 namespace Perna\Controller;
 use Perna\Hydrator\UserTokenHydrator;
 use Perna\InputFilter\LoginCredentialsInputFilter;
-use Perna\Service\AuthenticationService;
 
 /**
  * Controller for Login action
@@ -11,16 +10,7 @@ use Perna\Service\AuthenticationService;
  * @author      Jannik Portz
  * @package     Perna\Controller
  */
-class LoginController extends AbstractApiController {
-	
-	/**
-	 * @var       AuthenticationService
-	 */
-	protected $authenticationService;
-
-	public function __construct ( AuthenticationService $authenticationService ) {
-		$this->authenticationService = $authenticationService;
-	}
+class LoginController extends AbstractAuthenticatedApiController {
 
 	public function post () {
 		$credentials = $this->validateIncomingData( LoginCredentialsInputFilter::class );
