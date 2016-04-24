@@ -40,10 +40,12 @@ return [
 			/**
 			 * @var DocumentManager $dm
 			 * @var GUIDGenerator $gg
+			 * @var PasswordService $ps
 			 */
 			$dm = $serviceManager->get( DocumentManager::class );
 			$gg = $serviceManager->get( GUIDGenerator::class );
-			return new AuthenticationService( $dm, $gg );
+			$ps = $serviceManager->get( PasswordService::class );
+			return new AuthenticationService( $dm, $gg, $ps );
 		}
 	],
 	'invokables' => [

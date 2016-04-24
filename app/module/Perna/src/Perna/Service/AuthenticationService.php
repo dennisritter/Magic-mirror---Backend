@@ -7,7 +7,9 @@ use Perna\Document\AccessToken;
 use Perna\Document\User;
 use DateTime;
 use DateInterval;
+use ZfrRest\Http\Exception\Client\BadRequestException;
 use ZfrRest\Http\Exception\Client\UnauthorizedException;
+use ZfrRest\Http\Exception\Client\UnprocessableEntityException;
 
 /**
  * Service responsible for Authentication
@@ -27,7 +29,12 @@ class AuthenticationService {
 	 */
 	protected $guidGenerator;
 
-	public function __construct ( DocumentManager $documentManager, GUIDGenerator $guidGenerator ) {
+	/**
+	 * @var       PasswordService
+	 */
+	protected $passwordService;
+
+	public function __construct ( DocumentManager $documentManager, GUIDGenerator $guidGenerator, PasswordService $passwordService ) {
 		$this->documentManager = $documentManager;
 		$this->guidGenerator = $guidGenerator;
 	}
@@ -49,6 +56,34 @@ class AuthenticationService {
 
 		$this->documentManager->persist( $token );
 
+		return $token;
+	}
+
+	/**
+	 * Generates a new AccessToken for the User identified by the credentials
+	 *
+	 * @param     string    $email    The user's email
+	 * @param     string    $password The user's password
+	 * @return    AccessToken         The newly created AccessToken for the user
+	 *
+	 * @throws    UnprocessableEntityException  If no user could be found by the specified email address
+	 *                                          If the password is incorrect
+	 */
+	public function loginUser ( string $email, string $password ) : AccessToken {
+		$user = $this->documentManager->getRepository( User::class )->findOneBy([
+			'email' => $email
+		]);
+
+		if ( !$user instanceof User )
+			throw new UnprocessableEntityException("A user with the email address {$email} could not be found.");
+
+		if ( !$this->passwordService->passwordMatches( $user, $password ) )
+			throw new UnprocessableEntityException("The specified password is incorrect.");
+
+		$token = $this->generateAccessToken( $user );
+		$user->setLastLogin( new DateTime('now') );
+
+		$this->documentManager->flush();
 		return $token;
 	}
 
