@@ -3,10 +3,15 @@
 namespace Perna\Document;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
+use Swagger\Annotations as SWG;
 
 /**
  * @ODM\MappedSuperclass()
  * @ODM\InheritanceType("COLLECTION_PER_CLASS")
+ *
+ * @SWG\Definition(
+ *   @SWG\Xml(name="UserToken")
+ * )
  */
 abstract class UserToken {
 	
@@ -16,6 +21,7 @@ abstract class UserToken {
 	 *   strategy="NONE",
 	 *   type="string"
 	 * )
+	 * @SWG\Property(property="token", type="string")
 	 * @var string
 	 */
 	protected $token;
@@ -31,6 +37,7 @@ abstract class UserToken {
 	 *   name="expires",
 	 *   type="boolean"
 	 * )
+	 * @SWG\Property(property="expires", type="boolean")
 	 * @var boolean
 	 */
 	protected $expires;
@@ -40,6 +47,7 @@ abstract class UserToken {
 	 *   name="expirationDate",
 	 *   type="date"
 	 * )
+	 * @SWG\Property(property="expirationDate", type="string", format="date-time")
 	 * @var \DateTime
 	 */
 	protected $expirationDate;
