@@ -20,10 +20,12 @@ class AbstractApiController extends AbstractRestfulController {
 	 * @param     mixed     $data     The data for the view model
 	 * @return    ResourceViewModel   The new view model
 	 */
-	protected function createDefaultViewModel ( $data ) {
-		$model = new ResourceViewModel( [
-			'data' => $data
-		] );
+	protected function createDefaultViewModel ( $data = null ) {
+		$content = [];
+		if ( !$data !== null )
+			$content['data'] = $data;
+
+		$model = new ResourceViewModel( $content );
 		$model->setTemplate( 'default' );
 		return $model;
 	}

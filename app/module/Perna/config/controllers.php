@@ -2,6 +2,7 @@
 
 use Perna\Controller\Console\ImportCitiesController;
 use Perna\Controller\LoginController;
+use Perna\Controller\LogoutController;
 use Perna\Controller\UserController;
 use Perna\Hydrator\UserHydrator;
 use Perna\Service\AuthenticationService;
@@ -32,6 +33,13 @@ return [
 			 */
 			$as = $controllerManager->getServiceLocator()->get( AuthenticationService::class );
 			return new LoginController( $as );
+		},
+		LogoutController::class => function ( ControllerManager $controllerManager ) : LogoutController {
+			/**
+			 * @var AuthenticationService $as
+			 */
+			$as = $controllerManager->getServiceLocator()->get( AuthenticationService::class );
+			return new LogoutController( $as );
 		}
 	]
 ];
