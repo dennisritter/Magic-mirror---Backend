@@ -11,6 +11,7 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
  * )
  * @ODM\MappedSuperclass()
  * @ODM\InheritanceType("SINGLE_COLLECTION")
+ * @ODM\DiscriminatorMap({"accessToken" = "AccessToken"})
  */
 abstract class UserToken {
 	
