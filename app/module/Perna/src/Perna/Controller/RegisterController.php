@@ -8,13 +8,13 @@ use Perna\InputFilter\UserInputFilter;
 use Perna\Service\UserService;
 use Swagger\Annotations as SWG;
 
-class UserController extends AbstractUserController {
-	
+class RegisterController extends AbstractUserController {
+
 	/**
 	 * @SWG\Post(
 	 *    path="/users",
-	 *    summary="get and update user",
-	 *    operationId="getUser",
+	 *    summary="Creates a new user",
+	 *    operationId="createUser",
 	 *    @SWG\Parameter(
 	 *      name="data",
 	 *      in="body",
@@ -31,13 +31,11 @@ class UserController extends AbstractUserController {
 	 * )
 	 */
 	
-	public function put () {
+	public function post () {
 		$data = $this->validateIncomingData( UserInputFilter::REQUIRED_PASSWORD );
 		$user = new User();
 		$this->hydrateObject( UserHydrator::class, $user, $data );
-		$this->userService->update( $user, $data['password'] );
+		$this->userService->register( $user, $data['password'] );
 		return $this->createDefaultViewModel( $this->userHydrator->extract( $user ) );
 	}
-
-	//todo get()- Methode implementieren
 }
