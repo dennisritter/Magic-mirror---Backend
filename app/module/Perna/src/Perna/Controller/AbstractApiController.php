@@ -5,6 +5,14 @@ namespace Perna\Controller;
 use ZfrRest\Mvc\Controller\AbstractRestfulController;
 use ZfrRest\View\Model\ResourceViewModel;
 
+/**
+ * Base Controller class for whole API
+ *
+ * @author      Jannik Portz
+ * @package     Perna\Controller
+ *
+ * @method      array extractObject(string $hydratorName, object $object)
+ */
 class AbstractApiController extends AbstractRestfulController {
 
 	/**
