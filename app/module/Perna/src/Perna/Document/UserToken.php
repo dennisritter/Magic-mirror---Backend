@@ -5,13 +5,8 @@ namespace Perna\Document;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 
 /**
- * @ODM\Document(
- *   db="perna",
- *   collection="userTokens"
- * )
  * @ODM\MappedSuperclass()
- * @ODM\InheritanceType("SINGLE_COLLECTION")
- * @ODM\DiscriminatorMap({"accessToken" = "AccessToken"})
+ * @ODM\InheritanceType("COLLECTION_PER_CLASS")
  */
 abstract class UserToken {
 	
