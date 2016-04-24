@@ -89,6 +89,23 @@ class AuthenticationService {
 	}
 
 	/**
+	 * Removes the access token
+	 *
+	 * @param     string    $token    The AccessToken to remove
+	 *
+	 * @throws    UnprocessableEntityException  When the access token could not be found
+	 */
+	public function logoutUser ( string $token ) {
+		$token = $this->documentManager->getRepository( AccessToken::class )->find( $token );
+
+		if ( !$token instanceof AccessToken )
+			return;
+
+		$this->documentManager->remove( $token );
+		$this->documentManager->flush();
+	}
+
+	/**
 	 * Tries to find the User with the valid access token
 	 * @param     string    $token    The requested access token as string
 	 * @return    User                The user for the valid access token
