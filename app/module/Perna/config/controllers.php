@@ -1,8 +1,10 @@
 <?php
 
 use Perna\Controller\Console\ImportCitiesController;
+use Perna\Controller\LoginController;
 use Perna\Controller\UserController;
 use Perna\Hydrator\UserHydrator;
+use Perna\Service\AuthenticationService;
 use Perna\Service\CityImportService;
 use Perna\Service\UserService;
 use Zend\Mvc\Controller\ControllerManager;
@@ -23,6 +25,13 @@ return [
 			$us = $sm->get( UserService::class );
 			$hy = $sm->get( 'HydratorManager' )->get( UserHydrator::class );
 			return new UserController( $us, $hy );
+		},
+		LoginController::class => function ( ControllerManager $controllerManager ) : LoginController {
+			/**
+			 * @var AuthenticationService $as
+			 */
+			$as = $controllerManager->getServiceLocator()->get( AuthenticationService::class );
+			return new LoginController( $as );
 		}
 	]
 ];
