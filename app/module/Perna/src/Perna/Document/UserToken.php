@@ -7,10 +7,12 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 /**
  * @ODM\Document(
  *   db="perna",
- *   collection="accessTokens"
+ *   collection="userTokens"
  * )
+ * @ODM\MappedSuperclass()
+ * @ODM\InheritanceType("SINGLE_COLLECTION")
  */
-class AccessToken {
+abstract class UserToken {
 	
 	/**
 	 * @ODM\Id(
