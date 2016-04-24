@@ -4,6 +4,7 @@ use Doctrine\ODM\MongoDB\DocumentManager;
 use Perna\Hydrator\CityDumpHydrator;
 use Perna\InputFilter\CityDumpInputFilter;
 use Perna\Service\CityImportService;
+use Perna\Service\GUIDGenerator;
 use Perna\Service\PasswordService;
 use Perna\Service\UserService;
 use Zend\Di\ServiceLocator;
@@ -36,6 +37,7 @@ return [
 		}
 	],
 	'invokables' => [
-		PasswordService::class => PasswordService::class
+		PasswordService::class => PasswordService::class,
+		GUIDGenerator::class => GUIDGenerator::class
 	]
 ];
