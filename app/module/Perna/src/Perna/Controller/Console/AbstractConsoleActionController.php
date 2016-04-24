@@ -6,8 +6,6 @@ use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Mvc\MvcEvent;
 use Zend\Console\Request as ConsoleRequest;
 use Exception;
-use Zend\Stdlib\RequestInterface as Request;
-use Zend\Stdlib\ResponseInterface as Response;
 
 /**
  * Abstraction for a Controller for Console Actions

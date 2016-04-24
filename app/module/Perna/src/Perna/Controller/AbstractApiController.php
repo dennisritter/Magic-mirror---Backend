@@ -36,5 +36,4 @@ class AbstractApiController extends AbstractRestfulController {
 		$response->getHeaders()->addHeaderLine('Access-Control-Allow-Methods', $methods->getFieldValue() );
 		return $response;
 	}
-
 }
