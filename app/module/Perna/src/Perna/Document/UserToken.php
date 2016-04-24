@@ -75,7 +75,7 @@ abstract class UserToken {
 	/**
 	 * @return boolean
 	 */
-	public function isExpires() {
+	public function getExpires() {
 		return $this->expires;
 	}
 
