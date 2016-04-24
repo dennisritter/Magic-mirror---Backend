@@ -37,6 +37,7 @@ class AuthenticationService {
 	public function __construct ( DocumentManager $documentManager, GUIDGenerator $guidGenerator, PasswordService $passwordService ) {
 		$this->documentManager = $documentManager;
 		$this->guidGenerator = $guidGenerator;
+		$this->passwordService = $passwordService;
 	}
 
 	/**

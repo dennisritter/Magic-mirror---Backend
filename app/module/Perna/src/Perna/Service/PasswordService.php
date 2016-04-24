@@ -21,7 +21,7 @@ class PasswordService {
 		return $user;
 	}
 
-	public function passwordMatches ( User $user, string $password ) : boolean {
+	public function passwordMatches ( User $user, string $password ) : bool {
 		return $this->bcrypt->verify( $password, $user->getPassword() );
 	}
 }

@@ -28,7 +28,7 @@ class UserTokenHydrator implements HydratorInterface {
 	 *
 	 * A UserToken cannot be hydrated
 	 */
-	public function hydrate ( array $data, $object ) : object {
+	public function hydrate ( array $data, $object ) {
 		return $object;
 	}
 }

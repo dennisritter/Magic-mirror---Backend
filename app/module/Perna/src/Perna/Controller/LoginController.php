@@ -19,7 +19,7 @@ class LoginController extends AbstractApiController {
 	protected $authenticationService;
 
 	public function __construct ( AuthenticationService $authenticationService ) {
-		$this->authenticationService;
+		$this->authenticationService = $authenticationService;
 	}
 
 	public function post () {
