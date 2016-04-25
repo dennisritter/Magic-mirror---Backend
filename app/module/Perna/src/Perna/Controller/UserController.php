@@ -33,7 +33,7 @@ class UserController extends AbstractUserController {
 	
 	public function put () {
 		$data = $this->validateIncomingData( UserInputFilter::REQUIRED_PASSWORD );
-		$user = new User();
+		$user = $this->userService->getUserByEmail( $data["email"] );
 		$this->hydrateObject( UserHydrator::class, $user, $data );
 		$this->userService->update( $user, $data['password'] );
 		return $this->createDefaultViewModel( $this->userHydrator->extract( $user ) );

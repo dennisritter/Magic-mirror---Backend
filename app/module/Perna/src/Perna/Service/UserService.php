@@ -33,7 +33,10 @@ class UserService {
 	public function update ( User $user, string $password = null ) {
 		if ( $password != null )
 			$this->passwordService->setUserPassword( $user, $password );
-		
 		$this->documentManager->flush();
+	}
+
+	public function getUserByEmail ( string $email ) : User {
+		return $this->documentManager->getRepository(User::class)->findOneBy( ["email" => $email] );
 	}
 }
