@@ -17,10 +17,7 @@ class UserInputFilter extends InputFilter {
 
 		$this->add( InputFactory::createNameInput('lastName') );
 
-		$email = new Input('email');
-		$email->getFilterChain()->attach( new StringTrim() );
-		$email->getValidatorChain()->attach( new EmailAddress() );
-		$this->add($email);
+		$this->add( InputFactory::createEmailInput() );
 
 		//todo Better password validation
 		$password = new Input('password');

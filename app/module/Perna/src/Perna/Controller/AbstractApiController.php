@@ -5,6 +5,14 @@ namespace Perna\Controller;
 use ZfrRest\Mvc\Controller\AbstractRestfulController;
 use ZfrRest\View\Model\ResourceViewModel;
 
+/**
+ * Base Controller class for whole API
+ *
+ * @author      Jannik Portz
+ * @package     Perna\Controller
+ *
+ * @method      array extractObject(string $hydratorName, object $object)
+ */
 class AbstractApiController extends AbstractRestfulController {
 
 	/**
@@ -12,10 +20,12 @@ class AbstractApiController extends AbstractRestfulController {
 	 * @param     mixed     $data     The data for the view model
 	 * @return    ResourceViewModel   The new view model
 	 */
-	protected function createDefaultViewModel ( $data ) {
-		$model = new ResourceViewModel( [
-			'data' => $data
-		] );
+	protected function createDefaultViewModel ( $data = null ) {
+		$content = [];
+		if ( !$data !== null )
+			$content['data'] = $data;
+
+		$model = new ResourceViewModel( $content );
 		$model->setTemplate( 'default' );
 		return $model;
 	}
@@ -26,5 +36,4 @@ class AbstractApiController extends AbstractRestfulController {
 		$response->getHeaders()->addHeaderLine('Access-Control-Allow-Methods', $methods->getFieldValue() );
 		return $response;
 	}
-
 }
