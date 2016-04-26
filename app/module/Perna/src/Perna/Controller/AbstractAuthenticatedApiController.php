@@ -5,6 +5,7 @@ namespace Perna\Controller;
 use Perna\Service\AuthenticationService;
 use Zend\Http\Request as HttpRequest;
 use Zend\Mvc\MvcEvent;
+use ZfrRest\Http\Exception\Client\UnprocessableEntityException;
 
 /**
  * Abstraction for all controllers that require Authentication
@@ -46,5 +47,14 @@ class AbstractAuthenticatedApiController extends AbstractApiController {
 		}
 		
 		parent::onDispatch( $event );
+	}
+
+	/**
+	 * Throws an Exception when no Access-Token has been provided
+	 * @throws    UnprocessableEntityException  If access token has not been sent in request
+	 */
+	protected function assertAccessToken () {
+		if ( $this->accessToken == null )
+			throw new UnprocessableEntityException("You must provide an Access-Token header with your current access token.");
 	}
 }

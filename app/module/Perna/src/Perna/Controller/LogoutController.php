@@ -1,6 +1,7 @@
 <?php
 
 namespace Perna\Controller;
+
 use Swagger\Annotations as SWG;
 
 /**
@@ -34,6 +35,7 @@ class LogoutController extends AbstractAuthenticatedApiController {
 	 * )
 	 */
 	public function post () {
+		$this->assertAccessToken();
 		$this->authenticationService->logoutUser( $this->accessToken );
 		return $this->createDefaultViewModel( null );
 	}
