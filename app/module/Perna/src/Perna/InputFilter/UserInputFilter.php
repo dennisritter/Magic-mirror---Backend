@@ -2,10 +2,8 @@
 
 namespace Perna\InputFilter;
 
-use Zend\Filter\StringTrim;
 use Zend\InputFilter\Input;
 use Zend\InputFilter\InputFilter;
-use Zend\Validator\EmailAddress;
 use Zend\Validator\StringLength;
 
 class UserInputFilter extends InputFilter {

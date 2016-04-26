@@ -2,12 +2,11 @@
 
 namespace Perna\Service;
 
+use DateInterval;
+use DateTime;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Perna\Document\AccessToken;
 use Perna\Document\User;
-use DateTime;
-use DateInterval;
-use ZfrRest\Http\Exception\Client\BadRequestException;
 use ZfrRest\Http\Exception\Client\UnauthorizedException;
 use ZfrRest\Http\Exception\Client\UnprocessableEntityException;
 

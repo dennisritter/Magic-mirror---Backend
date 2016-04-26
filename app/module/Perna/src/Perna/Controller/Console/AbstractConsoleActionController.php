@@ -2,10 +2,10 @@
 
 namespace Perna\Controller\Console;
 
+use Exception;
+use Zend\Console\Request as ConsoleRequest;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Mvc\MvcEvent;
-use Zend\Console\Request as ConsoleRequest;
-use Exception;
 
 /**
  * Abstraction for a Controller for Console Actions

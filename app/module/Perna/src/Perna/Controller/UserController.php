@@ -2,10 +2,8 @@
 
 namespace Perna\Controller;
 
-use Perna\Document\User;
 use Perna\Hydrator\UserHydrator;
 use Perna\InputFilter\UserInputFilter;
-use Perna\Service\UserService;
 use Swagger\Annotations as SWG;
 
 class UserController extends AbstractUserController {
