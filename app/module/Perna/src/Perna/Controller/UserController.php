@@ -9,14 +9,15 @@ use Swagger\Annotations as SWG;
 class UserController extends AbstractUserController {
 	
 	/**
-	 * @SWG\Post(
-	 *    path="/users",
-	 *    summary="get and update user",
-	 *    operationId="getUser",
+	 * @SWG\Put(
+	 *    path="/user",
+	 *    summary="Update current user",
+	 *    operationId="updateUser",
+	 *	  tags={"user"},
 	 *    @SWG\Parameter(
 	 *      name="data",
 	 *      in="body",
-	 *      description="The user data",
+	 *      description="The user data as JSON object",
 	 *      required=true,
 	 *      @SWG\Schema(
 	 *        @SWG\Property(property="email", type="string"),
@@ -25,10 +26,21 @@ class UserController extends AbstractUserController {
 	 *        @SWG\Property(property="password", type="string")
 	 *      )
 	 *    ),
-	 *    @SWG\Response(response="201", description="New user has successfully been created.")
+	 *    @SWG\Parameter(
+	 *    	in="header",
+	 *    	name="Access-Token",
+	 *    	type="string",
+	 *    	description="The current access token",
+	 *    	required=true
+	 *   ),
+	 *    @SWG\Response(
+	 *		response="200",
+	 *		description="User was successfully updated.",
+	 *		@SWG\Schema( ref="User" )
+	 *	  )
 	 * )
 	 */
-	// todo implement change password
+
 	public function put () {
 		$data = $this->validateIncomingData( UserPutInputFilter::class );
 		$this->assertAccessToken();
@@ -38,6 +50,28 @@ class UserController extends AbstractUserController {
 		$this->userService->update( $user, $password );
 		return $this->createDefaultViewModel( $this->userHydrator->extract( $user ) );
 	}
+
+	/**
+	 * @SWG\Get(
+	 *    path="/user",
+	 *    summary="Get current user",
+	 *    operationId="getUser",
+	 *	  tags={"user"},
+	 *
+	 *    @SWG\Parameter(
+	 *    	in="header",
+	 *    	name="Access-Token",
+	 *    	type="string",
+	 *    	description="The current access token",
+	 *    	required=true
+	 *   ),
+	 *    @SWG\Response(
+	 *		response="200",
+	 *		description="Get current logged in user.",
+	 *		@SWG\Schema( ref="User" )
+	 *	  )
+	 * )
+	 */
 
 	public function get() {
 		$this->assertAccessToken();

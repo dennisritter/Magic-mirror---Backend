@@ -19,11 +19,6 @@ class LogoutController extends AbstractAuthenticatedApiController {
 	 *   description="Deletes the access token specified in the Request Header",
 	 *   operationId="logout",
 	 *   tags={"user"},
-	 *   @SWG\Header(
-	 *    header="Access-Token",
-	 *    type="string",
-	 *    format="GUID"
-	 *   ),
 	 *   @SWG\Parameter(
 	 *    in="header",
 	 *    name="Access-Token",

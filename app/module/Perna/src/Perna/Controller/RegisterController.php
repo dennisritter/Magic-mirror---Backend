@@ -11,9 +11,10 @@ class RegisterController extends AbstractUserController {
 
 	/**
 	 * @SWG\Post(
-	 *    path="/users",
-	 *    summary="Creates a new user",
-	 *    operationId="createUser",
+	 *    path="/register",
+	 *    summary="Create new user",
+	 *    operationId="Register-User",
+	 *    tags={"user"},
 	 *    @SWG\Parameter(
 	 *      name="data",
 	 *      in="body",
@@ -26,7 +27,7 @@ class RegisterController extends AbstractUserController {
 	 *        @SWG\Property(property="password", type="string")
 	 *      )
 	 *    ),
-	 *    @SWG\Response(response="201", description="New user has successfully been created.")
+	 *    @SWG\Response(response="201", description="New user has successfully been created.", @SWG\Schema( ref="User" ))
 	 * )
 	 */
 	
