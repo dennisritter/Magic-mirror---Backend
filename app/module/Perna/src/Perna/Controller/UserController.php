@@ -1,20 +1,23 @@
 <?php
 
-namespace Perna\Api;
+namespace Perna\Controller;
 
+use Perna\Hydrator\UserHydrator;
+use Perna\InputFilter\UserPutInputFilter;
 use Swagger\Annotations as SWG;
 
-class UserController {
-
+class UserController extends AbstractUserController {
+	
 	/**
-	 * @SWG\Post(
-	 *    path="/users",
-	 *    summary="Creates a new user",
-	 *    operationId="createUser",
+	 * @SWG\Put(
+	 *    path="/user",
+	 *    summary="Update current user",
+	 *    operationId="updateUser",
+	 *	  tags={"user"},
 	 *    @SWG\Parameter(
 	 *      name="data",
 	 *      in="body",
-	 *      description="The user data",
+	 *      description="The user data as JSON object",
 	 *      required=true,
 	 *      @SWG\Schema(
 	 *        @SWG\Property(property="email", type="string"),
@@ -23,9 +26,57 @@ class UserController {
 	 *        @SWG\Property(property="password", type="string")
 	 *      )
 	 *    ),
-	 *    @SWG\Response(response="201", description="New user has successfully been created.")
+	 *    @SWG\Parameter(
+	 *    	in="header",
+	 *    	name="Access-Token",
+	 *    	type="string",
+	 *    	description="The current access token",
+	 *    	required=true
+	 *   ),
+	 *    @SWG\Response(
+	 *		response="200",
+	 *		description="User was successfully updated.",
+	 *		@SWG\Schema( ref="User" )
+	 *	  )
 	 * )
 	 */
-	public function post () {}
 
+	public function put () {
+		$data = $this->validateIncomingData( UserPutInputFilter::class );
+		$this->assertAccessToken();
+		$user = $this->authenticationService->findAuthenticatedUser( $this->accessToken );
+		$this->hydrateObject( UserHydrator::class, $user, $data );
+		$password = $data["password"] ?? null;
+		$this->userService->update( $user, $password );
+		return $this->createDefaultViewModel( $this->userHydrator->extract( $user ) );
+	}
+
+	/**
+	 * @SWG\Get(
+	 *    path="/user",
+	 *    summary="Get current user",
+	 *    operationId="getUser",
+	 *	  tags={"user"},
+	 *
+	 *    @SWG\Parameter(
+	 *    	in="header",
+	 *    	name="Access-Token",
+	 *    	type="string",
+	 *    	description="The current access token",
+	 *    	required=true
+	 *   ),
+	 *    @SWG\Response(
+	 *		response="200",
+	 *		description="Get current logged in user.",
+	 *		@SWG\Schema( ref="User" )
+	 *	  )
+	 * )
+	 */
+
+	public function get() {
+		$this->assertAccessToken();
+		$user = $this->authenticationService->findAuthenticatedUser( $this->accessToken );
+		return $this->createDefaultViewModel( $this->userHydrator->extract( $user ) );
+
+	}
 }

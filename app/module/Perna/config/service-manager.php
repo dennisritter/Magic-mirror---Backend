@@ -1,30 +1,39 @@
 <?php
 
 use Doctrine\ODM\MongoDB\DocumentManager;
-use Doctrine\ODM\MongoDB\Mapping\Annotations\Document;
-use Doctrine\ODM\MongoDB\Tests\Functional\City;
+use Perna\Factory\DependencyTypes;
+use Perna\Factory\Factory;
 use Perna\Hydrator\CityDumpHydrator;
 use Perna\InputFilter\CityDumpInputFilter;
+use Perna\Service\AuthenticationService;
 use Perna\Service\CityImportService;
+use Perna\Service\GUIDGenerator;
+use Perna\Service\PasswordService;
+use Perna\Service\UserService;
 use Zend\Di\ServiceLocator;
-use Zend\Json\Server\Smd\Service;
-use Zend\ServiceManager\ServiceManager;
 
 return [
+	'aliases' => [
+		DocumentManager::class => 'doctrine.documentmanager.odm_default'
+	],
 	'factories' => [
-		DocumentManager::class => function ( ServiceManager $serviceManager ) : DocumentManager {
-			return $serviceManager->get('doctrine.documentmanager.odm_default');
-		},
-		CityImportService::class => function ( ServiceManager $serviceManager ) : CityImportService {
-			/**
-			 * @var DocumentManager $dm
-			 * @var CityDumpHydrator $hydrator
-			 * @var CityDumpInputFilter $inputFilter
-			 */
-			$dm = $serviceManager->get( DocumentManager::class );
-			$hydrator = $serviceManager->get('HydratorManager')->get( CityDumpHydrator::class );
-			$inputFilter = $serviceManager->get('InputFilterManager')->get( CityDumpInputFilter::class );
-			return new CityImportService( $dm, $hydrator, $inputFilter );
-		}
+		CityImportService::class => new Factory(CityImportService::class, [
+			DocumentManager::class => DependencyTypes::SERVICE,
+			CityDumpHydrator::class => DependencyTypes::HYDRATOR,
+			CityDumpInputFilter::class => DependencyTypes::INPUT_FILTER
+		]),
+		UserService::class => new Factory(UserService::class, [
+			PasswordService::class => DependencyTypes::SERVICE,
+			DocumentManager::class => DependencyTypes::SERVICE
+		]),
+		AuthenticationService::class => new Factory(AuthenticationService::class, [
+			DocumentManager::class => DependencyTypes::SERVICE,
+			GUIDGenerator::class => DependencyTypes::SERVICE,
+			PasswordService::class => DependencyTypes::SERVICE
+		])
+	],
+	'invokables' => [
+		PasswordService::class => PasswordService::class,
+		GUIDGenerator::class => GUIDGenerator::class
 	]
 ];

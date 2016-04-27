@@ -12,7 +12,7 @@ use Zend\Hydrator\HydratorInterface;
  * @author      Jannik Portz
  * @package     Perna\Hydrator
  */
-class CityDumpHydrator implements HydratorInterface {
+class CityDumpHydrator extends AbstractHydrator {
 
 	/** @inheritdoc */
 	public function extract ( $object ) : array {
