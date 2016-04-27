@@ -5,56 +5,33 @@ use Perna\Controller\RegisterController;
 use Perna\Controller\LoginController;
 use Perna\Controller\LogoutController;
 use Perna\Controller\UserController;
+use Perna\Factory\DependencyTypes;
+use Perna\Factory\Factory;
 use Perna\Hydrator\UserHydrator;
 use Perna\Service\AuthenticationService;
 use Perna\Service\CityImportService;
 use Perna\Service\UserService;
-use Zend\Mvc\Controller\ControllerManager;
 
 return [
 	'factories' => [
-		ImportCitiesController::class => function ( ControllerManager $controllerManager ) : ImportCitiesController {
-			/** @var CityImportService $importer */
-			$importer = $controllerManager->getServiceLocator()->get( CityImportService::class );
-			return new ImportCitiesController( $importer );
-		},
-		RegisterController::class => function( ControllerManager $controllerManager ) : RegisterController {
-			/**
-			 * @var UserService $us
-			 * @var UserHydrator $hy
-			 * @var AuthenticationService $as
-			 */
-			$sm = $controllerManager->getServiceLocator();
-			$us = $sm->get( UserService::class );
-			$hy = $sm->get( 'HydratorManager' )->get( UserHydrator::class );
-			$as = $controllerManager->getServiceLocator()->get( AuthenticationService::class );
-			return new RegisterController( $as, $us, $hy );
-		},
-		UserController::class => function( ControllerManager $controllerManager ) : UserController {
-			/**
-			 * @var UserService $us
-			 * @var UserHydrator $hy
-			 * @var  AuthenticationService $as
-			 */
-			$sm = $controllerManager->getServiceLocator();
-			$us = $sm->get( UserService::class );
-			$hy = $sm->get( 'HydratorManager' )->get( UserHydrator::class );
-			$as = $controllerManager->getServiceLocator()->get( AuthenticationService::class );
-			return new UserController( $as, $us, $hy );
-		},
-		LoginController::class => function ( ControllerManager $controllerManager ) : LoginController {
-			/**
-			 * @var AuthenticationService $as
-			 */
-			$as = $controllerManager->getServiceLocator()->get( AuthenticationService::class );
-			return new LoginController( $as );
-		},
-		LogoutController::class => function ( ControllerManager $controllerManager ) : LogoutController {
-			/**
-			 * @var AuthenticationService $as
-			 */
-			$as = $controllerManager->getServiceLocator()->get( AuthenticationService::class );
-			return new LogoutController( $as );
-		}
+		ImportCitiesController::class => new Factory(ImportCitiesController::class, [
+			CityImportService::class => DependencyTypes::SERVICE
+		]),
+		RegisterController::class => new Factory(RegisterController::class, [
+			AuthenticationService::class => DependencyTypes::SERVICE,
+			UserService::class => DependencyTypes::SERVICE,
+			UserHydrator::class => DependencyTypes::HYDRATOR
+		]),
+		UserController::class => new Factory(UserController::class, [
+			AuthenticationService::class => DependencyTypes::SERVICE,
+			UserService::class => DependencyTypes::SERVICE,
+			UserHydrator::class => DependencyTypes::HYDRATOR
+		]),
+		LoginController::class => new Factory(LoginController::class, [
+			AuthenticationService::class => DependencyTypes::SERVICE
+		]),
+		LogoutController::class => new Factory(LogoutController::class, [
+			AuthenticationService::class => DependencyTypes::SERVICE
+		])
 	]
 ];
