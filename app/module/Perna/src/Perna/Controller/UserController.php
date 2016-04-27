@@ -3,7 +3,7 @@
 namespace Perna\Controller;
 
 use Perna\Hydrator\UserHydrator;
-use Perna\InputFilter\UserInputFilter;
+use Perna\InputFilter\UserPutInputFilter;
 use Swagger\Annotations as SWG;
 
 class UserController extends AbstractUserController {
@@ -28,14 +28,21 @@ class UserController extends AbstractUserController {
 	 *    @SWG\Response(response="201", description="New user has successfully been created.")
 	 * )
 	 */
-	
+	// todo implement change password
 	public function put () {
-		$data = $this->validateIncomingData( UserInputFilter::REQUIRED_PASSWORD );
-		$user = $this->userService->getUserByEmail( $data["email"] );
+		$data = $this->validateIncomingData( UserPutInputFilter::class );
+		$this->assertAccessToken();
+		$user = $this->authenticationService->findAuthenticatedUser( $this->accessToken );
 		$this->hydrateObject( UserHydrator::class, $user, $data );
-		$this->userService->update( $user, $data['password'] );
+		$password = $data["password"] ?? null;
+		$this->userService->update( $user, $password );
 		return $this->createDefaultViewModel( $this->userHydrator->extract( $user ) );
 	}
 
-	//todo get()- Methode implementieren
+	public function get() {
+		$this->assertAccessToken();
+		$user = $this->authenticationService->findAuthenticatedUser( $this->accessToken );
+		return $this->createDefaultViewModel( $this->userHydrator->extract( $user ) );
+
+	}
 }

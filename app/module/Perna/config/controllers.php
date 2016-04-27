@@ -22,21 +22,25 @@ return [
 			/**
 			 * @var UserService $us
 			 * @var UserHydrator $hy
+			 * @var AuthenticationService $as
 			 */
 			$sm = $controllerManager->getServiceLocator();
 			$us = $sm->get( UserService::class );
 			$hy = $sm->get( 'HydratorManager' )->get( UserHydrator::class );
-			return new RegisterController( $us, $hy );
+			$as = $controllerManager->getServiceLocator()->get( AuthenticationService::class );
+			return new RegisterController( $as, $us, $hy );
 		},
 		UserController::class => function( ControllerManager $controllerManager ) : UserController {
 			/**
 			 * @var UserService $us
 			 * @var UserHydrator $hy
+			 * @var  AuthenticationService $as
 			 */
 			$sm = $controllerManager->getServiceLocator();
 			$us = $sm->get( UserService::class );
 			$hy = $sm->get( 'HydratorManager' )->get( UserHydrator::class );
-			return new UserController( $us, $hy );
+			$as = $controllerManager->getServiceLocator()->get( AuthenticationService::class );
+			return new UserController( $as, $us, $hy );
 		},
 		LoginController::class => function ( ControllerManager $controllerManager ) : LoginController {
 			/**

@@ -31,7 +31,7 @@ class RegisterController extends AbstractUserController {
 	 */
 	
 	public function post () {
-		$data = $this->validateIncomingData( UserInputFilter::REQUIRED_PASSWORD );
+		$data = $this->validateIncomingData( UserInputFilter::class );
 		$user = new User();
 		$this->hydrateObject( UserHydrator::class, $user, $data );
 		$this->userService->register( $user, $data['password'] );
