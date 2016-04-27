@@ -23,7 +23,6 @@ class User {
 	 *   strategy="AUTO"
 	 * )
 	 *
-	 * @SWG\Property(property="id", type="string")
 	 * @var string
 	 */
 	protected $id;

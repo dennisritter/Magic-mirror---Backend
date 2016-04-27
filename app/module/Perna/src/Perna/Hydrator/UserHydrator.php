@@ -11,7 +11,6 @@ class UserHydrator implements HydratorInterface {
 	public function extract ( $object ) : array {
 		/** @var User $object */
 		return [
-			'id' => $object->getId(),
 			'firstName' => $object->getFirstName(),
 			'lastName' => $object->getLastName(),
 			'email' => $object->getEmail(),
