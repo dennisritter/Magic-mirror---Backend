@@ -3,7 +3,6 @@
 namespace Perna\Hydrator;
 
 use Perna\Document\UserToken;
-use Zend\Hydrator\HydratorInterface;
 
 /**
  * Hydrator for all kinds of UserToken
@@ -11,16 +10,20 @@ use Zend\Hydrator\HydratorInterface;
  * @author      Jannik Portz
  * @package     Perna\Hydrator
  */
-class UserTokenHydrator implements HydratorInterface {
+class UserTokenHydrator extends AbstractHydrator {
 
 	/** @inheritdoc */
 	public function extract ( $object ) : array {
 		/** @var UserToken $object */
-		return [
+		$data = [
 			'token' => $object->getToken(),
-			'expires' => $object->getExpires(),
-			'expirationDate' => $object->getExpirationDate()
+			'expires' => $object->getExpires()
 		];
+
+		if ( $object->getExpires() )
+			$data['expirationDate'] = $this->extractDateTime( $object->getExpirationDate() );
+
+		return $data;
 	}
 
 	/**

@@ -11,7 +11,7 @@ use Swagger\Annotations as SWG;
  *  collection="users"
  * )
  * @SWG\Definition(
- *   required={"id", "firstName", "lastName", "email"},
+ *   required={"firstName", "lastName", "email"},
  *   @SWG\Xml(name="User")
  * )
  */
@@ -22,7 +22,6 @@ class User {
 	 *   name="_id",
 	 *   strategy="AUTO"
 	 * )
-	 *
 	 * @var string
 	 */
 	protected $id;
@@ -73,7 +72,7 @@ class User {
 	 *   name="lastLogin",
 	 *   type="date"
 	 * )
-	 *
+	 * @SWG\Property(property="lastLogin", type="string", format="date-time")
 	 * @var \DateTime
 	 */
 	protected $lastLogin;

@@ -3,9 +3,8 @@
 namespace Perna\Hydrator;
 
 use Perna\Document\User;
-use Zend\Hydrator\HydratorInterface;
 
-class UserHydrator implements HydratorInterface {
+class UserHydrator extends AbstractHydrator {
 
 	/** @inheritdoc */
 	public function extract ( $object ) : array {
@@ -14,7 +13,7 @@ class UserHydrator implements HydratorInterface {
 			'firstName' => $object->getFirstName(),
 			'lastName' => $object->getLastName(),
 			'email' => $object->getEmail(),
-			'lastLogin' => $object->getLastLogin()
+			'lastLogin' => $this->extractDateTime( $object->getLastLogin() )
 		];
 	}
 	
