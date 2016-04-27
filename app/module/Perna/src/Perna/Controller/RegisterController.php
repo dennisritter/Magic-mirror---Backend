@@ -2,17 +2,18 @@
 
 namespace Perna\Controller;
 
+use Perna\Document\User;
 use Perna\Hydrator\UserHydrator;
-use Perna\InputFilter\UserPutInputFilter;
+use Perna\InputFilter\UserInputFilter;
 use Swagger\Annotations as SWG;
 
-class UserController extends AbstractUserController {
-	
+class RegisterController extends AbstractUserController {
+
 	/**
 	 * @SWG\Post(
 	 *    path="/users",
-	 *    summary="get and update user",
-	 *    operationId="getUser",
+	 *    summary="Creates a new user",
+	 *    operationId="createUser",
 	 *    @SWG\Parameter(
 	 *      name="data",
 	 *      in="body",
@@ -28,21 +29,12 @@ class UserController extends AbstractUserController {
 	 *    @SWG\Response(response="201", description="New user has successfully been created.")
 	 * )
 	 */
-	// todo implement change password
-	public function put () {
-		$data = $this->validateIncomingData( UserPutInputFilter::class );
-		$this->assertAccessToken();
-		$user = $this->authenticationService->findAuthenticatedUser( $this->accessToken );
+	
+	public function post () {
+		$data = $this->validateIncomingData( UserInputFilter::class );
+		$user = new User();
 		$this->hydrateObject( UserHydrator::class, $user, $data );
-		$password = $data["password"] ?? null;
-		$this->userService->update( $user, $password );
+		$this->userService->register( $user, $data['password'] );
 		return $this->createDefaultViewModel( $this->userHydrator->extract( $user ) );
-	}
-
-	public function get() {
-		$this->assertAccessToken();
-		$user = $this->authenticationService->findAuthenticatedUser( $this->accessToken );
-		return $this->createDefaultViewModel( $this->userHydrator->extract( $user ) );
-
 	}
 }
