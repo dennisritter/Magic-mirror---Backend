@@ -2,6 +2,7 @@
 
 use Perna\Controller\LoginController;
 use Perna\Controller\LogoutController;
+use Perna\Controller\RefreshController;
 use Perna\Controller\UserController;
 use Perna\Controller\RegisterController;
 use Zend\Mvc\Router\Http\Literal;
@@ -42,6 +43,16 @@ return [
 			'route' => '/logout',
 			'defaults' => [
 				'controller' => LogoutController::class
+			]
+		]
+	],
+
+	'refresh' => [
+		'type' => Literal::class,
+		'options' => [
+			'route' => '/refresh',
+			'defaults' => [
+				'controller' => RefreshController::class
 			]
 		]
 	]

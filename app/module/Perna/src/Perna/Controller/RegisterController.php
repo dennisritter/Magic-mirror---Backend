@@ -30,12 +30,11 @@ class RegisterController extends AbstractUserController {
 	 *    @SWG\Response(response="201", description="New user has successfully been created.", @SWG\Schema( ref="User" ))
 	 * )
 	 */
-	
 	public function post () {
 		$data = $this->validateIncomingData( UserInputFilter::class );
 		$user = new User();
 		$this->hydrateObject( UserHydrator::class, $user, $data );
 		$this->userService->register( $user, $data['password'] );
-		return $this->createDefaultViewModel( $this->userHydrator->extract( $user ) );
+		return $this->createDefaultViewModel( $this->extractObject( UserHydrator::class, $user ) );
 	}
 }

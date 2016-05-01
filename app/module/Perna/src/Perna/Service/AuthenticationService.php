@@ -6,6 +6,7 @@ use DateInterval;
 use DateTime;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Perna\Document\AccessToken;
+use Perna\Document\RefreshToken;
 use Perna\Document\User;
 use ZfrRest\Http\Exception\Client\UnauthorizedException;
 use ZfrRest\Http\Exception\Client\UnprocessableEntityException;
@@ -48,11 +49,18 @@ class AuthenticationService {
 		$token = new AccessToken();
 		$token->setToken( $this->guidGenerator->generateGUID() );
 		$token->setUser( $user );
-		$token->setExpires( true );
 
 		$expiration = new DateTime();
 		$expiration->add( new DateInterval('P1D') );
 		$token->setExpirationDate( $expiration );
+
+		$refreshToken = new RefreshToken();
+		$refreshToken->setToken( $this->guidGenerator->generateGUID() );
+		$refreshExpiration = clone $expiration;
+		$refreshExpiration->add( new DateInterval('P1D') );
+		$refreshToken->setExpirationDate( $refreshExpiration );
+
+		$token->setRefreshToken( $refreshToken );
 
 		$this->documentManager->persist( $token );
 
@@ -116,17 +124,46 @@ class AuthenticationService {
 
 		if ( !$token instanceof AccessToken )
 			throw new UnauthorizedException( "The provided access token could not be found." );
-		
-		if ( $token->getExpires() ) {
-			$now = new DateTime();
-			if ( $token->getExpirationDate() < $now )
-				throw new UnauthorizedException( "The provided access token has already expired." );
-		}
+
+		$now = new DateTime();
+		if ( $token->getExpirationDate() < $now )
+			throw new UnauthorizedException( "The provided access token has already expired." );
 
 		$user = $token->getUser();
 		if ( !$user instanceof User )
 			throw new UnauthorizedException( "No user could be mapped to the access token." );
 
 		return $user;
+	}
+
+	/**
+	 * Exchanges the old AccessToken with a new one with the specified RefreshToken
+	 * @param     string    $accessToken    The old access token value
+	 * @param     string    $refreshToken   The refresh token for the specified access token
+	 * @return    AccessToken               The new AccessToken
+	 *
+	 * @throws    UnauthorizedException     If the access token does not exist
+	 *                                      If access token and refresh token do not match
+	 *                                      If the refresh token already has expired
+	 */
+	public function refreshToken ( string $accessToken, string $refreshToken ) : AccessToken {
+		$old = $this->documentManager->getRepository( AccessToken::class )->find( $accessToken );
+		$now = new DateTime('now');
+
+		if ( !$old instanceof AccessToken )
+			throw new UnauthorizedException("The provided access token does not exist.");
+
+		if ( $old->getRefreshToken()->getToken() !== $refreshToken )
+			throw new UnauthorizedException("The provided access and refresh tokens to not match.");
+
+		if ( $old->getRefreshToken()->getExpirationDate() < $now )
+			throw new UnauthorizedException("The provided refresh token already has expired.");
+
+		$newToken = $this->generateAccessToken( $old->getUser() );
+		$old->setExpirationDate( $now );
+		$old->getRefreshToken()->setExpirationDate( $now );
+
+		$this->documentManager->flush();
+		return $newToken;
 	}
 }

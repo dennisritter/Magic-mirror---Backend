@@ -10,7 +10,8 @@ use Swagger\Annotations as SWG;
  * @ODM\InheritanceType("COLLECTION_PER_CLASS")
  *
  * @SWG\Definition(
- *   @SWG\Xml(name="UserToken")
+ *   @SWG\Xml(name="UserToken"),
+ *   required={"token", "expirationDate"}
  * )
  */
 abstract class UserToken {
@@ -31,16 +32,6 @@ abstract class UserToken {
 	 * @var User
 	 */
 	protected $user;
-
-	/**
-	 * @ODM\Field(
-	 *   name="expires",
-	 *   type="boolean"
-	 * )
-	 * @SWG\Property(property="expires", type="boolean")
-	 * @var boolean
-	 */
-	protected $expires;
 
 	/**
 	 * @ODM\Field(
@@ -78,20 +69,6 @@ abstract class UserToken {
 	 */
 	public function setUser( $user ) {
 		$this->user = $user;
-	}
-
-	/**
-	 * @return boolean
-	 */
-	public function getExpires() {
-		return $this->expires;
-	}
-
-	/**
-	 * @param boolean $expires
-	 */
-	public function setExpires( $expires ) {
-		$this->expires = $expires;
 	}
 
 	/**

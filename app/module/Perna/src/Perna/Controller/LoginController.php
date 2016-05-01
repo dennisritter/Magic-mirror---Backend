@@ -2,7 +2,7 @@
 
 namespace Perna\Controller;
 
-use Perna\Hydrator\UserTokenHydrator;
+use Perna\Hydrator\AccessTokenHydrator;
 use Perna\InputFilter\LoginCredentialsInputFilter;
 use Swagger\Annotations as SWG;
 
@@ -33,8 +33,8 @@ class LoginController extends AbstractAuthenticatedApiController {
 	 *  ),
 	 *  @SWG\Response(
 	 *    response="200",
-	 *    description="The specified credentials are valid and a new AccessToken has been created.",
-	 *    @SWG\Schema(ref="UserToken")
+	 *    description="The specified credentials are valid and a new access token has been created. The access token will be valid for 24 hours.",
+	 *    @SWG\Schema(ref="AccessToken")
 	 *  ),
 	 *  @SWG\Response(response="422", description="The specified credentials are invalid. No AccessToken has been created.")
 	 * )
@@ -42,6 +42,6 @@ class LoginController extends AbstractAuthenticatedApiController {
 	public function post () {
 		$credentials = $this->validateIncomingData( LoginCredentialsInputFilter::class );
 		$token = $this->authenticationService->loginUser( $credentials['email'], $credentials['password'] );
-		return $this->createDefaultViewModel( $this->extractObject( UserTokenHydrator::class, $token ) );
+		return $this->createDefaultViewModel( $this->extractObject( AccessTokenHydrator::class, $token ) );
 	}
 }
