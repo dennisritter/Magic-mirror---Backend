@@ -2,7 +2,10 @@
 
 return [
 	'allowed_origins' => [
-		'http://doc.api.perna.dev'
+		'*.perna.dev',
+		'perna.dev',
+		'localhost',
+		'chrome-extension://*'
 	],
 
 	'allowed_methods' => [
@@ -12,8 +15,4 @@ return [
 		'DELETE',
 		'OPTIONS'
 	],
-
-	'allowed_headers' => [
-		'Authorization'
-	]
 ];
