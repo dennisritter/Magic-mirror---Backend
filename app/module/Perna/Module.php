@@ -6,6 +6,8 @@ use Exception;
 use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
 use Swagger\Annotations as SWG;
+use Zend\Uri\Uri;
+use Zend\Uri\UriFactory;
 
 /**
  * Module Class for Perna API Module
@@ -35,6 +37,8 @@ class Module {
 		$eventManager = $e->getApplication()->getEventManager();
 		$moduleRouteListener = new ModuleRouteListener();
 		$moduleRouteListener->attach($eventManager);
+
+		UriFactory::registerScheme('chrome-extension', Uri::class);
 	}
 
 	/** Returns the module config */
