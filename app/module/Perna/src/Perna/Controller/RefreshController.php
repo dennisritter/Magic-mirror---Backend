@@ -33,7 +33,7 @@ class RefreshController extends AbstractAuthenticatedApiController {
 	 *   ),
 	 *   @SWG\Response(
 	 *    response="201",
-	 *    description="New access and refresh tokens have been generated. The old tokens are no longer valid.",
+	 *    description="New access and refresh tokens have been generated. The old tokens are no longer valid. The new access token will be valid for 24 hours. The new refresh token will be valid until 24 hours after the access token has expired.",
 	 *    @SWG\Schema(ref="AccessToken")
 	 *   ),
 	 *   @SWG\Response(response="422", description="Access and/or refresh tokens are invalid.")
