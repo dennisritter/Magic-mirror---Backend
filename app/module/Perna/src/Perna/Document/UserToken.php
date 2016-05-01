@@ -10,7 +10,8 @@ use Swagger\Annotations as SWG;
  * @ODM\InheritanceType("COLLECTION_PER_CLASS")
  *
  * @SWG\Definition(
- *   @SWG\Xml(name="UserToken")
+ *   @SWG\Xml(name="UserToken"),
+ *   required={"token", "expires", "expirationDate"}
  * )
  */
 abstract class UserToken {
