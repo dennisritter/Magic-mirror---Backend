@@ -34,7 +34,7 @@ class LoginController extends AbstractAuthenticatedApiController {
 	 *  @SWG\Response(
 	 *    response="200",
 	 *    description="The specified credentials are valid and a new AccessToken has been created.",
-	 *    @SWG\Schema(ref="UserToken")
+	 *    @SWG\Schema(ref="AccessToken")
 	 *  ),
 	 *  @SWG\Response(response="422", description="The specified credentials are invalid. No AccessToken has been created.")
 	 * )
