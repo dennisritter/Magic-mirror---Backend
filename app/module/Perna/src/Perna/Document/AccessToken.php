@@ -13,7 +13,7 @@ use Swagger\Annotations as SWG;
  *
  * @SWG\Definition(
  *   @SWG\Xml(name="AccessToken"),
- *   required={"refreshToken", "token", "expires", "expirationDate"}
+ *   required={"refreshToken", "token", "expirationDate"}
  * )
  */
 class AccessToken extends UserToken {

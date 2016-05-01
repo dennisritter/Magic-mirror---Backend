@@ -49,7 +49,6 @@ class AuthenticationService {
 		$token = new AccessToken();
 		$token->setToken( $this->guidGenerator->generateGUID() );
 		$token->setUser( $user );
-		$token->setExpires( true );
 
 		$expiration = new DateTime();
 		$expiration->add( new DateInterval('P1D') );
@@ -57,7 +56,6 @@ class AuthenticationService {
 
 		$refreshToken = new RefreshToken();
 		$refreshToken->setToken( $this->guidGenerator->generateGUID() );
-		$refreshToken->setExpires( true );
 		$refreshExpiration = clone $expiration;
 		$refreshExpiration->add( new DateInterval('P1D') );
 		$refreshToken->setExpirationDate( $refreshExpiration );
@@ -126,12 +124,10 @@ class AuthenticationService {
 
 		if ( !$token instanceof AccessToken )
 			throw new UnauthorizedException( "The provided access token could not be found." );
-		
-		if ( $token->getExpires() ) {
-			$now = new DateTime();
-			if ( $token->getExpirationDate() < $now )
-				throw new UnauthorizedException( "The provided access token has already expired." );
-		}
+
+		$now = new DateTime();
+		if ( $token->getExpirationDate() < $now )
+			throw new UnauthorizedException( "The provided access token has already expired." );
 
 		$user = $token->getUser();
 		if ( !$user instanceof User )

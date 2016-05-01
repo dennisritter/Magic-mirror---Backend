@@ -17,11 +17,8 @@ class UserTokenHydrator extends AbstractHydrator {
 		/** @var UserToken $object */
 		$data = [
 			'token' => $object->getToken(),
-			'expires' => $object->getExpires()
+			'expirationDate' => $this->extractDateTime( $object->getExpirationDate() )
 		];
-
-		if ( $object->getExpires() )
-			$data['expirationDate'] = $this->extractDateTime( $object->getExpirationDate() );
 
 		return $data;
 	}
