@@ -11,7 +11,7 @@ return [
         'DoctrineModule',
         'DoctrineMongoODMModule',
 	      'ZfrRest',
-	      //'ZfrCors',
+	      'ZfrCors',
 	      'SwaggerModule',
 	      'SwaggerUI',
         'Perna',
