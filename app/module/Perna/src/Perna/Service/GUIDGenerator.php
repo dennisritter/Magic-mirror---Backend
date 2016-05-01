@@ -10,6 +10,9 @@ namespace Perna\Service;
  */
 class GUIDGenerator {
 
+	/** String length of a hyphened GUID without braces or parenthesis */
+	const GUID_LENGTH = 36;
+
 	/**
 	 * Generates a random GUID without curly braces
 	 * @return    string    The generated GUID

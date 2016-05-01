@@ -139,4 +139,35 @@ class AuthenticationService {
 
 		return $user;
 	}
+
+	/**
+	 * Exchanges the old AccessToken with a new one with the specified RefreshToken
+	 * @param     string    $accessToken    The old access token value
+	 * @param     string    $refreshToken   The refresh token for the specified access token
+	 * @return    AccessToken               The new AccessToken
+	 *
+	 * @throws    UnauthorizedException     If the access token does not exist
+	 *                                      If access token and refresh token do not match
+	 *                                      If the refresh token already has expired
+	 */
+	public function refreshToken ( string $accessToken, string $refreshToken ) : AccessToken {
+		$old = $this->documentManager->getRepository( AccessToken::class )->find( $accessToken );
+		$now = new DateTime('now');
+
+		if ( !$old instanceof AccessToken )
+			throw new UnauthorizedException("The provided access token does not exist.");
+
+		if ( $old->getRefreshToken()->getToken() !== $refreshToken )
+			throw new UnauthorizedException("The provided access and refresh tokens to not match.");
+
+		if ( $old->getRefreshToken()->getExpirationDate() < $now )
+			throw new UnauthorizedException("The provided refresh token already has expired.");
+
+		$newToken = $this->generateAccessToken( $old->getUser() );
+		$old->setExpirationDate( $now );
+		$old->getRefreshToken()->setExpirationDate( $now );
+
+		$this->documentManager->flush();
+		return $newToken;
+	}
 }

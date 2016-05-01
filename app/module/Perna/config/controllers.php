@@ -1,6 +1,7 @@
 <?php
 
 use Perna\Controller\Console\ImportCitiesController;
+use Perna\Controller\RefreshController;
 use Perna\Controller\RegisterController;
 use Perna\Controller\LoginController;
 use Perna\Controller\LogoutController;
@@ -31,6 +32,9 @@ return [
 			AuthenticationService::class => DependencyTypes::SERVICE
 		]),
 		LogoutController::class => new Factory(LogoutController::class, [
+			AuthenticationService::class => DependencyTypes::SERVICE
+		]),
+		RefreshController::class => new Factory(RefreshController::class, [
 			AuthenticationService::class => DependencyTypes::SERVICE
 		])
 	]
