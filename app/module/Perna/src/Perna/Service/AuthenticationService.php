@@ -6,6 +6,7 @@ use DateInterval;
 use DateTime;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Perna\Document\AccessToken;
+use Perna\Document\RefreshToken;
 use Perna\Document\User;
 use ZfrRest\Http\Exception\Client\UnauthorizedException;
 use ZfrRest\Http\Exception\Client\UnprocessableEntityException;
@@ -53,6 +54,15 @@ class AuthenticationService {
 		$expiration = new DateTime();
 		$expiration->add( new DateInterval('P1D') );
 		$token->setExpirationDate( $expiration );
+
+		$refreshToken = new RefreshToken();
+		$refreshToken->setToken( $this->guidGenerator->generateGUID() );
+		$refreshToken->setExpires( true );
+		$refreshExpiration = clone $expiration;
+		$refreshExpiration->add( new DateInterval('P1D') );
+		$refreshToken->setExpirationDate( $refreshExpiration );
+
+		$token->setRefreshToken( $refreshToken );
 
 		$this->documentManager->persist( $token );
 
