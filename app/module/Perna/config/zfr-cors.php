@@ -4,6 +4,8 @@ return [
 	'allowed_origins' => [
 		'*.perna.dev',
 		'perna.dev',
+		'http://perna.dev',
+		'https://perna.dev',
 		'localhost',
 		'chrome-extension://*'
 	],
@@ -15,4 +17,8 @@ return [
 		'DELETE',
 		'OPTIONS'
 	],
+
+	'allowed_headers' => [
+		'Content-Type'
+	]
 ];
