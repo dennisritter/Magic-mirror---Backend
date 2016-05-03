@@ -19,6 +19,7 @@ return [
 	],
 
 	'allowed_headers' => [
-		'Content-Type'
+		'Content-Type',
+		'Access-Token'
 	]
 ];
