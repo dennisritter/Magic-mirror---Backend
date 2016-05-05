@@ -4,9 +4,11 @@ use Doctrine\ODM\MongoDB\DocumentManager;
 use Perna\Factory\DependencyTypes;
 use Perna\Factory\Factory;
 use Perna\Hydrator\CityDumpHydrator;
+use Perna\Hydrator\GoogleAccessTokenHydrator;
 use Perna\InputFilter\CityDumpInputFilter;
 use Perna\Service\AuthenticationService;
 use Perna\Service\CityImportService;
+use Perna\Service\GoogleAuthenticationService;
 use Perna\Service\GUIDGenerator;
 use Perna\Service\PasswordService;
 use Perna\Service\UserService;
@@ -30,6 +32,11 @@ return [
 			DocumentManager::class => DependencyTypes::SERVICE,
 			GUIDGenerator::class => DependencyTypes::SERVICE,
 			PasswordService::class => DependencyTypes::SERVICE
+		]),
+		GoogleAuthenticationService::class => new Factory(GoogleAuthenticationService::class, [
+			GoogleAccessTokenHydrator::class => DependencyTypes::HYDRATOR,
+			DocumentManager::class => DependencyTypes::SERVICE,
+			GUIDGenerator::class => DependencyTypes::SERVICE
 		])
 	],
 	'invokables' => [
