@@ -22,10 +22,10 @@ class GoogleAuthenticationService {
 
 	// TODO: move to config
 	const APPLICATION_NAME = 'Perna';
-	const CLIENT_ID = '60781837706-50994u7k6dviflpbu8fds3ut13j67ghm.apps.googleusercontent.com';
-	const CLIENT_SECRET = 'GkJw_aresdYLvRCMgZBHvet6';
+	const CLIENT_ID = '1004755994493-vn9p9404kf3gie85k8ehjise9duuemct.apps.googleusercontent.com';
+	const CLIENT_SECRET = 'H_s_WxHQv_ciVafulFpX_E6e';
 	const CLIENT_ACCESS_TYPE = 'offline';
-	const CLIENT_REDIRECT_URI = 'http://api.perna.dev/google-auth/callback';
+	const CLIENT_REDIRECT_URI = 'http://api.perna.dev/v1/google-auth/callback';
 
 	const SCOPES = [
 		Google_Service_Calendar::CALENDAR
@@ -92,6 +92,41 @@ class GoogleAuthenticationService {
 		return $client->createAuthUrl();
 	}
 
+	/**
+	 * Authenticates a User identified by a state
+	 * @param     string    $state    The state token to use
+	 * @param     string    $authCode The Google Auth Code
+	 * @return    User                The authenticated User
+	 *
+	 * @throws UnauthorizedException        If the state token could not be found
+	 * @throws InternalServerErrorException If an unknown error occurred while authenticating
+	 */
+	public function authenticateByState ( string $state, string $authCode ) : User {
+		$stateToken = $this->documentManager->getRepository( GoogleAuthStateToken::class )->find( $state );
+		if ( !$stateToken instanceof GoogleAuthStateToken )
+			throw new UnauthorizedException("The specified state token does not exist.");
+
+		try {
+			$user = $this->authenticateUser( $stateToken->getUser(), $authCode );
+
+			$this->documentManager->remove( $stateToken );
+			$this->documentManager->flush();
+
+			return $user;
+		} catch ( \Google_Auth_Exception $e ) {
+			error_log("Google Authentication Error: " . $e->getTraceAsString() );
+			throw new InternalServerErrorException("Error while authenticating Google user.");
+		}
+	}
+
+	/**
+	 * Authenticates the specified user with the Google Auth Code
+	 * @param     User      $user     The User to authenticate
+	 * @param     string    $authCode The Google Auth Code
+	 * @return    User                The authenticated User
+	 *
+	 * @throws    \Google_Auth_Exception
+	 */
 	public function authenticateUser ( User $user, string $authCode ) : User {
 		$client = $this->createUnauthorizedClient();
 		$accessTokenData = $client->authenticate( $authCode );
@@ -100,6 +135,14 @@ class GoogleAuthenticationService {
 		return $user;
 	}
 
+	/**
+	 * Creates an Authorized Client for the specified User
+	 * @param     User      $user     The User for which to create the Google Client
+	 * @return    Google_Client       The authenticated Client for the User
+	 *
+	 * @throws    UnauthorizedException         If the User does not have Google credentials stored
+	 * @throws    InternalServerErrorException  If something went wrong while refreshing the access token
+	 */
 	public function createAuthorizedClient ( User $user ) {
 		$client = $this->createUnauthorizedClient();
 		$token = $user->getGoogleAccessToken();
