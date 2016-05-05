@@ -19,7 +19,6 @@ class GoogleAccessTokenHydrator extends AbstractHydrator {
 			'refresh_token' => $object->getRefreshToken(),
 			'token_type' => $object->getTokenType(),
 			'expires_in' => $object->getExpiresIn(),
-			'id_token' => $object->getIdToken(),
 			'created' => $object->getCreated()
 		];
 	}
@@ -28,11 +27,14 @@ class GoogleAccessTokenHydrator extends AbstractHydrator {
 	public function hydrate( array $data, $object ) {
 		/** @var GoogleAccessToken $object */
 		$object->setAccessToken( $data['access_token'] );
-		$object->setRefreshToken( $data['refresh_token'] );
 		$object->setTokenType( $data['token_type'] );
 		$object->setExpiresIn( $data['expires_in'] );
-		$object->setIdToken( $data['id_token'] );
 		$object->setCreated( $data['created'] );
+
+		if ( array_key_exists('refresh_token', $data) )
+			$object->setRefreshToken( $data['refresh_token'] );
+
+		return $object;
 	}
 
 	/**
