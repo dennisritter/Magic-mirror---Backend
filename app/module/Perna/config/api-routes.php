@@ -1,6 +1,7 @@
 <?php
 
 use Perna\Controller\GoogleAuth\AuthUrlController;
+use Perna\Controller\GoogleAuth\CallbackController;
 use Perna\Controller\LoginController;
 use Perna\Controller\LogoutController;
 use Perna\Controller\RefreshController;
@@ -71,6 +72,16 @@ return [
 					'route' => '/auth-url',
 					'defaults' => [
 						'controller' => AuthUrlController::class
+					]
+				]
+			],
+
+			'authCallback' => [
+				'type' => Literal::class,
+				'options' => [
+					'route' => '/callback',
+					'defaults' => [
+						'controller' => CallbackController::class
 					]
 				]
 			]
