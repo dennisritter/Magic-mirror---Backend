@@ -51,15 +51,6 @@ class GoogleAccessToken {
 
 	/**
 	 * @ODM\Field(
-	 *   name="idToken",
-	 *   type="string"
-	 * )
-	 * @var       string
-	 */
-	protected $idToken;
-
-	/**
-	 * @ODM\Field(
 	 *   name="created",
 	 *   type="timestamp"
 	 * )
@@ -121,20 +112,6 @@ class GoogleAccessToken {
 	 */
 	public function setExpiresIn( $expiresIn ) {
 		$this->expiresIn = $expiresIn;
-	}
-
-	/**
-	 * @return string
-	 */
-	public function getIdToken() {
-		return $this->idToken;
-	}
-
-	/**
-	 * @param string $idToken
-	 */
-	public function setIdToken( $idToken ) {
-		$this->idToken = $idToken;
 	}
 
 	/**
