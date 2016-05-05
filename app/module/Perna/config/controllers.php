@@ -1,6 +1,7 @@
 <?php
 
 use Perna\Controller\Console\ImportCitiesController;
+use Perna\Controller\GoogleAuth\AuthUrlController;
 use Perna\Controller\RefreshController;
 use Perna\Controller\RegisterController;
 use Perna\Controller\LoginController;
@@ -11,6 +12,7 @@ use Perna\Factory\Factory;
 use Perna\Hydrator\UserHydrator;
 use Perna\Service\AuthenticationService;
 use Perna\Service\CityImportService;
+use Perna\Service\GoogleAuthenticationService;
 use Perna\Service\UserService;
 
 return [
@@ -36,6 +38,10 @@ return [
 		]),
 		RefreshController::class => new Factory(RefreshController::class, [
 			AuthenticationService::class => DependencyTypes::SERVICE
+		]),
+		AuthUrlController::class => new Factory(AuthUrlController::class, [
+			AuthenticationService::class => DependencyTypes::SERVICE,
+			GoogleAuthenticationService::class => DependencyTypes::SERVICE
 		])
 	]
 ];

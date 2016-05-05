@@ -1,5 +1,6 @@
 <?php
 
+use Perna\Controller\GoogleAuth\AuthUrlController;
 use Perna\Controller\LoginController;
 use Perna\Controller\LogoutController;
 use Perna\Controller\RefreshController;
@@ -53,6 +54,25 @@ return [
 			'route' => '/refresh',
 			'defaults' => [
 				'controller' => RefreshController::class
+			]
+		]
+	],
+
+	'googleAuth' => [
+		'type' => Literal::class,
+		'options' => [
+			'route' => '/google-auth'
+		],
+		'may_terminate' => false,
+		'child_routes' => [
+			'authUrl' => [
+				'type' => Literal::class,
+				'options' => [
+					'route' => '/auth-url',
+					'defaults' => [
+						'controller' => AuthUrlController::class
+					]
+				]
 			]
 		]
 	]
