@@ -13,6 +13,7 @@
     "zfr/zfr-rest": "^0.5.0",
     "outeredge/swagger-module": "^2.0",
     "kbrabrand/zf2-swagger-ui": "^1.0",
-    "zfr/zfr-cors": "^1.2"
+    "zfr/zfr-cors": "^1.2",
+    "google/apiclient": "1.*"
   }
 }

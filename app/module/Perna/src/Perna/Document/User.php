@@ -78,6 +78,15 @@ class User {
 	protected $lastLogin;
 
 	/**
+	 * @ODM\EmbedOne(
+	 *   name="googleAccessToken",
+	 *   targetDocument="GoogleAccessToken"
+	 * )
+	 * @var       GoogleAccessToken
+	 */
+	protected $googleAccessToken;
+
+	/**
 	 * @return string
 	 */
 	public function getId() {
@@ -159,5 +168,19 @@ class User {
 	 */
 	public function setLastLogin( $lastLogin ) {
 		$this->lastLogin = $lastLogin;
+	}
+
+	/**
+	 * @return GoogleAccessToken
+	 */
+	public function getGoogleAccessToken() {
+		return $this->googleAccessToken;
+	}
+
+	/**
+	 * @param GoogleAccessToken $googleAccessToken
+	 */
+	public function setGoogleAccessToken( $googleAccessToken ) {
+		$this->googleAccessToken = $googleAccessToken;
 	}
 }

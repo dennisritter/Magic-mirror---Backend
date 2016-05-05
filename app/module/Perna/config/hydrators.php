@@ -1,5 +1,6 @@
 <?php
 
+use Perna\Document\GoogleAccessToken;
 use Perna\Hydrator\AccessTokenHydrator;
 use Perna\Hydrator\CityDumpHydrator;
 use Perna\Hydrator\UserHydrator;
@@ -10,6 +11,7 @@ return [
 		CityDumpHydrator::class => CityDumpHydrator::class,
 		UserHydrator::class => UserHydrator::class,
 		UserTokenHydrator::class => UserTokenHydrator::class,
-		AccessTokenHydrator::class => AccessTokenHydrator::class
+		AccessTokenHydrator::class => AccessTokenHydrator::class,
+		GoogleAccessToken::class => GoogleAccessToken::class
 	]
 ];
