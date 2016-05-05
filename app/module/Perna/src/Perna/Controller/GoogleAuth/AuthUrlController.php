@@ -5,6 +5,7 @@ namespace Perna\Controller\GoogleAuth;
 use Perna\Controller\AbstractAuthenticatedApiController;
 use Perna\Service\AuthenticationService;
 use Perna\Service\GoogleAuthenticationService;
+use Swagger\Annotations as SWG;
 
 /**
  * Class AuthUrlController
@@ -24,6 +25,30 @@ class AuthUrlController extends AbstractAuthenticatedApiController {
 		$this->googleAuthenticationService = $googleAuthenticationService;
 	}
 
+	/**
+	 * @SWG\Get(
+	 *   path="/google-auth/auth-url",
+	 *   summary="Creates Google Auth URL",
+	 *   description="Creates a URL for the current user to permit Google OAuth",
+	 *   operationId="googleAuthURL",
+	 *   tags={"google"},
+	 *   @SWG\Parameter(
+	 *    name="Access-Token",
+	 *    in="header",
+	 *    type="string",
+	 *    description="The current access token",
+	 *    required=true
+	 *   ),
+	 *   @SWG\Response(
+	 *    response="200",
+	 *    description="A Google Auth URL has been created",
+	 *    @SWG\Schema(
+	 *      required={"url"},
+	 *      @SWG\Property(property="url", description="The Google Auth URL for the current user", type="string", format="url")
+	 *    )
+	 *   )
+	 * )
+	 */
 	public function get () {
 		$this->assertAccessToken();
 		$user = $this->authenticationService->findAuthenticatedUser( $this->accessToken );

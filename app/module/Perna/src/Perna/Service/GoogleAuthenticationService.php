@@ -130,7 +130,7 @@ class GoogleAuthenticationService {
 	public function authenticateUser ( User $user, string $authCode ) : User {
 		$client = $this->createUnauthorizedClient();
 		$accessTokenData = $client->authenticate( $authCode );
-		$token = $this->tokenHydrator->hydrateFromJson( $accessTokenData, new GoogleAccessToken() );
+		$token = $this->tokenHydrator->hydrateFromJson( $accessTokenData, $user->getGoogleAccessToken() ?? new GoogleAccessToken() );
 		$user->setGoogleAccessToken( $token );
 		return $user;
 	}
@@ -157,7 +157,6 @@ class GoogleAuthenticationService {
 			try {
 				$client->refreshToken( $client->getRefreshToken() );
 			} catch ( \Google_Auth_Exception $e ) {
-				// TODO: Better exception handling
 				error_log( 'Google Refresh Error: ' . $e->getTraceAsString() );
 				throw new InternalServerErrorException("An error occurred while refreshing the Google Access Token.");
 			}
