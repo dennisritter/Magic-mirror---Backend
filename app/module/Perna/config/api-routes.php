@@ -1,5 +1,6 @@
 <?php
 
+use Perna\Controller\Calendar\CalendarsController;
 use Perna\Controller\GoogleAuth\AuthUrlController;
 use Perna\Controller\GoogleAuth\CallbackController;
 use Perna\Controller\LoginController;
@@ -82,6 +83,25 @@ return [
 					'route' => '/callback',
 					'defaults' => [
 						'controller' => CallbackController::class
+					]
+				]
+			]
+		]
+	],
+
+	'calendar' => [
+		'type' => Literal::class,
+		'options' => [
+			'route' => '/calendar'
+		],
+		'may_terminate' => false,
+		'child_routes' => [
+			'calendars' => [
+				'type' => Literal::class,
+				'options' => [
+					'route' => '/calendars',
+					'defaults' => [
+						'controller' => CalendarsController::class
 					]
 				]
 			]

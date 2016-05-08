@@ -1,7 +1,9 @@
 <?php
 
 namespace Perna\Hydrator;
+
 use Perna\Document\GoogleAccessToken;
+use MongoTimestamp;
 
 /**
  * Hydrator for a GoogleAccessToken
@@ -13,14 +15,21 @@ class GoogleAccessTokenHydrator extends AbstractHydrator {
 
 	/** @inheritdoc */
 	public function extract( $object ) {
-		/** @var GoogleAccessToken $object */
-		return [
+		/**
+		 * @var GoogleAccessToken $object
+		 * @var MongoTimestamp $created
+		 */
+		$data = [
 			'access_token' => $object->getAccessToken(),
 			'refresh_token' => $object->getRefreshToken(),
 			'token_type' => $object->getTokenType(),
 			'expires_in' => $object->getExpiresIn(),
-			'created' => $object->getCreated()
 		];
+
+		$created = $object->getCreated();
+		$data['created'] = $created->sec ?? 0;
+
+		return $data;
 	}
 
 	/** @inheritdoc */
