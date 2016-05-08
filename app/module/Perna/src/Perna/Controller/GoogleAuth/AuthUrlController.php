@@ -52,9 +52,7 @@ class AuthUrlController extends AbstractAuthenticatedApiController {
 	public function get () {
 		$this->assertAccessToken();
 		$user = $this->authenticationService->findAuthenticatedUser( $this->accessToken );
-		$url = $this->googleAuthenticationService->generateAuthUrl( $user );
-		return $this->createDefaultViewModel([
-			'url' => $url
-		]);
+		$data = $this->googleAuthenticationService->generateAuthUrl( $user );
+		return $this->createDefaultViewModel( $data );
 	}
 }
