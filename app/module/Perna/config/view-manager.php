@@ -7,6 +7,8 @@ return [
 		'perna' => $viewDir
 	],
 	'template_map' => [
-		'api/default' => $viewDir . '/default/default.phtml'
+		'api/default' => $viewDir . '/default/default.phtml',
+		'api/google-auth-callback' => $viewDir . '/default/google-auth-callback.php',
+		'api/layout/empty' => $viewDir . '/layout/empty.php'
 	]
 ];
