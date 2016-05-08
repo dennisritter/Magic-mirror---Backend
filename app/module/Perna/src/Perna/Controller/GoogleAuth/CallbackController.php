@@ -5,6 +5,7 @@ namespace Perna\Controller\GoogleAuth;
 use Perna\Controller\AbstractApiController;
 use Perna\Service\GoogleAuthenticationService;
 use Zend\Http\Request;
+use Zend\View\Model\ViewModel;
 use ZfrRest\Http\Exception\Client\UnauthorizedException;
 use ZfrRest\Http\Exception\Client\UnprocessableEntityException;
 
@@ -32,19 +33,39 @@ class CallbackController extends AbstractApiController {
 		$error = $request->getQuery('error', null);
 		$state = $request->getQuery('state', null);
 
-		if ( $state === null )
-			throw new UnprocessableEntityException("No state has been provided.");
-
-		if ( $error !== null )
-			throw new UnauthorizedException("Access has been denied by the Google user.");
-
-		if ( $code === null )
-			throw new UnprocessableEntityException("No code has been provided.");
-
-		$this->googleAuthenticationService->authenticateByState( $state, $code );
-
-		return $this->createDefaultViewModel([
-			'success' => true
+		$model = new ViewModel([
+			'success' => false,
+			'state' => null
 		]);
+
+		$this->layout('api/layout/empty');
+
+		$model->setTemplate('api/google-auth-callback');
+
+		if ( $state === null ) {
+			$model->setVariable('error', 'noState');
+			return $model;
+		}
+
+		$model->setVariable('state', $state);
+
+		if ( $error !== null ) {
+			$model->setVariable('error', 'accessDenied');
+			return $model;
+		}
+
+		if ( $code === null ) {
+			$model->setVariable('error', 'noCode');
+			return $model;
+		}
+
+		try {
+			$this->googleAuthenticationService->authenticateByState( $state, $code );
+			$model->setVariable('success', true);
+		} catch ( \Exception $e ) {
+			$model->setVariable('error', 'unknownError');
+		}
+
+		return $model;
 	}
 }
