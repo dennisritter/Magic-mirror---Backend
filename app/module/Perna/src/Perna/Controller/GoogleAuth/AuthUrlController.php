@@ -43,8 +43,9 @@ class AuthUrlController extends AbstractAuthenticatedApiController {
 	 *    response="200",
 	 *    description="A Google Auth URL has been created",
 	 *    @SWG\Schema(
-	 *      required={"url"},
-	 *      @SWG\Property(property="url", description="The Google Auth URL for the current user", type="string", format="url")
+	 *      required={"url", "state"},
+	 *      @SWG\Property(property="url", description="The Google Auth URL for the current user", type="string", format="url"),
+	 *      @SWG\Property(property="state", description="State identifier. Token for current Google Auth session.", type="string", format="GUID")
 	 *    )
 	 *   )
 	 * )
@@ -52,9 +53,7 @@ class AuthUrlController extends AbstractAuthenticatedApiController {
 	public function get () {
 		$this->assertAccessToken();
 		$user = $this->authenticationService->findAuthenticatedUser( $this->accessToken );
-		$url = $this->googleAuthenticationService->generateAuthUrl( $user );
-		return $this->createDefaultViewModel([
-			'url' => $url
-		]);
+		$data = $this->googleAuthenticationService->generateAuthUrl( $user );
+		return $this->createDefaultViewModel( $data );
 	}
 }

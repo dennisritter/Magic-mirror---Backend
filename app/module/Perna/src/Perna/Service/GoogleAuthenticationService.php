@@ -73,9 +73,9 @@ class GoogleAuthenticationService {
 	/**
 	 * Generates a Google Auth URL for the specified user
 	 * @param     User      $user     The user for which to generate the Auth URL
-	 * @return    string              The Auth URL for the User
+	 * @return    array               Array with 'auth_url' and 'state'
 	 */
-	public function generateAuthUrl ( User $user ) : string {
+	public function generateAuthUrl ( User $user ) : array {
 		/** @var \Google_Auth_OAuth2 $auth */
 		$client = $this->createUnauthorizedClient();
 
@@ -89,7 +89,10 @@ class GoogleAuthenticationService {
 		$auth = $client->getAuth();
 		$auth->setState( $stateToken->getToken() );
 
-		return $client->createAuthUrl();
+		return [
+			'url' => $client->createAuthUrl(),
+			'state' => $stateToken->getToken()
+		];
 	}
 
 	/**
