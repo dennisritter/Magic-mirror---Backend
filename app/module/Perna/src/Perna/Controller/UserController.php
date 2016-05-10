@@ -77,6 +77,12 @@ class UserController extends AbstractUserController {
 		$this->assertAccessToken();
 		$user = $this->authenticationService->findAuthenticatedUser( $this->accessToken );
 		return $this->createDefaultViewModel( $this->userHydrator->extract( $user ) );
+	}
 
+	public function delete(){
+		$this->assertAccessToken();
+		$user = $this->authenticationService->findAuthenticatedUser( $this->accessToken );
+		$this->userService->deleteUser($user);
+		return "Mail send";
 	}
 }

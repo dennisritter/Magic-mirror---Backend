@@ -3,8 +3,10 @@
 namespace Perna\Service;
 
 use Doctrine\ODM\MongoDB\DocumentManager;
+use Perna\Document\AccessToken;
 use Perna\Document\User;
 use ZfrRest\Http\Exception\Client\UnprocessableEntityException;
+use Zend\Mail;
 
 /**
  * Service for User-Operations
@@ -63,5 +65,26 @@ class UserService {
 
 	public function getUserByEmail ( string $email ) : User {
 		return $this->documentManager->getRepository(User::class)->findOneBy( ["email" => $email] );
+	}
+
+	public function deleteUser ( User $user, DeletionToken $deleteToken = null ) : int {
+		if( $deleteToken == null){
+			$mail = new Mail\Message();
+			$mail->setBody('This is the text of the email.');
+			$mail->setFrom('Freeaqingme@example.org', 'Sender\'s name');
+			$mail->addTo('Knauft@gmx.net', 'Name of recipient');
+			$mail->setSubject('TestSubject');
+			$transport = new Mail\Transport\Sendmail();
+			$transport->send($mail);
+			return 0;
+		}
+		$usr = $this->documentManager->getRepository(User::class)->findOneBy( $user );
+		$token = $this->documentManager->getRepository(DeletionToken::class)->findOneBy( $deleteToken );
+
+		if($usr == $token.getUser()){
+			$this->documentManager->getDocumentCollection("users")->remove(usr);
+		}
+
+		return -1;
 	}
 }
