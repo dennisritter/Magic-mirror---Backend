@@ -9,7 +9,9 @@ use Perna\Document\GoogleAccessToken;
 use Perna\Document\GoogleAuthStateToken;
 use Perna\Document\User;
 use Perna\Hydrator\GoogleAccessTokenHydrator;
+use ZfrRest\Http\Exception\Client\ForbiddenException;
 use ZfrRest\Http\Exception\Client\UnauthorizedException;
+use ZfrRest\Http\Exception\Client\UnprocessableEntityException;
 use ZfrRest\Http\Exception\Server\InternalServerErrorException;
 
 /**
@@ -143,7 +145,7 @@ class GoogleAuthenticationService {
 	 * @param     User      $user     The User for which to create the Google Client
 	 * @return    Google_Client       The authenticated Client for the User
 	 *
-	 * @throws    UnauthorizedException         If the User does not have Google credentials stored
+	 * @throws    ForbiddenException            If the user has not yet authenticated at Google or access has been revoked by the user
 	 * @throws    InternalServerErrorException  If something went wrong while refreshing the access token
 	 */
 	public function createAuthorizedClient ( User $user ) {
@@ -151,7 +153,7 @@ class GoogleAuthenticationService {
 		$token = $user->getGoogleAccessToken();
 
 		if ( !$token instanceof GoogleAccessToken )
-			throw new UnauthorizedException("The user has not yet authenticated at Google.");
+			throw new ForbiddenException("The user has not yet authenticated at Google.");
 
 		$tokenData = $this->tokenHydrator->extractToJson( $token );
 		$client->setAccessToken( $tokenData );
@@ -160,6 +162,10 @@ class GoogleAuthenticationService {
 			try {
 				$client->refreshToken( $client->getRefreshToken() );
 			} catch ( \Google_Auth_Exception $e ) {
+				if ( strpos( $e->getMessage(), 'revoked' ) > -1 ) {
+					throw new ForbiddenException("The Google Calendar access has been revoked by the user.");
+				}
+
 				error_log( 'Google Refresh Error: ' . $e->getTraceAsString() );
 				throw new InternalServerErrorException("An error occurred while refreshing the Google Access Token.");
 			}

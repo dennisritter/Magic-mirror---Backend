@@ -22,10 +22,7 @@ use Zend\Uri\UriFactory;
  *      version="1.0.0",
  *      title="Perna API",
  *      description="RESTful API for Perna Smart Dashboard"
- *    ),
- *    @SWG\Response(response="400", description="The provided data is invalid"),
- *    @SWG\Response(response="200", description="Success"),
- *    @SWG\Response(response="500", description="An internal server error occurred. No specific information available.")
+ *    )
  * )
  *
  * @author      Jannik Portz
