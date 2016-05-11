@@ -32,7 +32,7 @@ class GoogleCalendar {
 	 * The title of the calendar
 	 * @var       string
 	 */
-	protected $title;
+	protected $summary;
 
 	/**
 	 * The description of the calendar
@@ -98,15 +98,29 @@ class GoogleCalendar {
 	/**
 	 * @return string
 	 */
-	public function getTitle() {
-		return $this->title;
+	public function getSummary() {
+		return $this->summary;
 	}
 
 	/**
-	 * @param string $title
+	 * @return string
 	 */
-	public function setTitle( $title ) {
-		$this->title = $title;
+	public function getDescription() {
+		return $this->description;
+	}
+
+	/**
+	 * @param string $description
+	 */
+	public function setDescription( $description ) {
+		$this->description = $description;
+	}
+
+	/**
+	 * @param string $summary
+	 */
+	public function setSummary( $summary ) {
+		$this->summary = $summary;
 	}
 
 	/**
@@ -126,7 +140,7 @@ class GoogleCalendar {
 	/**
 	 * @return boolean
 	 */
-	public function isSelected() {
+	public function getSelected() {
 		return $this->selected;
 	}
 
@@ -140,7 +154,7 @@ class GoogleCalendar {
 	/**
 	 * @return boolean
 	 */
-	public function isPrimary() {
+	public function getPrimary() {
 		return $this->primary;
 	}
 
