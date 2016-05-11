@@ -3,6 +3,7 @@
 namespace Perna\Controller\Calendar;
 
 use Perna\Controller\AbstractAuthenticatedApiController;
+use Perna\Hydrator\GoogleCalendarHydrator;
 use Perna\Service\AuthenticationService;
 use Perna\Service\GoogleCalendarService;
 
@@ -27,9 +28,7 @@ class CalendarsController extends AbstractAuthenticatedApiController {
 	public function get () {
 		$this->assertAccessToken();
 		$user = $this->authenticationService->findAuthenticatedUser( $this->accessToken );
-		$results = $this->googleCalendarService->getCalendars( $user );
-		return $this->createDefaultViewModel([
-			'success' => true
-		]);
+		$calendars = $this->googleCalendarService->getCalendars( $user );
+		return $this->createDefaultViewModel( $this->extractObject( GoogleCalendarHydrator::class, $calendars ) );
 	}
 }

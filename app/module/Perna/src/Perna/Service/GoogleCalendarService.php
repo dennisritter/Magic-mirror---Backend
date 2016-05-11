@@ -1,7 +1,10 @@
 <?php
 
 namespace Perna\Service;
+
+use Perna\Document\GoogleCalendar;
 use Perna\Document\User;
+use Perna\Hydrator\GoogleCalendarHydrator;
 
 /**
  * Class GoogleCalendarService
@@ -17,8 +20,14 @@ class GoogleCalendarService {
 	 */
 	protected $googleAuthenticationService;
 
-	public function __construct ( GoogleAuthenticationService $googleAuthenticationService ) {
+	/**
+	 * @var       GoogleCalendarHydrator
+	 */
+	protected $googleCalendarHydrator;
+
+	public function __construct ( GoogleAuthenticationService $googleAuthenticationService, GoogleCalendarHydrator $googleCalendarHydrator ) {
 		$this->googleAuthenticationService = $googleAuthenticationService;
+		$this->googleCalendarHydrator = $googleCalendarHydrator;
 	}
 
 	/**
@@ -39,8 +48,13 @@ class GoogleCalendarService {
 			'showDeleted' => false,
 			'showHidden' => false
 		]);
-		$results = $results;
-		return $results;
-	}
 
+		$calendars = [];
+		$hydrator = $this->googleCalendarHydrator;
+		foreach ( $results as $result ) {
+			$calendars[] = $hydrator->hydrateFromGoogleCalendarEntry( $result, new GoogleCalendar() );
+		}
+
+		return $calendars;
+	}
 }

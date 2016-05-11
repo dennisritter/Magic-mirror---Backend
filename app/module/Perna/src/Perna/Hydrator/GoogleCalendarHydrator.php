@@ -33,4 +33,16 @@ class GoogleCalendarHydrator extends AbstractHydrator {
 
 		return $object;
 	}
+
+	public function hydrateFromGoogleCalendarEntry ( \Google_Service_Calendar_CalendarListEntry $calendar, GoogleCalendar $object ) : GoogleCalendar {
+		$object->setId( $calendar->getId() );
+		$object->setAccessRole( $calendar->getAccessRole() );
+		$object->setColor( $calendar->getBackgroundColor() );
+		$object->setSummary( $calendar->getSummary() );
+		$object->setDescription( $calendar->getDescription() ?? '' );
+		$object->setSelected( $calendar->getSelected() ?? false );
+		$object->setPrimary( $calendar->getPrimary() ?? false );
+
+		return $object;
+	}
 }

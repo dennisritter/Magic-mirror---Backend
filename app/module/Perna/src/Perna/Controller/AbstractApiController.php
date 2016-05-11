@@ -2,6 +2,7 @@
 
 namespace Perna\Controller;
 
+use Perna\Controller\Plugin\ExtractObject;
 use ZfrRest\Mvc\Controller\AbstractRestfulController;
 use ZfrRest\View\Model\ResourceViewModel;
 
@@ -11,7 +12,8 @@ use ZfrRest\View\Model\ResourceViewModel;
  * @author      Jannik Portz
  * @package     Perna\Controller
  *
- * @method      array extractObject(string $hydratorName, object $object)
+ * @method      array extractObject(string $hydratorName, $object)
+ * @property    $extractObject ExtractObject
  */
 class AbstractApiController extends AbstractRestfulController {
 
