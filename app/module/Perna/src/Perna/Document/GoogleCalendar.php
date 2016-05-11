@@ -1,9 +1,14 @@
 <?php
 
 namespace Perna\Document;
+use Swagger\Annotations as SWG;
 
 /**
  * Document representing a Google Calendar
+ *
+ * @SWG\Definition(
+ *   @SWG\Xml(name="GoogleCalendar")
+ * )
  *
  * @author      Jannik Portz
  * @package     Perna\Document
@@ -12,36 +17,42 @@ class GoogleCalendar {
 
 	/**
 	 * The ID of the Google Calendar
+	 * @SWG\Property()
 	 * @var       string
 	 */
 	protected $id;
 
 	/**
 	 * The Access Role for the Calendar
+	 * @SWG\Property()
 	 * @var       string
 	 */
 	protected $accessRole;
 
 	/**
 	 * The color of the calendar as HEX RGB color string
+	 * @SWG\Property()
 	 * @var       string
 	 */
 	protected $color;
 
 	/**
 	 * The title of the calendar
+	 * @SWG\Property()
 	 * @var       string
 	 */
 	protected $summary;
 
 	/**
 	 * The description of the calendar
+	 * @SWG\Property()
 	 * @var       string
 	 */
 	protected $description;
 
 	/**
 	 * Whether the calendar is visible for the user in Google Calendar UI
+	 * @SWG\Property()
 	 * @var       bool
 	 */
 	protected $selected;
@@ -49,6 +60,7 @@ class GoogleCalendar {
 	/**
 	 * Whether this is the User's primary calendar.
 	 * There may only be one primary calendar for the user.
+	 * @SWG\Property()
 	 * @var       bool
 	 */
 	protected $primary;

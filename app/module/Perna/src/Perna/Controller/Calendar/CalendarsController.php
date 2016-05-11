@@ -6,6 +6,7 @@ use Perna\Controller\AbstractAuthenticatedApiController;
 use Perna\Hydrator\GoogleCalendarHydrator;
 use Perna\Service\AuthenticationService;
 use Perna\Service\GoogleCalendarService;
+use Swagger\Annotations as SWG;
 
 /**
  * Controller for Calendars endpoint
@@ -25,6 +26,23 @@ class CalendarsController extends AbstractAuthenticatedApiController {
 		$this->googleCalendarService = $googleCalendarService;
 	}
 
+	/**
+	 * @SWG\Get(
+	 *   path="/calendar/calendars",
+	 *   summary="Google-Calendar-List",
+	 *   description="Lists up all calendars of the specified user.",
+	 *   operationId="getCalendars",
+	 *   tags={"calendar"},
+	 *   @SWG\Response(
+	 *    response="200",
+	 *    description="The User's calendars have successfully been retrieved.",
+	 *    @SWG\Schema(
+	 *      type="array",
+	 *      @SWG\Items( ref="GoogleCalendar" )
+	 *    )
+	 *   )
+	 * )
+	 */
 	public function get () {
 		$this->assertAccessToken();
 		$user = $this->authenticationService->findAuthenticatedUser( $this->accessToken );
