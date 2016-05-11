@@ -40,6 +40,10 @@ class CalendarsController extends AbstractAuthenticatedApiController {
 	 *      type="array",
 	 *      @SWG\Items( ref="GoogleCalendar" )
 	 *    )
+	 *   ),
+	 *   @SWG\Response(
+	 *    response="403",
+	 *    description="If the user has not authenticated at Google or access has been revoked"
 	 *   )
 	 * )
 	 */
