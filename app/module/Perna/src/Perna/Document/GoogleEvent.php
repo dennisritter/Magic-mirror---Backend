@@ -1,9 +1,15 @@
 <?php
 
 namespace Perna\Document;
+use Swagger\Annotations as SWG;
 
 /**
  * Document representing a Google Calendar Event
+ *
+ * @SWG\Definition(
+ *   required={"id", "description", "location", "transparency", "updated", "summary", "attendees", "startTime", "endTime"},
+ *   @SWG\Xml(name="GoogleEvent")
+ * )
  *
  * @author      Jannik Portz
  * @package     Perna\Document
@@ -12,6 +18,7 @@ class GoogleEvent {
 
 	/**
 	 * The event Id
+	 * @SWG\Property()
 	 * @var       string
 	 */
 	protected $id;
@@ -24,12 +31,14 @@ class GoogleEvent {
 
 	/**
 	 * The event description
+	 * @SWG\Property()
 	 * @var       string
 	 */
 	protected $description;
 
 	/**
 	 * The event location as textual description
+	 * @SWG\Property()
 	 * @var       string
 	 */
 	protected $location;
@@ -37,36 +46,42 @@ class GoogleEvent {
 	/**
 	 * The event transparency. Possible values are 'opaque' and 'transparent'.
 	 * Indicates whether the event actually blocks time in the calendar.
+	 * @SWG\Property()
 	 * @var       string
 	 */
 	protected $transparency;
 
 	/**
 	 * The last time the event has been updated.
+	 * @SWG\Property()
 	 * @var       \DateTime
 	 */
 	protected $updated;
 
 	/**
 	 * The event summary / title
+	 * @SWG\Property()
 	 * @var       string
 	 */
 	protected $summary;
 
 	/**
 	 * Names of all event attendees
+	 * @SWG\Property(property="attendees", type="array", @SWG\Items(type="string"))
 	 * @var       string[]
 	 */
 	protected $attendees;
 
 	/**
 	 * The start date/time of the event
+	 * @SWG\Property()
 	 * @var       \DateTime
 	 */
 	protected $startTime;
 
 	/**
 	 * The end date/time of the event
+	 * @SWG\Property()
 	 * @var       \DateTime
 	 */
 	protected $endTime;
