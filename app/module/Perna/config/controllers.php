@@ -1,6 +1,7 @@
 <?php
 
 use Perna\Controller\Calendar\CalendarsController;
+use Perna\Controller\Calendar\EventsController;
 use Perna\Controller\Console\ImportCitiesController;
 use Perna\Controller\GoogleAuth\AuthUrlController;
 use Perna\Controller\GoogleAuth\CallbackController;
@@ -50,6 +51,10 @@ return [
 			GoogleAuthenticationService::class => DependencyTypes::SERVICE
 		]),
 		CalendarsController::class => new Factory(CalendarsController::class, [
+			AuthenticationService::class => DependencyTypes::SERVICE,
+			GoogleCalendarService::class => DependencyTypes::SERVICE
+		]),
+		EventsController::class => new Factory(EventsController::class, [
 			AuthenticationService::class => DependencyTypes::SERVICE,
 			GoogleCalendarService::class => DependencyTypes::SERVICE
 		])
