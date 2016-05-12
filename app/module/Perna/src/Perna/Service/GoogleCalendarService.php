@@ -3,8 +3,10 @@
 namespace Perna\Service;
 
 use Perna\Document\GoogleCalendar;
+use Perna\Document\GoogleEvent;
 use Perna\Document\User;
 use Perna\Hydrator\GoogleCalendarHydrator;
+use Perna\Hydrator\GoogleEventHydrator;
 
 /**
  * Class GoogleCalendarService
@@ -25,9 +27,16 @@ class GoogleCalendarService {
 	 */
 	protected $googleCalendarHydrator;
 
-	public function __construct ( GoogleAuthenticationService $googleAuthenticationService, GoogleCalendarHydrator $googleCalendarHydrator ) {
+	/**
+	 * @var       GoogleEventHydrator
+	 */
+	protected $googleEventHydrator;
+
+	public function __construct ( GoogleAuthenticationService $googleAuthenticationService,
+		GoogleCalendarHydrator $googleCalendarHydrator, GoogleEventHydrator $googleEventHydrator ) {
 		$this->googleAuthenticationService = $googleAuthenticationService;
 		$this->googleCalendarHydrator = $googleCalendarHydrator;
+		$this->googleEventHydrator = $googleEventHydrator;
 	}
 
 	/**
@@ -40,6 +49,11 @@ class GoogleCalendarService {
 		return new \Google_Service_Calendar( $client );
 	}
 
+	/**
+	 * Retrieves a list of all available GoogleCalendatrs of the current user
+	 * @param     User      $user     The user whose calendars to retrieve
+	 * @return    GoogleCalendar[]    All available calendars associated with the User
+	 */
 	public function getCalendars ( User $user ) {
 		$service = $this->createGoogleCalendarService( $user );
 		$results = $service->calendarList->listCalendarList([
@@ -56,5 +70,19 @@ class GoogleCalendarService {
 		}
 
 		return $calendars;
+	}
+
+	/**
+	 * Generates an Event by an event text
+	 * @param     User      $user       The current user
+	 * @param     string    $eventText  The text for the event (e.g. spoken event text)
+	 * @param     string    $calendar   The id of the calendar to which to add the event. Defaults to the User's primary calendar
+	 *
+	 * @return    GoogleEvent           The newly created Google Event
+	 */
+	public function quickAddEvent ( User $user, string $eventText, string $calendar = 'primary' ) {
+		$service = $this->createGoogleCalendarService( $user );
+		$event = $service->events->quickAdd( $calendar, $eventText );
+		return $this->googleEventHydrator->hydrateFromGoogleEvent( $event, new GoogleEvent() );
 	}
 }

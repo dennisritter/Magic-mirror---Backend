@@ -6,6 +6,7 @@ use Perna\Factory\Factory;
 use Perna\Hydrator\CityDumpHydrator;
 use Perna\Hydrator\GoogleAccessTokenHydrator;
 use Perna\Hydrator\GoogleCalendarHydrator;
+use Perna\Hydrator\GoogleEventHydrator;
 use Perna\InputFilter\CityDumpInputFilter;
 use Perna\Service\AuthenticationService;
 use Perna\Service\CityImportService;
@@ -43,7 +44,8 @@ return [
 		]),
 		GoogleCalendarService::class => new Factory(GoogleCalendarService::class, [
 			GoogleAuthenticationService::class => DependencyTypes::SERVICE,
-			GoogleCalendarHydrator::class => DependencyTypes::HYDRATOR
+			GoogleCalendarHydrator::class => DependencyTypes::HYDRATOR,
+			GoogleEventHydrator::class => DependencyTypes::HYDRATOR
 		])
 	],
 	'invokables' => [

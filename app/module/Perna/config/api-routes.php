@@ -1,6 +1,7 @@
 <?php
 
 use Perna\Controller\Calendar\CalendarsController;
+use Perna\Controller\Calendar\EventsController;
 use Perna\Controller\GoogleAuth\AuthUrlController;
 use Perna\Controller\GoogleAuth\CallbackController;
 use Perna\Controller\LoginController;
@@ -102,6 +103,16 @@ return [
 					'route' => '/calendars',
 					'defaults' => [
 						'controller' => CalendarsController::class
+					]
+				]
+			],
+
+			'events' => [
+				'type' => Literal::class,
+				'options' => [
+					'route' => '/events',
+					'defaults' => [
+						'controller' => EventsController::class
 					]
 				]
 			]

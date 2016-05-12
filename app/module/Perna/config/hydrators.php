@@ -5,6 +5,7 @@ use Perna\Document\GoogleCalendar;
 use Perna\Hydrator\AccessTokenHydrator;
 use Perna\Hydrator\CityDumpHydrator;
 use Perna\Hydrator\GoogleCalendarHydrator;
+use Perna\Hydrator\GoogleEventHydrator;
 use Perna\Hydrator\UserHydrator;
 use Perna\Hydrator\UserTokenHydrator;
 
@@ -15,6 +16,7 @@ return [
 		UserTokenHydrator::class => UserTokenHydrator::class,
 		AccessTokenHydrator::class => AccessTokenHydrator::class,
 		GoogleAccessToken::class => GoogleAccessToken::class,
-		GoogleCalendarHydrator::class => GoogleCalendarHydrator::class
+		GoogleCalendarHydrator::class => GoogleCalendarHydrator::class,
+		GoogleEventHydrator::class => GoogleEventHydrator::class
 	]
 ];

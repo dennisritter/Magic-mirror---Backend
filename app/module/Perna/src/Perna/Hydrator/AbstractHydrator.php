@@ -16,11 +16,12 @@ abstract class AbstractHydrator implements HydratorInterface {
 	/**
 	 * Extracts a DateTime object to a date-time string according to RFC3339
 	 * @param     DateTime  $dateTime The DateTime to extract
-	 * @return    string              The string representation of the DateTime according to RFC3339
+	 * @return    string|null         The string representation of the DateTime according to RFC3339
+	 *                                or null if $dateTime is not an instance of DateTime
 	 */
-	protected function extractDateTime ( $dateTime ) : string {
+	protected function extractDateTime ( $dateTime ) {
 		if ( !$dateTime instanceof DateTime )
-			return '';
+			return null;
 
 		return $dateTime->format( DateTime::RFC3339 );
 	}
