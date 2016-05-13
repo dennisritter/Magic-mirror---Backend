@@ -1,6 +1,7 @@
 <?php
 
 namespace Perna\Document;
+use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 use Swagger\Annotations as SWG;
 
 /**
@@ -10,6 +11,8 @@ use Swagger\Annotations as SWG;
  *   @SWG\Xml(name="GoogleCalendar")
  * )
  *
+ * @ODM\EmbeddedDocument
+ *
  * @author      Jannik Portz
  * @package     Perna\Document
  */
@@ -18,6 +21,7 @@ class GoogleCalendar {
 	/**
 	 * The ID of the Google Calendar
 	 * @SWG\Property()
+	 * @ODM\Id()
 	 * @var       string
 	 */
 	protected $id;
@@ -25,6 +29,7 @@ class GoogleCalendar {
 	/**
 	 * The Access Role for the Calendar
 	 * @SWG\Property()
+	 * @ODM\Field()
 	 * @var       string
 	 */
 	protected $accessRole;
@@ -32,6 +37,7 @@ class GoogleCalendar {
 	/**
 	 * The color of the calendar as HEX RGB color string
 	 * @SWG\Property()
+	 * @ODM\Field()
 	 * @var       string
 	 */
 	protected $color;
@@ -39,6 +45,7 @@ class GoogleCalendar {
 	/**
 	 * The title of the calendar
 	 * @SWG\Property()
+	 * @ODM\Field()
 	 * @var       string
 	 */
 	protected $summary;
@@ -46,6 +53,7 @@ class GoogleCalendar {
 	/**
 	 * The description of the calendar
 	 * @SWG\Property()
+	 * @ODM\Field()
 	 * @var       string
 	 */
 	protected $description;
@@ -53,6 +61,7 @@ class GoogleCalendar {
 	/**
 	 * Whether the calendar is visible for the user in Google Calendar UI
 	 * @SWG\Property()
+	 * @ODM\Field(type="boolean")
 	 * @var       bool
 	 */
 	protected $selected;
@@ -61,6 +70,7 @@ class GoogleCalendar {
 	 * Whether this is the User's primary calendar.
 	 * There may only be one primary calendar for the user.
 	 * @SWG\Property()
+	 * @ODM\Field(type="boolean")
 	 * @var       bool
 	 */
 	protected $primary;
@@ -133,20 +143,6 @@ class GoogleCalendar {
 	 */
 	public function setSummary( $summary ) {
 		$this->summary = $summary;
-	}
-
-	/**
-	 * @return string
-	 */
-	public function getString() {
-		return $this->string;
-	}
-
-	/**
-	 * @param string $string
-	 */
-	public function setString( $string ) {
-		$this->string = $string;
 	}
 
 	/**
