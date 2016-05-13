@@ -76,6 +76,15 @@ class GoogleCalendar {
 	protected $primary;
 
 	/**
+	 * The GoogleEventCache caching the events for this calendar
+	 * @ODM\ReferenceOne(
+	 *   targetDocument="GoogleEventCache",
+	 *   simple=true
+	 * )
+	 */
+	protected $eventCache;
+
+	/**
 	 * @return string
 	 */
 	public function getId() {
@@ -171,5 +180,19 @@ class GoogleCalendar {
 	 */
 	public function setPrimary( $primary ) {
 		$this->primary = $primary;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getEventCache() {
+		return $this->eventCache;
+	}
+
+	/**
+	 * @param mixed $eventCache
+	 */
+	public function setEventCache( $eventCache ) {
+		$this->eventCache = $eventCache;
 	}
 }
