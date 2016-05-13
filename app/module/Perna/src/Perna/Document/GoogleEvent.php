@@ -1,6 +1,8 @@
 <?php
 
 namespace Perna\Document;
+
+use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 use Swagger\Annotations as SWG;
 
 /**
@@ -11,6 +13,8 @@ use Swagger\Annotations as SWG;
  *   @SWG\Xml(name="GoogleEvent")
  * )
  *
+ * @ODM\EmbeddedDocument
+ *
  * @author      Jannik Portz
  * @package     Perna\Document
  */
@@ -19,12 +23,14 @@ class GoogleEvent {
 	/**
 	 * The event Id
 	 * @SWG\Property()
+	 * @ODM\Id()
 	 * @var       string
 	 */
 	protected $id;
 
 	/**
 	 * The etag of the current event state
+	 * @ODM\Field()
 	 * @var       string
 	 */
 	protected $etag;
@@ -32,6 +38,7 @@ class GoogleEvent {
 	/**
 	 * The event description
 	 * @SWG\Property()
+	 * @ODM\Field()
 	 * @var       string
 	 */
 	protected $description;
@@ -39,6 +46,7 @@ class GoogleEvent {
 	/**
 	 * The event location as textual description
 	 * @SWG\Property()
+	 * @ODM\Field()
 	 * @var       string
 	 */
 	protected $location;
@@ -47,6 +55,7 @@ class GoogleEvent {
 	 * The event transparency. Possible values are 'opaque' and 'transparent'.
 	 * Indicates whether the event actually blocks time in the calendar.
 	 * @SWG\Property()
+	 * @ODM\Field()
 	 * @var       string
 	 */
 	protected $transparency;
@@ -54,6 +63,7 @@ class GoogleEvent {
 	/**
 	 * The last time the event has been updated.
 	 * @SWG\Property()
+	 * @ODM\Field(type="date")
 	 * @var       \DateTime
 	 */
 	protected $updated;
@@ -61,6 +71,7 @@ class GoogleEvent {
 	/**
 	 * The event summary / title
 	 * @SWG\Property()
+	 * @ODM\Field()
 	 * @var       string
 	 */
 	protected $summary;
@@ -68,6 +79,7 @@ class GoogleEvent {
 	/**
 	 * Names of all event attendees
 	 * @SWG\Property(property="attendees", type="array", @SWG\Items(type="string"))
+	 * @ODM\Field(type="collection")
 	 * @var       string[]
 	 */
 	protected $attendees;
@@ -75,6 +87,7 @@ class GoogleEvent {
 	/**
 	 * The start date/time of the event
 	 * @SWG\Property()
+	 * @ODM\Field(type="date")
 	 * @var       \DateTime
 	 */
 	protected $startTime;
@@ -82,6 +95,7 @@ class GoogleEvent {
 	/**
 	 * The end date/time of the event
 	 * @SWG\Property()
+	 * @ODM\Field(type="date")
 	 * @var       \DateTime
 	 */
 	protected $endTime;
