@@ -87,6 +87,15 @@ class User {
 	protected $googleAccessToken;
 
 	/**
+	 * @ODM\EmbedMany(
+	 *   name="googleCalendars",
+	 *   targetDocument="GoogleCalendar"
+	 * )
+	 * @var       GoogleCalendar[]
+	 */
+	protected $googleCalendars;
+
+	/**
 	 * @return string
 	 */
 	public function getId() {
@@ -182,5 +191,19 @@ class User {
 	 */
 	public function setGoogleAccessToken( $googleAccessToken ) {
 		$this->googleAccessToken = $googleAccessToken;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getGoogleCalendars() {
+		return $this->googleCalendars;
+	}
+
+	/**
+	 * @param mixed $googleCalendars
+	 */
+	public function setGoogleCalendars( $googleCalendars ) {
+		$this->googleCalendars = $googleCalendars;
 	}
 }
