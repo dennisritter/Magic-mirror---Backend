@@ -81,6 +81,7 @@ class GoogleCalendar {
 	 *   targetDocument="GoogleEventCache",
 	 *   simple=true
 	 * )
+	 * @var       GoogleEventCache
 	 */
 	protected $eventCache;
 
@@ -183,14 +184,14 @@ class GoogleCalendar {
 	}
 
 	/**
-	 * @return mixed
+	 * @return GoogleEventCache
 	 */
 	public function getEventCache() {
 		return $this->eventCache;
 	}
 
 	/**
-	 * @param mixed $eventCache
+	 * @param GoogleEventCache $eventCache
 	 */
 	public function setEventCache( $eventCache ) {
 		$this->eventCache = $eventCache;
