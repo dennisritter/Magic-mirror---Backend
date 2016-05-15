@@ -20,7 +20,7 @@ class GoogleEventHydrator extends AbstractHydrator {
 			'transparency' => $object->getTransparency(),
 			'updated' => $this->extractDateTime( $object->getUpdated() ),
 			'summary' => $object->getSummary(),
-			'attendees' => $object->getAttendees(),
+			'attendees' => $object->getAttendees() ?? [],
 			'startTime' => $this->extractDateTime( $object->getStartTime() ),
 			'endTime' => $this->extractDateTime( $object->getEndTime() )
 		];
