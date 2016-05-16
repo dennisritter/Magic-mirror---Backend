@@ -43,8 +43,7 @@ class GoogleCalendarEventsService {
 	 */
 	protected $documentManager;
 
-	public function __construct ( \Google_Service_Calendar $googleService, GoogleEventHydrator $googleEventHydrator, GUIDGenerator $guidGenerator, DocumentManager $documentManager ) {
-		$this->googleService = $googleService;
+	public function __construct ( GoogleEventHydrator $googleEventHydrator, GUIDGenerator $guidGenerator, DocumentManager $documentManager ) {
 		$this->googleEventHydrator = $googleEventHydrator;
 		$this->guidGenerator = $guidGenerator;
 		$this->documentManager = $documentManager;
