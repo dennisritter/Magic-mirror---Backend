@@ -61,18 +61,12 @@ class GoogleCalendarEventsService {
 	public function getEvents ( User $user, array $calendarIds ) : array {
 		$calendars = [];
 		foreach ( $user->getGoogleCalendars() as $calendar ) {
-			$i = array_search( $calendar->getId(), $calendarIds );
-			if ( $i < 0 )
-				continue;
-
-			unset( $calendarIds[$i] );
-			$calendars[] = $calendar;
+			if ( in_array( $calendar->getId(), $calendarIds ) )
+				$calendars[] = $calendar;
 		}
 
-		if ( count( $calendarIds ) > 0 ) {
-			$ids = implode(', ', $calendarIds);
-			throw new UnprocessableEntityException("No calendars found for ids {$ids}");
-		}
+		if ( count( $calendars ) > 0 )
+			return [];
 
 		$events = [];
 		foreach ( $calendars as $calendar ) {
