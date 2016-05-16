@@ -21,7 +21,9 @@ class GoogleCalendar {
 	/**
 	 * The ID of the Google Calendar
 	 * @SWG\Property()
-	 * @ODM\Id()
+	 * @ODM\Id(
+	 *   strategy="NONE"
+	 * )
 	 * @var       string
 	 */
 	protected $id;
