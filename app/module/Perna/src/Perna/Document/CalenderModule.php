@@ -1,13 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Hannes
- * Date: 16.05.2016
- * Time: 16:34
- */
 
 namespace Perna\Document;
-
 
 /**
  * Document-Class for CalenderModules
@@ -24,19 +17,23 @@ class CalenderModule extends Module {
      *     name = "calenderIds",
      *     type = "collection"
      * )
-     * @var string[]
+     * @var string[] array of calender ids
      */
     protected $calenderIds;
-    
-    protected function addSetting( $keyValueArray ) {
-        $this->settings->push( $keyValueArray );
+
+    /**
+     * @return string[]
+     */
+    public function getCalenderIds()
+    {
+        return $this->calenderIds;
     }
 
-    protected function removeSetting( $key ) {
-        $this->settings->remove( $key );
-    }
-
-    protected function setSetting( $key, $value ) {
-        $this->settings->set( $key, $value );
+    /**
+     * @param string[] $calenderIds
+     */
+    public function setCalenderIds($calenderIds)
+    {
+        $this->calenderIds = $calenderIds;
     }
 }

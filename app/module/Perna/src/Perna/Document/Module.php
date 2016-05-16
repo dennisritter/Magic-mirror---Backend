@@ -55,17 +55,66 @@ abstract class Module {
     protected $yPosition;
 
     /**
-     * @ODM\Field(
-     *     name = "settings",
-     *     type = "collection"
-     * )
-     * @var  mixed of settings
+     * @return int
      */
-    protected $settings;
+    public function getWidth()
+    {
+        return $this->width;
+    }
 
-    protected abstract function addSetting ( $keyValueArray );
+    /**
+     * @param int $width
+     */
+    public function setWidth($width)
+    {
+        $this->width = $width;
+    }
 
-    protected abstract function removeSetting ( $key );
+    /**
+     * @return int
+     */
+    public function getHeight()
+    {
+        return $this->height;
+    }
 
-    protected abstract function setSetting ( $key, $value );
+    /**
+     * @param int $height
+     */
+    public function setHeight($height)
+    {
+        $this->height = $height;
+    }
+
+    /**
+     * @return int
+     */
+    public function getXPosition()
+    {
+        return $this->xPosition;
+    }
+
+    /**
+     * @param int $xPosition
+     */
+    public function setXPosition($xPosition)
+    {
+        $this->xPosition = $xPosition;
+    }
+
+    /**
+     * @return int
+     */
+    public function getYPosition()
+    {
+        return $this->yPosition;
+    }
+
+    /**
+     * @param int $yPosition
+     */
+    public function setYPosition($yPosition)
+    {
+        $this->yPosition = $yPosition;
+    }
 }
