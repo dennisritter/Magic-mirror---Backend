@@ -5,6 +5,7 @@ namespace Perna\Service;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Perna\Document\GoogleCalendar;
 use Perna\Document\GoogleEvent;
+use Perna\Document\GoogleEventCache;
 use Perna\Document\User;
 use Perna\Hydrator\GoogleCalendarHydrator;
 use Perna\Hydrator\GoogleEventHydrator;
@@ -70,7 +71,7 @@ class GoogleCalendarService {
 	 */
 	public function getCalendars ( User $user ) {
 		$service = $this->createGoogleCalendarService( $user );
-		$savedCalendars = $user->getGoogleCalendars();
+		$savedCalendars = $user->getGoogleCalendars() ?? [];
 
 		$results = $service->calendarList->listCalendarList([
 			'maxResults' => 250, // Max available size
@@ -80,6 +81,7 @@ class GoogleCalendarService {
 		]);
 
 		$calendars = [];
+		$calendarIds = [];
 		$hydrator = $this->googleCalendarHydrator;
 
 		foreach ( $results as $result ) {
@@ -99,9 +101,15 @@ class GoogleCalendarService {
 				$calendar = new GoogleCalendar();
 
 			$calendars[] = $hydrator->hydrateFromGoogleCalendarEntry( $result, $calendar );
+			$calendarIds[] = $calendar->getId();
 		}
 
-		// Re-assign the GoogleCalendars to automatically remove deleted calendars
+		/** Remove Event caches of removed calendars */
+		foreach ( $savedCalendars ?? [] as $savedCalendar ) {
+			if ( !in_array( $savedCalendar->getId(), $calendarIds ) && $savedCalendar->getEventCache() instanceof GoogleEventCache )
+				$this->documentManager->remove( $savedCalendar->getEventCache() );
+		}
+
 		$user->setGoogleCalendars( $calendars );
 		$this->documentManager->flush();
 
