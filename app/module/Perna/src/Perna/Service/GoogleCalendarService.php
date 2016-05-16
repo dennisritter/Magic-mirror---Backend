@@ -2,6 +2,7 @@
 
 namespace Perna\Service;
 
+use Doctrine\ODM\MongoDB\DocumentManager;
 use Perna\Document\GoogleCalendar;
 use Perna\Document\GoogleEvent;
 use Perna\Document\User;
@@ -37,12 +38,19 @@ class GoogleCalendarService {
 	 */
 	protected $googleCalendarEventsService;
 
+	/**
+	 * @var       DocumentManager
+	 */
+	protected $documentManager;
+
 	public function __construct ( GoogleAuthenticationService $googleAuthenticationService,
-		GoogleCalendarHydrator $googleCalendarHydrator, GoogleEventHydrator $googleEventHydrator, GoogleCalendarEventsService $googleCalendarEventsService ) {
+		GoogleCalendarHydrator $googleCalendarHydrator, GoogleEventHydrator $googleEventHydrator,
+		GoogleCalendarEventsService $googleCalendarEventsService, DocumentManager $documentManager ) {
 		$this->googleAuthenticationService = $googleAuthenticationService;
 		$this->googleCalendarHydrator = $googleCalendarHydrator;
 		$this->googleEventHydrator = $googleEventHydrator;
 		$this->googleCalendarEventsService = $googleCalendarEventsService;
+		$this->documentManager = $documentManager;
 	}
 
 	/**
@@ -62,6 +70,8 @@ class GoogleCalendarService {
 	 */
 	public function getCalendars ( User $user ) {
 		$service = $this->createGoogleCalendarService( $user );
+		$savedCalendars = $user->getGoogleCalendars();
+
 		$results = $service->calendarList->listCalendarList([
 			'maxResults' => 250, // Max available size
 			'minAccessRole' => 'reader',
@@ -71,9 +81,29 @@ class GoogleCalendarService {
 
 		$calendars = [];
 		$hydrator = $this->googleCalendarHydrator;
+
 		foreach ( $results as $result ) {
-			$calendars[] = $hydrator->hydrateFromGoogleCalendarEntry( $result, new GoogleCalendar() );
+			/** @var \Google_Service_Calendar_CalendarListEntry $result */
+			$id = $result->getId();
+
+			// Try to get an existing GoogleCalendar or create a new one
+			$calendar = null;
+			foreach ( $savedCalendars as $savedCalendar ) {
+				if ( $savedCalendar->getId() === $id ) {
+					$calendar = $savedCalendar;
+					break;
+				}
+			}
+
+			if ( $calendar === null )
+				$calendar = new GoogleCalendar();
+
+			$calendars[] = $hydrator->hydrateFromGoogleCalendarEntry( $result, $calendar );
 		}
+
+		// Re-assign the GoogleCalendars to automatically remove deleted calendars
+		$user->setGoogleCalendars( $calendars );
+		$this->documentManager->flush();
 
 		return $calendars;
 	}
