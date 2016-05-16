@@ -2,11 +2,14 @@
 
 namespace Perna\Service;
 
+use Doctrine\ODM\MongoDB\DocumentManager;
 use Perna\Document\GoogleCalendar;
 use Perna\Document\GoogleEvent;
 use Perna\Document\GoogleEventCache;
 use Perna\Document\User;
+use Perna\Filter\UpcomingTodayEventsFilter;
 use Perna\Hydrator\GoogleEventHydrator;
+use ZfrRest\Http\Exception\Client\UnprocessableEntityException;
 
 /**
  * Service dealing with Google Calendar Events
@@ -15,9 +18,6 @@ use Perna\Hydrator\GoogleEventHydrator;
  * @package     Perna\Service
  */
 class GoogleCalendarEventsService {
-
-	// TODO: move to config
-	const CALLBACK = 'http://api.perna.dev/v1/calendar/notify';
 
 	/**
 	 * The authorized Google_Calendar_Service
@@ -37,10 +37,17 @@ class GoogleCalendarEventsService {
 	 */
 	protected $guidGenerator;
 
-	public function __construct ( \Google_Service_Calendar $googleService, GoogleEventHydrator $googleEventHydrator, GUIDGenerator $guidGenerator ) {
+	/**
+	 * The DocumentManager
+	 * @var       DocumentManager
+	 */
+	protected $documentManager;
+
+	public function __construct ( \Google_Service_Calendar $googleService, GoogleEventHydrator $googleEventHydrator, GUIDGenerator $guidGenerator, DocumentManager $documentManager ) {
 		$this->googleService = $googleService;
 		$this->googleEventHydrator = $googleEventHydrator;
 		$this->guidGenerator = $guidGenerator;
+		$this->documentManager = $documentManager;
 	}
 
 	/**
@@ -48,9 +55,35 @@ class GoogleCalendarEventsService {
 	 * @param     User      $user         The User whose calendar events to retrieve
 	 * @param     string[]  $calendarIds  Sequential array of calendar ids
 	 * @return    GoogleEvent[]           Today's upcoming events for the specified calendar
+	 *
+	 * @throws    UnprocessableEntityException    If a calendar could not be found
 	 */
 	public function getEvents ( User $user, array $calendarIds ) : array {
+		$calendars = [];
+		foreach ( $user->getGoogleCalendars() as $calendar ) {
+			$i = array_search( $calendar->getId(), $calendarIds );
+			if ( $i < 0 )
+				continue;
 
+			unset( $calendarIds[$i] );
+			$calendars[] = $calendar;
+		}
+
+		if ( count( $calendarIds ) > 0 ) {
+			$ids = implode(', ', $calendarIds);
+			throw new UnprocessableEntityException("No calendars found for ids {$ids}");
+		}
+
+		$events = [];
+		foreach ( $calendars as $calendar ) {
+			$calendarEvents = $this->getCalendarEvents( $calendar );
+
+			if ( count( $calendarEvents ) > 0 )
+				$events = array_merge( $events, $calendarEvents );
+		}
+
+		$filter = new UpcomingTodayEventsFilter();
+		return $filter->filter( $events );
 	}
 
 	/**
@@ -59,14 +92,20 @@ class GoogleCalendarEventsService {
 	 * @return    GoogleEvent[]                   Today's upcoming events of the specified calendar
 	 */
 	protected function getCalendarEvents ( GoogleCalendar $calendar ) : array {
+		$cache = $calendar->getEventCache();
+		if ( !$cache instanceof GoogleEventCache || $cache->getWatchSessionExpiration() <= new \DateTime('now') ) {
+			$cache = $this->initializeEventCache( $calendar );
+		}
 
+		return $cache->getEvents();
 	}
 
 	/**
 	 * Initializes the event cache for the specified calendar
 	 * @param     GoogleCalendar      $calendar   The calendar for which to initialize the event cache
+	 * @return    GoogleEventCache                The newly created event cache
 	 */
-	protected function initializeEventCache ( GoogleCalendar $calendar ) {
+	protected function initializeEventCache ( GoogleCalendar $calendar ) : GoogleEventCache {
 		$now = new \DateTime('now');
 		$tomorrow = clone $now;
 		$tomorrow->add( new \DateInterval('P1D') );
@@ -83,15 +122,25 @@ class GoogleCalendarEventsService {
 		$events = [];
 		foreach ( $results as $result ) {
 			/** @var \Google_Service_Calendar_Event $result */
-			$events[] = $this->googleEventHydrator->hydrateFromGoogleEvent( $result, new GoogleEvent() );
+			$event = $this->googleEventHydrator->hydrateFromGoogleEvent( $result, new GoogleEvent() );
+			$event->setCalendarId( $calendar->getId() );
 		}
 
 		$cache = new GoogleEventCache();
 		$cache->setEvents( $events );
+		$cache->setCreated( $now );
+		$cache->setWatchSessionToken( $this->guidGenerator->generateGUID() );
+		$expires = new \DateTime('now');
+		$expires->add( new \DateInterval('PT10M') );
+		$cache->setWatchSessionExpiration( $expires );
 
-		$channel = new \Google_Service_Calendar_Channel();
-		$channel->setId( $this->guidGenerator->generateGUID() );
-		$channel->setType('web_hook');
-		$channel->setAddress( self::CALLBACK );
+		$this->documentManager->persist( $cache );
+
+		$oldCache = $calendar->getEventCache();
+		if ( $oldCache instanceof GoogleEventCache )
+			$this->documentManager->remove( $oldCache );
+
+		$calendar->setEventCache( $cache );
+		return $cache;
 	}
 }
