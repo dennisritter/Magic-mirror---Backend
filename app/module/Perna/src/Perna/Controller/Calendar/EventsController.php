@@ -6,6 +6,7 @@ use Perna\Document\GoogleEvent;
 use Perna\Hydrator\GoogleEventHydrator;
 use Perna\InputFilter\EventQuickAddInputFilter;
 use Swagger\Annotations as SWG;
+use ZfrRest\Http\Exception\Client\UnprocessableEntityException;
 
 class EventsController extends AbstractCalendarController {
 
@@ -64,7 +65,17 @@ class EventsController extends AbstractCalendarController {
 	 */
 	public function get () {
 		$this->assertAccessToken();
-		$events = $this->generateTestEvents();
+		$user = $this->authenticationService->findAuthenticatedUser( $this->accessToken );
+
+		$calendarIds = $this->params()->fromQuery('calendarIds', '');
+		if ( empty( $calendarIds ) || preg_match('/^\s+$/', $calendarIds) )
+			throw new UnprocessableEntityException("You must specify at least one calendar");
+
+		$calendarIds = explode(',', $calendarIds);
+		foreach ( $calendarIds as &$id )
+			$id = trim($id);
+
+		$events = $this->googleCalendarService->getEvents( $user, $calendarIds );
 		return $this->createDefaultViewModel( $this->extractObject( GoogleEventHydrator::class, $events ) );
 	}
 
