@@ -3,6 +3,7 @@
 namespace Perna\Service;
 
 use Doctrine\ODM\MongoDB\DocumentManager;
+use Doctrine\ODM\MongoDB\PersistentCollection;
 use Perna\Document\GoogleCalendar;
 use Perna\Document\GoogleEvent;
 use Perna\Document\GoogleEventCache;
@@ -64,7 +65,7 @@ class GoogleCalendarEventsService {
 				$calendars[] = $calendar;
 		}
 
-		if ( count( $calendars ) > 0 )
+		if ( count( $calendars ) < 1 )
 			return [];
 
 		$events = [];
@@ -72,7 +73,7 @@ class GoogleCalendarEventsService {
 			$calendarEvents = $this->getCalendarEvents( $calendar );
 
 			if ( count( $calendarEvents ) > 0 )
-				$events = array_merge( $events, $calendarEvents );
+				$events = array_merge( $events, $calendarEvents->toArray() );
 		}
 
 		$filter = new UpcomingTodayEventsFilter();
@@ -82,9 +83,9 @@ class GoogleCalendarEventsService {
 	/**
 	 * Retrieves today's events for the specified calendar
 	 * @param     GoogleCalendar      $calendar   The calendar whose events to retrieve
-	 * @return    GoogleEvent[]                   Today's upcoming events of the specified calendar
+	 * @return    PersistentCollection            Today's upcoming events of the specified calendar
 	 */
-	protected function getCalendarEvents ( GoogleCalendar $calendar ) : array {
+	protected function getCalendarEvents ( GoogleCalendar $calendar ) : PersistentCollection {
 		$cache = $calendar->getEventCache();
 		if ( !$cache instanceof GoogleEventCache || $cache->getWatchSessionExpiration() <= new \DateTime('now') ) {
 			$cache = $this->initializeEventCache( $calendar );
@@ -117,6 +118,7 @@ class GoogleCalendarEventsService {
 			/** @var \Google_Service_Calendar_Event $result */
 			$event = $this->googleEventHydrator->hydrateFromGoogleEvent( $result, new GoogleEvent() );
 			$event->setCalendarId( $calendar->getId() );
+			$events[] = $event;
 		}
 
 		$cache = new GoogleEventCache();

@@ -23,7 +23,10 @@ class GoogleEvent {
 	/**
 	 * The event Id
 	 * @SWG\Property()
-	 * @ODM\Id()
+	 * @ODM\Id(
+	 *   strategy="NONE",
+	 *   type="string"
+	 * )
 	 * @var       string
 	 */
 	protected $id;
