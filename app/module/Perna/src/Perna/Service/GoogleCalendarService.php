@@ -32,11 +32,17 @@ class GoogleCalendarService {
 	 */
 	protected $googleEventHydrator;
 
+	/**
+	 * @var       GoogleCalendarEventsService
+	 */
+	protected $googleCalendarEventsService;
+
 	public function __construct ( GoogleAuthenticationService $googleAuthenticationService,
-		GoogleCalendarHydrator $googleCalendarHydrator, GoogleEventHydrator $googleEventHydrator ) {
+		GoogleCalendarHydrator $googleCalendarHydrator, GoogleEventHydrator $googleEventHydrator, GoogleCalendarEventsService $googleCalendarEventsService ) {
 		$this->googleAuthenticationService = $googleAuthenticationService;
 		$this->googleCalendarHydrator = $googleCalendarHydrator;
 		$this->googleEventHydrator = $googleEventHydrator;
+		$this->googleCalendarEventsService = $googleCalendarEventsService;
 	}
 
 	/**
@@ -84,5 +90,18 @@ class GoogleCalendarService {
 		$service = $this->createGoogleCalendarService( $user );
 		$event = $service->events->quickAdd( $calendar, $eventText );
 		return $this->googleEventHydrator->hydrateFromGoogleEvent( $event, new GoogleEvent() );
+	}
+
+	/**
+	 * Retrieves the Events for the specified user in the specified calendars
+	 * @param     User      $user         The user whose events to retrieve
+	 * @param     string[]  $calendarIds  Ids of the calendars
+	 * @return    GoogleEvent[]           The events of the specified User in the specified calendars
+	 */
+	public function getEvents ( User $user, array $calendarIds ) : array {
+		$service = $this->createGoogleCalendarService( $user );
+		$eventsService = $this->googleCalendarEventsService;
+		$eventsService->setGoogleService( $service );
+		return $eventsService->getEvents( $user, $calendarIds );
 	}
 }
