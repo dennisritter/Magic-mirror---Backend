@@ -141,6 +141,8 @@ class GoogleCalendarEventsService {
 			$this->documentManager->remove( $oldCache );
 
 		$calendar->setEventCache( $cache );
+		$this->documentManager->flush();
+
 		return $cache;
 	}
 
