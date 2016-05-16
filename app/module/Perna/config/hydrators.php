@@ -1,8 +1,9 @@
 <?php
 
 use Perna\Document\GoogleAccessToken;
-use Perna\Document\GoogleCalendar;
+use Perna\Hydrator\AbstractModuleHydrator;
 use Perna\Hydrator\AccessTokenHydrator;
+use Perna\Hydrator\CalenderModuleHydrator;
 use Perna\Hydrator\CityDumpHydrator;
 use Perna\Hydrator\GoogleCalendarHydrator;
 use Perna\Hydrator\GoogleEventHydrator;
@@ -17,6 +18,8 @@ return [
 		AccessTokenHydrator::class => AccessTokenHydrator::class,
 		GoogleAccessToken::class => GoogleAccessToken::class,
 		GoogleCalendarHydrator::class => GoogleCalendarHydrator::class,
-		GoogleEventHydrator::class => GoogleEventHydrator::class
+		GoogleEventHydrator::class => GoogleEventHydrator::class,
+		AbstractModuleHydrator::class => AbstractModuleHydrator::class,
+		CalenderModuleHydrator::class => CalenderModuleHydrator::class
 	]
 ];

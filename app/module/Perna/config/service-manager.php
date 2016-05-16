@@ -10,7 +10,6 @@ use Perna\Hydrator\GoogleEventHydrator;
 use Perna\InputFilter\CityDumpInputFilter;
 use Perna\Service\AuthenticationService;
 use Perna\Service\CityImportService;
-use Perna\Service\Factory\GoogleCalendarServiceFactory;
 use Perna\Service\GoogleAuthenticationService;
 use Perna\Service\GoogleCalendarService;
 use Perna\Service\GUIDGenerator;
