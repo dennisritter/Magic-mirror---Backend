@@ -48,6 +48,12 @@ class GoogleEventCache {
 	protected $updated;
 
 	/**
+	 * The date/time when the cache has been created
+	 * @var       \DateTime
+	 */
+	protected $created;
+
+	/**
 	 * @return string
 	 */
 	public function getWatchSessionToken() {
@@ -101,5 +107,19 @@ class GoogleEventCache {
 	 */
 	public function setUpdated( $updated ) {
 		$this->updated = $updated;
+	}
+
+	/**
+	 * @return \DateTime
+	 */
+	public function getCreated() {
+		return $this->created;
+	}
+
+	/**
+	 * @param \DateTime $created
+	 */
+	public function setCreated( $created ) {
+		$this->created = $created;
 	}
 }

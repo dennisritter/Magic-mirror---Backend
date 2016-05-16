@@ -1,6 +1,7 @@
 <?php
 
 use Doctrine\ODM\MongoDB\DocumentManager;
+use Doctrine\ODM\MongoDB\Mapping\Annotations\Document;
 use Perna\Factory\DependencyTypes;
 use Perna\Factory\Factory;
 use Perna\Hydrator\CityDumpHydrator;
@@ -12,6 +13,7 @@ use Perna\Service\AuthenticationService;
 use Perna\Service\CityImportService;
 use Perna\Service\Factory\GoogleCalendarServiceFactory;
 use Perna\Service\GoogleAuthenticationService;
+use Perna\Service\GoogleCalendarEventsService;
 use Perna\Service\GoogleCalendarService;
 use Perna\Service\GUIDGenerator;
 use Perna\Service\PasswordService;
@@ -45,7 +47,14 @@ return [
 		GoogleCalendarService::class => new Factory(GoogleCalendarService::class, [
 			GoogleAuthenticationService::class => DependencyTypes::SERVICE,
 			GoogleCalendarHydrator::class => DependencyTypes::HYDRATOR,
-			GoogleEventHydrator::class => DependencyTypes::HYDRATOR
+			GoogleEventHydrator::class => DependencyTypes::HYDRATOR,
+			GoogleCalendarEventsService::class => DependencyTypes::SERVICE,
+			DocumentManager::class => DependencyTypes::SERVICE
+		]),
+		GoogleCalendarEventsService::class => new Factory(GoogleCalendarEventsService::class, [
+			GoogleEventHydrator::class => DependencyTypes::HYDRATOR,
+			GUIDGenerator::class => DependencyTypes::SERVICE,
+			DocumentManager::class => DependencyTypes::SERVICE
 		])
 	],
 	'invokables' => [

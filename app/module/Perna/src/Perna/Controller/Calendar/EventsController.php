@@ -6,6 +6,7 @@ use Perna\Document\GoogleEvent;
 use Perna\Hydrator\GoogleEventHydrator;
 use Perna\InputFilter\EventQuickAddInputFilter;
 use Swagger\Annotations as SWG;
+use ZfrRest\Http\Exception\Client\UnprocessableEntityException;
 
 class EventsController extends AbstractCalendarController {
 
@@ -49,9 +50,16 @@ class EventsController extends AbstractCalendarController {
 	 * @SWG\Get(
 	 *   path="/calendar/events",
 	 *   summary="Get Events",
-	 *   description="Serves test data for events.",
+	 *   description="Returns today's upcoming events for the specified calendar. Currently debounced by 10 minutes (Events will actually refresh every 10 minutes).",
 	 *   operationId="getEvents",
 	 *   tags={"calendar"},
+	 *   @SWG\Parameter(
+	 *    in="query",
+	 *    name="calendarIds",
+	 *    type="string",
+	 *    description="Comma separated list of calendar ids. Unknown ids will be ignored.",
+	 *    default="calendar1,calendar2,calendar3"
+	 *   ),
 	 *   @SWG\Response(
 	 *    response="200",
 	 *    description="The events have successfully be retrieved",
@@ -64,44 +72,17 @@ class EventsController extends AbstractCalendarController {
 	 */
 	public function get () {
 		$this->assertAccessToken();
-		$events = $this->generateTestEvents();
+		$user = $this->authenticationService->findAuthenticatedUser( $this->accessToken );
+
+		$calendarIds = $this->params()->fromQuery('calendarIds', '');
+		if ( empty( $calendarIds ) || preg_match('/^\s+$/', $calendarIds) )
+			throw new UnprocessableEntityException("You must specify at least one calendar");
+
+		$calendarIds = explode(',', $calendarIds);
+		foreach ( $calendarIds as &$id )
+			$id = trim($id);
+
+		$events = $this->googleCalendarService->getEvents( $user, $calendarIds );
 		return $this->createDefaultViewModel( $this->extractObject( GoogleEventHydrator::class, $events ) );
-	}
-
-	protected function generateTestEvents () : array {
-		$events = [];
-
-		$events[] = $this->generateEvent('e1', 'Allday event', new \DateTime('00:00:00'), new \DateTime('23:59:59'), true);
-
-		$e = $this->generateEvent('e2', 'Breakfast', new \DateTime('10:00'), new \DateTime('11:30'));
-		$e->setLocation('Tiffany');
-		$events[] = $e;
-
-		$e = $this->generateEvent('e3', 'Lunch', new \DateTime('11:15'), new \DateTime('12:30'));
-		$e->setAttendees(['Nathalie Junker', 'Dennis Ritter', 'Johannes Knauft']);
-		$events[] = $e;
-
-		$e = $this->generateEvent('e4', 'Dinner', new \DateTime('21:00'), new \DateTime('01:30'));
-		$e->getEndTime()->add( new \DateInterval('P1D') );
-		$events[] = $e;
-
-		return $events;
-	}
-
-	protected function generateEvent ( string $id, string $summary, \DateTime $startTime, \DateTime $endTime, bool $transparent = false ) : GoogleEvent {
-		$e = new GoogleEvent();
-		$e->setId( $id );
-		$e->setSummary( $summary );
-
-		$start = new \DateTime('now');
-		$end = clone $start;
-		$start->setTime( (int) $startTime->format('H'), (int) $startTime->format('i'), (int) $startTime->format('s') );
-		$end->setTime( (int) $endTime->format('H'), (int) $endTime->format('i'), (int) $endTime->format('s') );
-
-		$e->setStartTime( $start );
-		$e->setEndTime( $end );
-		$e->setTransparency( $transparent ? 'transparent' : 'opaque' );
-
-		return $e;
 	}
 }
