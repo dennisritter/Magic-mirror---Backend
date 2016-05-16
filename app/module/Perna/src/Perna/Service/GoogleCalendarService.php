@@ -140,6 +140,12 @@ class GoogleCalendarService {
 		$service = $this->createGoogleCalendarService( $user );
 		$eventsService = $this->googleCalendarEventsService;
 		$eventsService->setGoogleService( $service );
+
+		// Refresh calendars when error has occurred
+		$eventsService->getEventManager()->attach( GoogleCalendarEventsService::EVENT_CALENDAR_ERROR, function () use ($user) {
+			$this->getCalendars( $user );
+		} );
+
 		return $eventsService->getEvents( $user, $calendarIds );
 	}
 }
