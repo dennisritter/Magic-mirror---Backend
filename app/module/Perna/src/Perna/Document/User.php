@@ -3,6 +3,7 @@
 namespace Perna\Document;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
+use Perna\Module as Module;
 use Swagger\Annotations as SWG;
 
 /**
@@ -94,6 +95,15 @@ class User {
 	 * @var       GoogleCalendar[]
 	 */
 	protected $googleCalendars;
+
+	/**
+	 * @ODM\EmbedMany(
+	 *   name="modules",
+	 *   targetDocument="Module"
+	 * )
+	 * @var	Module[]
+	 */
+	protected $modules;
 
 	/**
 	 * @return string
@@ -206,4 +216,20 @@ class User {
 	public function setGoogleCalendars( $googleCalendars ) {
 		$this->googleCalendars = $googleCalendars;
 	}
+
+	/**
+	 * @return Module[]
+	 */
+	public function getModules() {
+		return $this->modules;
+	}
+
+	/**
+	 * @param Module[] $modules
+	 */
+	public function setModules( $modules ) {
+		$this->modules = $modules;
+	}
+	
+	
 }
