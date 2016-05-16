@@ -143,4 +143,8 @@ class GoogleCalendarEventsService {
 		$calendar->setEventCache( $cache );
 		return $cache;
 	}
+
+	public function setGoogleService ( \Google_Service_Calendar $service ) {
+		$this->googleService = $service;
+	}
 }
