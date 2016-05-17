@@ -2,7 +2,7 @@
 
 use Perna\Controller\Calendar\CalendarsController;
 use Perna\Controller\Calendar\EventsController;
-use Perna\Controller\CalenderModuleController;
+use Perna\Controller\CalendarModuleController;
 use Perna\Controller\Console\ImportCitiesController;
 use Perna\Controller\GoogleAuth\AuthUrlController;
 use Perna\Controller\GoogleAuth\CallbackController;

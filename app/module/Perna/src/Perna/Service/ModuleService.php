@@ -13,7 +13,7 @@ class ModuleService {
         $this->documentManager = $documentManager;
     }
 
-    public function getModules( $user ) {
+    public function getModules( $user ) : array {
         /** @var $user User */
         return $user->getModules();
     }

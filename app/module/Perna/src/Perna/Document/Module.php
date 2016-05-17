@@ -17,10 +17,7 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 abstract class Module {
 
     /**
-     * @ODM\Id(
-     *   name="_id",
-     *   strategy="AUTO"
-     * )
+     * @ODM\Id()
      * @var string
      */
     protected $id;
