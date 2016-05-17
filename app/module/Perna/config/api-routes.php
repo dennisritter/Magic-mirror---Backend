@@ -6,6 +6,7 @@ use Perna\Controller\GoogleAuth\AuthUrlController;
 use Perna\Controller\GoogleAuth\CallbackController;
 use Perna\Controller\LoginController;
 use Perna\Controller\LogoutController;
+use Perna\Controller\ModuleController;
 use Perna\Controller\RefreshController;
 use Perna\Controller\UserController;
 use Perna\Controller\RegisterController;
@@ -115,7 +116,17 @@ return [
 						'controller' => EventsController::class
 					]
 				]
-			]
+			],
+
+			'modules' => [
+				'type' => Literal::class,
+				'options' => [
+					'route' => '/modules',
+					'defaults' => [
+						'controller' => ModuleController::class
+					]
+				]
+			],
 		]
 	]
 ];

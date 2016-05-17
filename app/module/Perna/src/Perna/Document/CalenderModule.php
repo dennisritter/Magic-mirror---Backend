@@ -1,6 +1,7 @@
 <?php
 
 namespace Perna\Document;
+use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 
 /**
  * Document-Class for CalenderModules
@@ -11,6 +12,10 @@ namespace Perna\Document;
  * @package     Perna\Documents
  */
 class CalenderModule extends Module {
+
+    public function __construct() {
+        $this->type = "calender";
+    }
 
     /**
      * @ODM\Field(

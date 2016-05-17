@@ -18,6 +18,25 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
  * @package     Perna\Documents
  */
 abstract class Module {
+
+    /**
+     * @ODM\Id(
+     *   name="_id",
+     *   strategy="AUTO"
+     * )
+     * @var string
+     */
+    protected $id;
+
+    /**
+     * @ODM\Field(
+     *     name = "type",
+     *     type = "string"
+     * )
+     * @var string type of a module
+     */
+    protected $type;
+    
     /**
      * @ODM\Field(
      *     name = "width",
@@ -54,6 +73,22 @@ abstract class Module {
      */
     protected $yPosition;
 
+    /**
+     * @return string
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @return string
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+    
     /**
      * @return int
      */

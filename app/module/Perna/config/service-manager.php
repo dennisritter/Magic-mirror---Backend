@@ -13,6 +13,7 @@ use Perna\Service\CityImportService;
 use Perna\Service\GoogleAuthenticationService;
 use Perna\Service\GoogleCalendarService;
 use Perna\Service\GUIDGenerator;
+use Perna\Service\ModuleService;
 use Perna\Service\PasswordService;
 use Perna\Service\UserService;
 use Zend\Di\ServiceLocator;
@@ -45,6 +46,9 @@ return [
 			GoogleAuthenticationService::class => DependencyTypes::SERVICE,
 			GoogleCalendarHydrator::class => DependencyTypes::HYDRATOR,
 			GoogleEventHydrator::class => DependencyTypes::HYDRATOR
+		]),
+		ModuleService::class => new Factory(ModuleService::class, [
+			DocumentManager::class => DependencyTypes::SERVICE
 		])
 	],
 	'invokables' => [
