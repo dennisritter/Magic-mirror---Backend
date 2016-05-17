@@ -2,7 +2,7 @@
 
 namespace Perna\Service;
 
-use DoctrineMongoODMModule\Options\DocumentManager;
+use Doctrine\ODM\MongoDB\DocumentManager;
 use Perna\Document\User;
 
 class ModuleService {
@@ -13,7 +13,7 @@ class ModuleService {
         $this->documentManager = $documentManager;
     }
 
-    public function getModules( $user ) : array {
+    public function getModules( $user ) {
         /** @var $user User */
         return $user->getModules();
     }

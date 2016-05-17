@@ -116,17 +116,16 @@ return [
 						'controller' => EventsController::class
 					]
 				]
-			],
-
-			'modules' => [
-				'type' => Literal::class,
-				'options' => [
-					'route' => '/modules',
-					'defaults' => [
-						'controller' => ModuleController::class
-					]
-				]
-			],
+			]
+		]
+	],
+	'modules' => [
+		'type' => Literal::class,
+		'options' => [
+			'route' => '/modules',
+			'defaults' => [
+				'controller' => ModuleController::class
+			]
 		]
 	]
 ];

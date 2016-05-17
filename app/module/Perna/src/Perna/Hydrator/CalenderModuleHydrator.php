@@ -10,6 +10,7 @@ class CalenderModuleHydrator extends AbstractModuleHydrator {
         /** @var CalenderModule $object */
         $data = parent::extract($object);
         $data["calenderIds"] =  $object->getCalenderIds();
+        return $data;
     }
 
     public function hydrate(array $data, $object) {

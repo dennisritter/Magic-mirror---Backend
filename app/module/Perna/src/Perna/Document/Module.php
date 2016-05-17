@@ -10,9 +10,6 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
  * Document-Class for Modules
  *
  * @ODM\EmbeddedDocument
- * @ODM\InheritanceType("SINGLE_COLLECTION")
- * @ODM\DiscriminatorField("type")
- * @ODM\DiscriminatorMap({"calender"="CalenderModule"})
  * 
  * @author      Johannes Knauft
  * @package     Perna\Documents

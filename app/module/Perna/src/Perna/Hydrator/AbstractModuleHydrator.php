@@ -13,7 +13,8 @@ class AbstractModuleHydrator extends AbstractHydrator {
             'width' => $object->getWidth(),
             'height' => $object->getHeight(),
             'xPosition' => $object->getXPosition(),
-            'yPosition' => $object->getYPosition()
+            'yPosition' => $object->getYPosition(),
+            'type' => $object->getType()
         ];
     }
 
