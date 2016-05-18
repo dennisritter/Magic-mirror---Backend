@@ -32,15 +32,15 @@ class ModuleController extends AbstractAuthenticatedApiController {
     public function post() {
         $this->assertAccessToken();
         $user = $this->authenticationService->findAuthenticatedUser( $this->accessToken );
+        //todo Use universal inputfilter
         $data = $this->validateIncomingData( ModuleInputFilter::class );
         $module = null;
-//        switch ($data["type"]){
-//            case "calendar" :
+        switch ($data["type"]){
+            case "calendar" :
                 $module = new CalendarModule();
                 $this->hydrateObject(CalendarModuleHydrator::class, $module, $data);
-//        }
+        }
         $this->moduleService->addModule($user, $module);
-        echo $module;
         return $this->createDefaultViewModel( $this->extractObject( CalendarModuleHydrator::class, $module) );
     }
 
@@ -54,7 +54,7 @@ class ModuleController extends AbstractAuthenticatedApiController {
             $type = $module->getType();
             switch ($type){
                 case 'calendar':
-                    $temp = new CalendarModule();
+                    $temp = null;
                     array_push( $data, $this->extractObject(CalendarModuleHydrator::class, $temp) );
             }
         }
