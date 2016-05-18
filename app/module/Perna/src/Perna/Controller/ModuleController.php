@@ -54,8 +54,7 @@ class ModuleController extends AbstractAuthenticatedApiController {
             $type = $module->getType();
             switch ($type){
                 case 'calendar':
-                    $temp = null;
-                    array_push( $data, $this->extractObject(CalendarModuleHydrator::class, $temp) );
+                    array_push( $data, $this->extractObject(CalendarModuleHydrator::class, $module) );
             }
         }
         return $this->createDefaultViewModel( $data );

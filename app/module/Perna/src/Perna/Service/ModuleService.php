@@ -3,7 +3,9 @@
 namespace Perna\Service;
 
 use Doctrine\ODM\MongoDB\DocumentManager;
+use Doctrine\ODM\MongoDB\PersistentCollection;
 use Perna\Document\CalendarModule;
+use Perna\Document\Module;
 use Perna\Document\User;
 
 class ModuleService {
@@ -14,21 +16,16 @@ class ModuleService {
         $this->documentManager = $documentManager;
     }
 
-    public function getModules( $user ) : array {
-        /** @var $user User */
+    public function getModules( User $user ) : array {
+        /** @var PersistentCollection $modules */
         $modules = $user->getModules();
-        $obj = [];
-        foreach ($modules as $value)
-            array_push($obj, $value);
-        return $obj;
+        return $modules->toArray();
     }
 
-    public function addModule ( $user, $module ) {
-        /** @var User $user  */
+    public function addModule ( User $user, Module $module ) {
+        /** @var PersistentCollection $modules */
         $modules = $user->getModules();
-        $module_array = [];
-        array_push($module_array, $module);
-        $user->setModules( $module_array );
+        $modules->add( $module );
         $this->documentManager->flush();
     }
 }

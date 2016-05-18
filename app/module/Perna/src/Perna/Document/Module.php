@@ -11,6 +11,11 @@ use Perna\Service\GUIDGenerator;
  * Document-Class for Modules
  *
  * @ODM\EmbeddedDocument
+ * @ODM\MappedSuperclass
+ * @ODM\DiscriminatorField("moduleType")
+ * @ODM\DiscriminatorMap({
+ *     "calendar"="CalendarModule"
+ *   })
  * 
  * @author      Johannes Knauft
  * @package     Perna\Documents
