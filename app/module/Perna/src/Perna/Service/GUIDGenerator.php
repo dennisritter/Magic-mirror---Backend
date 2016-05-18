@@ -5,7 +5,7 @@ namespace Perna\Service;
 /**
  * Generator for a GUID
  *
- * @author      Jannik Portz
+ * @author      http://guid.us/GUID/PHP
  * @package     Perna\Service
  */
 class GUIDGenerator {
