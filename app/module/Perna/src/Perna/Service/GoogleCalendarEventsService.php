@@ -161,6 +161,62 @@ class GoogleCalendarEventsService implements EventManagerAwareInterface {
 		return $cache;
 	}
 
+	/**
+	 * Handles a Google event notification
+	 * @param     string    $token      The token identifying the watch session
+	 * @param     string    $resourceId The id of the updated resource / event
+	 * @return    GoogleEvent           The updated or new event
+	 *
+	 * @throws    UnprocessableEntityException  If the notification could not be handled
+	 */
+	public function handleNotification ( string $token, string $resourceId ) {
+		$qb = $this->documentManager->createQueryBuilder( GoogleCalendar::class );
+		$qb->find( GoogleCalendar::class );
+		$qb->field( 'eventCache.watchSessionToken' )->equals( $token );
+		$calendar = $qb->getQuery()->execute();
+
+
+		if ( !$calendar instanceof GoogleCalendar || !$calendar->getEventCache() instanceof GoogleEventCache )
+			throw new UnprocessableEntityException("A cache with the specified id does not exist");
+
+		$cache = $calendar->getEventCache();
+
+		/** @var GoogleEventCache $cache */
+		if ( $cache->getWatchSessionExpiration() < new \DateTime('now') )
+			throw new UnprocessableEntityException("The watch session has already expired");
+
+		try {
+			$result = $this->googleService->events->get( $calendar->getId(), $resourceId );
+
+			/** @var Collection $events */
+			$events = $cache->getEvents();
+			$event = null;
+			$new = true;
+
+			foreach ( $events as $e ) {
+				if ( $e->getId() === $result->getId() ) {
+					$event = $e;
+					$new = false;
+					break;
+				}
+			}
+
+			if ( $event == null )
+				$event = new GoogleEvent();
+
+			$this->googleEventHydrator->hydrateFromGoogleEvent( $result, $event );
+
+			if ( $new )
+				$events->add( $event );
+
+			$this->documentManager->flush();
+
+			return $event;
+		} catch ( \Google_Exception $e ) {
+			throw new UnprocessableEntityException("New event could not be retrieved");
+		}
+	}
+
 	public function setGoogleService ( \Google_Service_Calendar $service ) {
 		$this->googleService = $service;
 	}

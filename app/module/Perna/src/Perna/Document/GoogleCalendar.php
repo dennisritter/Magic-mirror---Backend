@@ -11,7 +11,10 @@ use Swagger\Annotations as SWG;
  *   @SWG\Xml(name="GoogleCalendar")
  * )
  *
- * @ODM\EmbeddedDocument
+ * @ODM\Document(
+ *   db="perna",
+ *   collection="googleCalendars"
+ * )
  *
  * @author      Jannik Portz
  * @package     Perna\Document
@@ -80,9 +83,8 @@ class GoogleCalendar {
 
 	/**
 	 * The GoogleEventCache caching the events for this calendar
-	 * @ODM\ReferenceOne(
-	 *   targetDocument="GoogleEventCache",
-	 *   simple=true
+	 * @ODM\EmbedOne(
+	 *   targetDocument="GoogleEventCache"
 	 * )
 	 * @var       GoogleEventCache
 	 */

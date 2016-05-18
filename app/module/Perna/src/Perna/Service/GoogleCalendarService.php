@@ -9,6 +9,7 @@ use Perna\Document\GoogleEventCache;
 use Perna\Document\User;
 use Perna\Hydrator\GoogleCalendarHydrator;
 use Perna\Hydrator\GoogleEventHydrator;
+use ZfrRest\Http\Exception\Client\UnprocessableEntityException;
 
 /**
  * Class GoogleCalendarService
@@ -147,5 +148,23 @@ class GoogleCalendarService {
 		} );
 
 		return $eventsService->getEvents( $user, $calendarIds );
+	}
+
+	public function handleNotification ( string $token, string $resourceId ) {
+		$qb = $this->documentManager->createQueryBuilder();
+		$qb->find( GoogleCalendar::class );
+		$qb->field('eventCache.watchSessionToken')->equals( $token );
+		$calendar = $qb->getQuery()->execute();
+
+		if ( !$calendar instanceof GoogleCalendar )
+			throw new UnprocessableEntityException("A cache with the specified id does not exist.");
+
+		$qb = $this->documentManager->createQueryBuilder();
+		$qb->find( User::class );
+		$qb->field('googleCalendars.$id')->equals( $calendar->getId() );
+		$user = $qb->getQuery()->execute();
+
+		if ( !$user instanceof User )
+			throw new UnprocessableEntityException("The user for the calendar could not be found.");
 	}
 }

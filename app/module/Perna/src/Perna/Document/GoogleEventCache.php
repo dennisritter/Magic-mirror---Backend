@@ -7,10 +7,7 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 /**
  * GoogleEventCache contains cached events and meta information on the caching of the events of one specific calendar
  *
- * @ODM\Document(
- *   db="perna",
- *   collection="googleEventCaches"
- * )
+ * @ODM\EmbeddedDocument()
  *
  * @author      Jannik Portz
  * @package     Perna\Document

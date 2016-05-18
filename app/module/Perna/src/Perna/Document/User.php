@@ -87,9 +87,9 @@ class User {
 	protected $googleAccessToken;
 
 	/**
-	 * @ODM\EmbedMany(
-	 *   name="googleCalendars",
-	 *   targetDocument="GoogleCalendar"
+	 * @ODM\ReferenceMany(
+	 *   targetDocument="GoogleCalendar",
+	 *   cascade={"persist", "update", "remove"}
 	 * )
 	 * @var       GoogleCalendar[]
 	 */
