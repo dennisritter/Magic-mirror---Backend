@@ -4,6 +4,7 @@ namespace Perna\Document;
 
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
+use Perna\Service\GUIDGenerator;
 
 
 /**
@@ -17,7 +18,7 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 abstract class Module {
 
     /**
-     * @ODM\Id()
+     * @ODM\Field()
      * @var string
      */
     protected $id;
@@ -145,5 +146,10 @@ abstract class Module {
     public function setYPosition($yPosition)
     {
         $this->yPosition = $yPosition;
+    }
+
+    public function __construct() {
+        $guid = new GUIDGenerator();
+        $this->id = $guid->generateGUID();
     }
 }

@@ -29,32 +29,33 @@ class ModuleController extends AbstractAuthenticatedApiController {
         $user->setModules();
     }
 
-    public function post($module) {
+    public function post() {
         $this->assertAccessToken();
         $user = $this->authenticationService->findAuthenticatedUser( $this->accessToken );
-        $modules = $this->moduleService->getModules( $user );
         $data = $this->validateIncomingData( ModuleInputFilter::class );
-        switch ($data["type"]){
-            case "calendar" :
+        $module = null;
+//        switch ($data["type"]){
+//            case "calendar" :
                 $module = new CalendarModule();
                 $this->hydrateObject(CalendarModuleHydrator::class, $module, $data);
-        }
-        $modules->add($module);
-        $user->setModules($modules);
-        return $this->createDefaultViewModel( $modules );
+//        }
+        $this->moduleService->addModule($user, $module);
+        echo $module;
+        return $this->createDefaultViewModel( $this->extractObject( CalendarModuleHydrator::class, $module) );
     }
 
     public function get() {
         $this->assertAccessToken();
         $user = $this->authenticationService->findAuthenticatedUser( $this->accessToken );
         $modules = $this->moduleService->getModules( $user );
-        $data = array();
+        $data = [];
         foreach ($modules as $module){
-            $class = get_class($module);
-            switch ($class){
+            /** @var CalendarModule $module */
+            $type = $module->getType();
+            switch ($type){
                 case 'calendar':
-                    array_push( $data, $this->extractObject(CalendarModuleHydrator::class, $module) ); 
-                    break;
+                    $temp = new CalendarModule();
+                    array_push( $data, $this->extractObject(CalendarModuleHydrator::class, $temp) );
             }
         }
         return $this->createDefaultViewModel( $data );

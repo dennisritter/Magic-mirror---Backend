@@ -10,6 +10,7 @@ class AbstractModuleHydrator extends AbstractHydrator {
     public function extract ( $object ) : array {
         /** @var Module $object */
         return [
+            'id' => $object->getId(),
             'width' => $object->getWidth(),
             'height' => $object->getHeight(),
             'xPosition' => $object->getXPosition(),

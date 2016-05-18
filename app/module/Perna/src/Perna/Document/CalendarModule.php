@@ -14,6 +14,7 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 class CalendarModule extends Module {
 
     public function __construct() {
+        parent::__construct();
         $this->type = "calendar";
     }
 
@@ -29,16 +30,21 @@ class CalendarModule extends Module {
     /**
      * @return string[]
      */
-    public function getCalendarIds()
-    {
+    public function getCalendarIds() {
         return $this->calendarIds;
     }
 
     /**
      * @param string[] $calendarIds
      */
-    public function setCalendarIds($calendarIds)
-    {
-        $this->CalendarIds = $calendarIds;
+    public function setCalendarIds( $calendarIds ) {
+        $this->calendarIds = $calendarIds;
     }
+
+    function __toString()
+    {
+        return $this->id." ".$this->height." ". $this->width." ".$this->xPosition." ".$this->yPosition." ";
+    }
+
+
 }

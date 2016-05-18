@@ -15,8 +15,8 @@ class CalendarModuleHydrator extends AbstractModuleHydrator {
 
     public function hydrate(array $data, $object) {
         /** @var CalendarModule $object */
+        $object->setCalendarIds( $data["calendarIds"] );
         parent::hydrate($data, $object);
-        $object->setCalendarIds( $data["calendarIDs"] );
         return $object;
     }
 

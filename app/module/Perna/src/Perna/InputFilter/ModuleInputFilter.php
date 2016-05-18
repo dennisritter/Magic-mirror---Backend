@@ -9,10 +9,11 @@ use Zend\Validator\StringLength;
 class ModuleInputFilter extends InputFilter {
 		
 	public function __construct() {
-		$this->add( InputFactory::createNameInput('width') );
-		$this->add( InputFactory::createNameInput('height') );
-		$this->add( InputFactory::createNameInput('xPosition') );
-		$this->add( InputFactory::createNameInput('yPosition') );
-		$this->add( InputFactory::createNameInput('type') );
+		$this->add( new Input('width') );
+		$this->add( new Input('height') );
+		$this->add( new Input('xPosition') );
+		$this->add( new Input('yPosition') );
+		$this->add( new Input('type') );
+		$this->add( new Input('calendarIds') );
 	}
 }
