@@ -87,8 +87,7 @@ class Bootstrap {
 		));
 	}
 
-	protected static function findParentPath($path)
-	{
+	protected static function findParentPath($path) {
 		$dir = __DIR__;
 		$previousDir = '.';
 		while (!is_dir($dir . '/' . $path)) {
