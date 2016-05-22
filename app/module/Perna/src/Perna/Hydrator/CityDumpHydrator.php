@@ -22,8 +22,8 @@ class CityDumpHydrator extends AbstractHydrator {
 			'name' => $object->getName(),
 			'country' => $object->getCountryCode(),
 			'coord' => [
-				'lon' => $object->getLocation()[0],
-				'lat' => $object->getLocation()[1]
+				'lat' => $object->getLocation()[0],
+				'lon' => $object->getLocation()[1]
 			]
 		];
 	}
@@ -35,7 +35,7 @@ class CityDumpHydrator extends AbstractHydrator {
 		$object->setName( $data['name'] );
 		$object->setCountryCode( $data['country'] );
 		$coord = $data['coord'];
-		$object->setLocation([$coord['lon'], $coord['lat']]);
+		$object->setLocation([$coord['lat'], $coord['lon']]);
 
 		return $object;
 	}
