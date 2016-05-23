@@ -14,6 +14,5 @@ class ModuleInputFilter extends InputFilter {
 		$this->add( new Input('xPosition') );
 		$this->add( new Input('yPosition') );
 		$this->add( new Input('type') );
-		$this->add( new Input('calendarIds') );
 	}
 }

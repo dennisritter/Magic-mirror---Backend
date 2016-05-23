@@ -9,6 +9,7 @@ use Perna\Hydrator\CalendarModuleHydrator;
 use Perna\InputFilter\ModuleInputFilter;
 use Perna\Service\AuthenticationService;
 use Perna\Service\ModuleService;
+use Zend\Http\Headers;
 
 class ModuleController extends AbstractAuthenticatedApiController {
 
@@ -32,11 +33,13 @@ class ModuleController extends AbstractAuthenticatedApiController {
     public function post() {
         $this->assertAccessToken();
         $user = $this->authenticationService->findAuthenticatedUser( $this->accessToken );
-        //todo Use universal inputfilter
-        $data = $this->validateIncomingData( ModuleInputFilter::class );
+        $data = $this->validateIncomingData(ModuleInputFilter::class);
+        /** @var $rawData string */
+        $rawData = json_decode($this->request->getContent(), true);
         $module = null;
         switch ($data["type"]){
             case "calendar" :
+                $data['calendarIds'] = $rawData['calendarIds'];
                 $module = new CalendarModule();
                 $this->hydrateObject(CalendarModuleHydrator::class, $module, $data);
         }
@@ -58,5 +61,14 @@ class ModuleController extends AbstractAuthenticatedApiController {
             }
         }
         return $this->createDefaultViewModel( $data );
+    }
+
+    public function delete() {
+        $this->assertAccessToken();
+        $user = $this->authenticationService->findAuthenticatedUser( $this->accessToken );
+        $headers = $this->request->getMetadata();
+        print_r($this->request->getContent().asdasdsd);
+        $this->moduleService->removeModule( $user,  $headers);
+        return $this->get();
     }
 }
