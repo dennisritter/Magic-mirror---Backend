@@ -67,7 +67,7 @@ class ModuleController extends AbstractAuthenticatedApiController {
         $this->assertAccessToken();
         $user = $this->authenticationService->findAuthenticatedUser( $this->accessToken );
         $headers = $this->request->getMetadata();
-        print_r($this->request->getContent().asdasdsd);
+        print_r($this->request->getContent());
         $this->moduleService->removeModule( $user,  $headers);
         return $this->get();
     }
