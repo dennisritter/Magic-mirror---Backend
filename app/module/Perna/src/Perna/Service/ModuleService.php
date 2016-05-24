@@ -3,9 +3,7 @@
 namespace Perna\Service;
 
 use Doctrine\ODM\MongoDB\DocumentManager;
-use Doctrine\ODM\MongoDB\Mapping\Annotations\String;
 use Doctrine\ODM\MongoDB\PersistentCollection;
-use Perna\Document\CalendarModule;
 use Perna\Document\Module;
 use Perna\Document\User;
 
@@ -30,7 +28,7 @@ class ModuleService {
         $this->documentManager->flush();
     }
 
-    public function removeModule( User $user, String $id ) {
+    public function removeModule( User $user, string $id ) {
         echo $id;
         /** @var PersistentCollection $modules */
         $modules = $user->getModules();
