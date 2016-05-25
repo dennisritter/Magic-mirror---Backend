@@ -18,6 +18,7 @@ use Perna\Service\GoogleCalendarService;
 use Perna\Service\GUIDGenerator;
 use Perna\Service\PasswordService;
 use Perna\Service\UserService;
+use Perna\Service\WeatherLocationService;
 use Zend\Di\ServiceLocator;
 
 return [
@@ -54,6 +55,9 @@ return [
 		GoogleCalendarEventsService::class => new Factory(GoogleCalendarEventsService::class, [
 			GoogleEventHydrator::class => DependencyTypes::HYDRATOR,
 			GUIDGenerator::class => DependencyTypes::SERVICE,
+			DocumentManager::class => DependencyTypes::SERVICE
+		]),
+		WeatherLocationService::class => new Factory(WeatherLocationService::class, [
 			DocumentManager::class => DependencyTypes::SERVICE
 		])
 	],

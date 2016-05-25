@@ -10,6 +10,7 @@ use Perna\Controller\RegisterController;
 use Perna\Controller\LoginController;
 use Perna\Controller\LogoutController;
 use Perna\Controller\UserController;
+use Perna\Controller\Weather\WeatherLocationNearbyController;
 use Perna\Factory\DependencyTypes;
 use Perna\Factory\Factory;
 use Perna\Hydrator\UserHydrator;
@@ -18,6 +19,7 @@ use Perna\Service\CityImportService;
 use Perna\Service\GoogleAuthenticationService;
 use Perna\Service\GoogleCalendarService;
 use Perna\Service\UserService;
+use Perna\Service\WeatherLocationService;
 
 return [
 	'factories' => [
@@ -57,6 +59,10 @@ return [
 		EventsController::class => new Factory(EventsController::class, [
 			AuthenticationService::class => DependencyTypes::SERVICE,
 			GoogleCalendarService::class => DependencyTypes::SERVICE
+		]),
+		WeatherLocationNearbyController::class => new Factory(WeatherLocationNearbyController::class, [
+			AuthenticationService::class => DependencyTypes::SERVICE,
+			WeatherLocationService::class => DependencyTypes::SERVICE
 		])
 	]
 ];
