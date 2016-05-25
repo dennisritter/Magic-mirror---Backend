@@ -36,7 +36,7 @@ class City {
 	 *   type="int"
 	 * )
 	 *
-	 * @SWG\Property(property="id", type="int")
+	 * @SWG\Property(default=12345)
 	 *
 	 * @var       int
 	 */
@@ -50,7 +50,7 @@ class City {
 	 *   type="string"
 	 * )
 	 *
-	 * @SWG\Property(property="name", type="string")
+	 * @SWG\Property(property="name", type="string", default="Berlin")
 	 *
 	 * @var       string
 	 */
@@ -64,7 +64,7 @@ class City {
 	 *   type="string"
 	 * )
 	 *
-	 * @SWG\Property()
+	 * @SWG\Property(property="countryCode", type="string", default="DE", maxLength=2, minLength=2)
 	 *
 	 * @var       string
 	 */
@@ -82,7 +82,8 @@ class City {
 	 * @SWG\Property(
 	 *    property="location",
 	 *    type="array",
-	 *    @SWG\Items(type="float")
+	 *    @SWG\Items(type="number"),
+	 *    default={52.5451160, 13.3552320}
 	 * )
 	 *
 	 * @var       array

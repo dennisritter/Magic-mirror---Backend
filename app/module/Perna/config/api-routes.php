@@ -9,6 +9,7 @@ use Perna\Controller\LogoutController;
 use Perna\Controller\RefreshController;
 use Perna\Controller\UserController;
 use Perna\Controller\RegisterController;
+use Perna\Controller\Weather\WeatherLocationNearbyController;
 use Zend\Mvc\Router\Http\Literal;
 
 return [
@@ -113,6 +114,34 @@ return [
 					'route' => '/events',
 					'defaults' => [
 						'controller' => EventsController::class
+					]
+				]
+			]
+		]
+	],
+
+	'weather' => [
+		'type' => Literal::class,
+		'options' => [
+			'route' => '/weather'
+		],
+		'may_terminate' => false,
+		'child_routes' => [
+			'locations' => [
+				'type' => Literal::class,
+				'options' => [
+					'route' => '/locations'
+				],
+				'may_terminate' => false,
+				'child_routes' => [
+					'nearby' => [
+						'type' => Literal::class,
+						'options' => [
+							'route' => '/nearby',
+							'defaults' => [
+								'controller' => WeatherLocationNearbyController::class
+							]
+						]
 					]
 				]
 			]
