@@ -2,6 +2,7 @@
 
 namespace Perna\Service;
 
+use Doctrine\MongoDB\Cursor;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Perna\Document\City;
 
@@ -28,14 +29,21 @@ class WeatherLocationService {
 	 *
 	 * @return    City[]                    Array of city objects representing the nearest locations to the specified location
 	 */
-	public function findNearbyLocations ( float $latitude, float $longitude, int $numberResults = 10 ) {
+	public function findNearbyLocations ( float $latitude, float $longitude, int $numberResults = 10 ) : array {
 		$qb = $this->documentManager->getRepository( City::class )->createQueryBuilder();
 		$qb->field('location')
-			->geoNear($latitude, $longitude);
+			->geoNear($latitude, $longitude)
+			->spherical(true);
 		$qb->limit($numberResults);
 
 		$query = $qb->getQuery();
-		$results = $query->execute();
+
+		/** @var Cursor $cursor */
+		$cursor = $query->execute();
+		$results = [];
+
+		foreach ( $cursor as $r )
+			$results[] = $r;
 
 		return $results;
 	}
