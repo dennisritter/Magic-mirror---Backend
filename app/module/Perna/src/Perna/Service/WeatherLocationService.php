@@ -4,7 +4,9 @@ namespace Perna\Service;
 
 use Doctrine\MongoDB\Cursor;
 use Doctrine\ODM\MongoDB\DocumentManager;
+use Doctrine\ODM\MongoDB\MongoDBException;
 use Perna\Document\City;
+use ZfrRest\Http\Exception\Client\UnprocessableEntityException;
 
 /**
  * WeatherLocationService
@@ -38,13 +40,18 @@ class WeatherLocationService {
 
 		$query = $qb->getQuery();
 
-		/** @var Cursor $cursor */
-		$cursor = $query->execute();
-		$results = [];
+		try {
+			/** @var Cursor $cursor */
+			$cursor = $query->execute();
+			$results = [];
 
-		foreach ( $cursor as $r )
-			$results[] = $r;
+			foreach ( $cursor as $r )
+				$results[] = $r;
 
-		return $results;
+			return $results;
+		} catch ( MongoDBException $e ) {
+			error_log( $e->getMessage() );
+			return [];
+		}
 	}
 }
