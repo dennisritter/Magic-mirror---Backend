@@ -67,6 +67,9 @@ class WeatherLocationNearbyController extends AbstractAuthenticatedApiController
 	 */
 	public function get () {
 		$this->assertAccessToken();
+		// Check if any user is actually authenticated
+		$this->authenticationService->findAuthenticatedUser( $this->accessToken );
+
 		$params = $this->params();
 
 		$lat = floatval( $params->fromQuery('latitude', null) );
