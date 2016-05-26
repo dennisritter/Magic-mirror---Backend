@@ -21,9 +21,9 @@ class WeatherLocationAutocompleteController extends AbstractAuthenticatedApiCont
 	}
 	
 	public function get () {
-		//$this->assertAccessToken();
+		$this->assertAccessToken();
 		// Check if any user is actually authenticated
-//		$this->authenticationService->findAuthenticatedUser( $this->accessToken );
+		$this->authenticationService->findAuthenticatedUser( $this->accessToken );
 		$query = $this->params()->fromQuery('query', null);
 
 		if ( $query === null )
