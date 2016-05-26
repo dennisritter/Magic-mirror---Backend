@@ -9,6 +9,7 @@ use Perna\Controller\LogoutController;
 use Perna\Controller\RefreshController;
 use Perna\Controller\UserController;
 use Perna\Controller\RegisterController;
+use Perna\Controller\Weather\WeatherLocationAutocompleteController;
 use Perna\Controller\Weather\WeatherLocationNearbyController;
 use Zend\Mvc\Router\Http\Literal;
 
@@ -140,6 +141,15 @@ return [
 							'route' => '/nearby',
 							'defaults' => [
 								'controller' => WeatherLocationNearbyController::class
+							]
+						]
+					],
+					'autocomplete' => [
+						'type' => Literal::class,
+						'options' => [
+							'route' => '/autocomplete',
+							'defaults' => [
+								'controller' => WeatherLocationAutocompleteController::class
 							]
 						]
 					]
