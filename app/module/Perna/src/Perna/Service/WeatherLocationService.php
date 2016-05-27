@@ -2,11 +2,10 @@
 
 namespace Perna\Service;
 
-use Doctrine\MongoDB\Cursor;
+use Doctrine\MongoDB\Query\Query;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ODM\MongoDB\MongoDBException;
 use Perna\Document\City;
-use ZfrRest\Http\Exception\Client\UnprocessableEntityException;
 
 /**
  * WeatherLocationService
@@ -39,12 +38,40 @@ class WeatherLocationService {
 		$qb->limit($numberResults);
 
 		$query = $qb->getQuery();
+		return $this->getResultsFromQuery( $query );
+	}
 
+	/**
+	 * Retrieves a set of Locations that match the specified search query.
+	 * Will return an empty array if the trimmed query is shorter than two characters.
+	 * @param     string    $query          The search query
+	 * @param     int       $numberResults  The number of location results to retrieve
+	 * @return    City[]                    The location results
+	 */
+	public function autocompleteLocations ( string $query, int $numberResults = 10 ) : array {
+		$query = trim( $query );
+		if ( strlen( $query ) < 3 )
+			return [];
+
+		$regex = '/'. preg_replace('/[\s-–\.]+/', '.*', $query) .'/i';
+		$qb = $this->documentManager->getRepository( City::class )->createQueryBuilder();
+		$qb->field('name')
+			->equals( new \MongoRegex( $regex ) );
+		$qb->limit( $numberResults );
+
+		$query = $qb->getQuery();
+		return $this->getResultsFromQuery( $query );
+	}
+
+	/**
+	 * Executes the specified Query and fetches the results
+	 * @param     Query     $query    The Query to execute
+	 * @return    array               The results or an empty array if an error occurred
+	 */
+	protected function getResultsFromQuery ( Query $query ) : array {
 		try {
-			/** @var Cursor $cursor */
 			$cursor = $query->execute();
 			$results = [];
-
 			foreach ( $cursor as $r )
 				$results[] = $r;
 
