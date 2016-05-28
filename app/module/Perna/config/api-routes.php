@@ -9,9 +9,11 @@ use Perna\Controller\LogoutController;
 use Perna\Controller\RefreshController;
 use Perna\Controller\UserController;
 use Perna\Controller\RegisterController;
+use Perna\Controller\Weather\WeatherDataController;
 use Perna\Controller\Weather\WeatherLocationAutocompleteController;
 use Perna\Controller\Weather\WeatherLocationNearbyController;
 use Zend\Mvc\Router\Http\Literal;
+use Zend\Mvc\Router\Http\Segment;
 
 return [
 	'register' => [
@@ -152,6 +154,19 @@ return [
 								'controller' => WeatherLocationAutocompleteController::class
 							]
 						]
+					]
+				]
+			],
+
+			'weatherData' => [
+				'type' => Segment::class,
+				'options' => [
+					'route' => '/:id',
+					'defaults' => [
+						'controller' => WeatherDataController::class
+					],
+					'constraints' => [
+						'id' => '[0-9]+'
 					]
 				]
 			]

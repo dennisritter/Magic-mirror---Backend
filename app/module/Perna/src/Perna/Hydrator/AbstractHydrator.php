@@ -2,6 +2,7 @@
 
 namespace Perna\Hydrator;
 
+use Doctrine\Common\Collections\Collection;
 use Zend\Hydrator\HydratorInterface;
 use DateTime;
 
@@ -45,10 +46,10 @@ abstract class AbstractHydrator implements HydratorInterface {
 
 	/**
 	 * Extracts many objects
-	 * @param     object[]  $objects  The objects to extract
+	 * @param     array|Collection    $objects  The objects to extract
 	 * @return    array               Sequential array of data arrays
 	 */
-	public function extractMany ( array $objects ) : array {
+	public function extractMany ( $objects ) : array {
 		$data = [];
 		foreach ( $objects as $object ) {
 			$data[] = $this->extract( $object );
