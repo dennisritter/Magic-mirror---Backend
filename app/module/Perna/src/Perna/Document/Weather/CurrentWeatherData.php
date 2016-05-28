@@ -47,14 +47,14 @@ class CurrentWeatherData extends TemporalWeatherData {
 	}
 
 	/**
-	 * @return mixed
+	 * @return \DateTime
 	 */
 	public function getSunset() {
 		return $this->sunset;
 	}
 
 	/**
-	 * @param mixed $sunset
+	 * @param \DateTime $sunset
 	 */
 	public function setSunset( $sunset ) {
 		$this->sunset = $sunset;
