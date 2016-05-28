@@ -1,8 +1,6 @@
 <?php
 
 use Doctrine\ODM\MongoDB\DocumentManager;
-use Perna\Document\DailyWeatherData;
-use Perna\Document\TemporalWeatherData;
 use Perna\Factory\DependencyTypes;
 use Perna\Factory\Factory;
 use Perna\Hydrator\CityDumpHydrator;
@@ -10,10 +8,11 @@ use Perna\Hydrator\GoogleAccessTokenHydrator;
 use Perna\Hydrator\GoogleCalendarHydrator;
 use Perna\Hydrator\GoogleEventHydrator;
 use Perna\Hydrator\Weather\CurrentWeatherDataHydrator;
+use Perna\Hydrator\Weather\DailyWeatherDataHydrator;
+use Perna\Hydrator\Weather\TemporalWeatherDataHydrator;
 use Perna\InputFilter\CityDumpInputFilter;
 use Perna\Service\AuthenticationService;
 use Perna\Service\CityImportService;
-use Perna\Service\Factory\GoogleCalendarServiceFactory;
 use Perna\Service\GoogleAuthenticationService;
 use Perna\Service\GoogleCalendarEventsService;
 use Perna\Service\GoogleCalendarService;
@@ -66,8 +65,8 @@ return [
 		]),
 		WeatherDataAccessService::class => new Factory(WeatherDataAccessService::class, [
 			CurrentWeatherDataHydrator::class => DependencyTypes::HYDRATOR,
-			TemporalWeatherData::class => DependencyTypes::HYDRATOR,
-			DailyWeatherData::class => DependencyTypes::HYDRATOR
+			TemporalWeatherDataHydrator::class => DependencyTypes::HYDRATOR,
+			DailyWeatherDataHydrator::class => DependencyTypes::HYDRATOR
 		]),
 		WeatherDataService::class => new Factory(WeatherDataService::class, [
 			WeatherDataAccessService::class => DependencyTypes::SERVICE,

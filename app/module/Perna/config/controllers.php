@@ -21,6 +21,7 @@ use Perna\Service\CityImportService;
 use Perna\Service\GoogleAuthenticationService;
 use Perna\Service\GoogleCalendarService;
 use Perna\Service\UserService;
+use Perna\Service\Weather\WeatherDataService;
 use Perna\Service\WeatherLocationService;
 
 return [
@@ -72,7 +73,7 @@ return [
 		]),
 		WeatherDataController::class => new Factory(WeatherDataController::class, [
 			AuthenticationService::class => DependencyTypes::SERVICE,
-			WeatherLocationService::class => DependencyTypes::SERVICE
+			WeatherDataService::class => DependencyTypes::SERVICE
 		])
 	]
 ];

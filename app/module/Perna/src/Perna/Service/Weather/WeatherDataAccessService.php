@@ -114,10 +114,9 @@ class WeatherDataAccessService {
 		if ( !$response->isSuccess() || !$response->isOk() )
 			throw new WeatherDataAccessException("Could not fetch data at endpoint {$endpoint} for location {$location}");
 
-		$content = $response->getContent();
-		$data = json_decode( $content, true );
+		$data = json_decode( $response->getBody(), true );
 
-		if ( $data === false )
+		if ( $data === false || !is_array( $data ) )
 			throw new WeatherDataAccessException("Could not parse JSON in weather data response from endpoint {$endpoint} for location {$location}");
 
 		return $data;
@@ -139,5 +138,7 @@ class WeatherDataAccessService {
 		$query = $request->getQuery();
 		$query->set('id', $location);
 		$query->set('appid', self::API_KEY);
+
+		return $request;
 	}
 }

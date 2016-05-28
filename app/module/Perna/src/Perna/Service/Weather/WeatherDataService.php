@@ -114,9 +114,10 @@ class WeatherDataService {
 			$last->setTime(23,59,59);
 
 			// Remove weather data that is not for today
-			$weatherData = array_filter( $data, function ( int $i, TemporalWeatherData $wd ) use ( $last ) {
+			$weatherData = array_filter( $data, function ( TemporalWeatherData $wd ) use ( $last ) {
 				return $wd->getDateTime() <= $last;
 			}, ARRAY_FILTER_USE_BOTH);
+
 
 			$cache->setToday( $weatherData );
 			$cache->setFetchedToday( new \DateTime('now') );

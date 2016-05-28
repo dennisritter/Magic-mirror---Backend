@@ -56,4 +56,13 @@ abstract class AbstractHydrator implements HydratorInterface {
 		}
 		return $data;
 	}
+
+	/**
+	 * Creates a DateTime instance from a UNIX Timestamp
+	 * @param     int       $timestamp  The timestamp
+	 * @return    \DateTime
+	 */
+	public function createDate ( int $timestamp ) : \DateTime {
+		return \DateTime::createFromFormat('U', $timestamp);
+	}
 }

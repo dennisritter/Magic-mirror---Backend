@@ -19,8 +19,8 @@ class CurrentWeatherDataHydrator extends TemporalWeatherDataHydrator {
 	public function hydrate( array $data, $object ) {
 		/** @var CurrentWeatherData $object */
 		parent::hydrate( $data, $object );
-		$object->setSunrise( new \DateTime( $data['sys']['sunrise'] ) );
-		$object->setSunset( new \DateTime( $data['sys']['sunset'] ) );
+		$object->setSunrise( $this->createDate( $data['sys']['sunrise'] ) );
+		$object->setSunset( $this->createDate( $data['sys']['sunset'] ) );
 		return $object;
 	}
 }
