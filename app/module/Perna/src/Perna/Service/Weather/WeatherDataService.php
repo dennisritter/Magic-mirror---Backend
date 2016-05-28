@@ -36,6 +36,14 @@ class WeatherDataService {
 		$this->documentManager = $documentManager;
 	}
 
+	/**
+	 * Retrieves weather data for the specified location
+	 * @param     int       $location The id of the location for which to retrieve weather data
+	 * @return    WeatherDataCache    The WeatherDataCache containing all weather data
+	 *
+	 * @throws    NotFoundException   If no location could be found
+	 * @throws    ServiceUnavailableException If an error occurred while fetching weather data
+	 */
 	public function getWeatherData ( int $location ) : WeatherDataCache {
 		$city = $this->documentManager->getRepository( City::class )->find( $location );
 
@@ -48,9 +56,9 @@ class WeatherDataService {
 			$city->setWeatherDataCache( $cache );
 		}
 
-		$changed = $this->populateCurrentWeatherData( $city->getId(), $cache );
-		$changed = $this->populateTodayWeatherData( $city->getId(), $cache ) || $changed;
-		$changed = $this->populateDailyWeatherData( $city->getId(), $cache ) || $changed;
+		$changed = $this->updateCurrentWeatherData( $city->getId(), $cache );
+		$changed = $this->updateTodayWeatherData( $city->getId(), $cache ) || $changed;
+		$changed = $this->updateDailyWeatherData( $city->getId(), $cache ) || $changed;
 
 		if ( $changed )
 			$this->documentManager->flush();
@@ -58,7 +66,15 @@ class WeatherDataService {
 		return $cache;
 	}
 
-	protected function populateCurrentWeatherData ( int $location, WeatherDataCache $cache ) : bool {
+	/**
+	 * Updates the cache with current weather data
+	 * @param     int               $location The location id
+	 * @param     WeatherDataCache  $cache    The cache whose data to update
+	 *
+	 * @return    bool                        Whether new data has been fetched
+	 * @throws    ServiceUnavailableException If an error occurred while fetching the data and no old data is available
+	 */
+	protected function updateCurrentWeatherData ( int $location, WeatherDataCache $cache ) : bool {
 		$hasData = $cache->getCurrent() instanceof CurrentWeatherData;
 		if ( $hasData && $cache->getFetchedCurrent() >= (new \DateTime('now'))->sub( new \DateInterval('PT15M') ) )
 			return false;
@@ -76,7 +92,15 @@ class WeatherDataService {
 		}
 	}
 
-	protected function populateTodayWeatherData ( int $location, WeatherDataCache $cache ) : bool {
+	/**
+	 * Updates the cache with today's weather data
+	 * @param     int               $location The location id
+	 * @param     WeatherDataCache  $cache    The cache whose data to update
+	 *
+	 * @return    bool                        Whether new data has been fetched
+	 * @throws    ServiceUnavailableException If an error occurred while fetching the data and no old data is available
+	 */
+	protected function updateTodayWeatherData ( int $location, WeatherDataCache $cache ) : bool {
 		$today = $cache->getToday();
 		$hasData = ($today instanceof Collection && $today->count() > 0) || ( is_array( $today ) && count( $today ) > 0 );
 		if ( $hasData // If data is already present
@@ -105,7 +129,15 @@ class WeatherDataService {
 		}
 	}
 
-	protected function populateDailyWeatherData ( int $location, WeatherDataCache $cache ) : bool {
+	/**
+	 * Updates the cache with daily weather data
+	 * @param     int               $location The location id
+	 * @param     WeatherDataCache  $cache    The cache whose data to update
+	 *
+	 * @return    bool                        Whether new data has been fetched
+	 * @throws    ServiceUnavailableException If an error occurred while fetching the data and no old data is available
+	 */
+	protected function updateDailyWeatherData ( int $location, WeatherDataCache $cache ) : bool {
 		$daily = $cache->getDaily();
 		$hasData = ($daily instanceof Collection && $daily->count() > 0) || ( is_array( $daily ) && count( $daily ) > 0 );
 		if ( $hasData // If data is already present
