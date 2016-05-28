@@ -42,7 +42,7 @@ class WeatherDataController extends AbstractAuthenticatedApiController {
 	 *  @SWG\Response(
 	 *    response="200",
 	 *    description="Weather data has successdfully been retrieved.",
-	 *    @SWG\Schema(ref="WeatherData")
+	 *    @SWG\Schema(ref="WeatherDataCache")
 	 *  )
 	 * )
 	 */

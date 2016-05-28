@@ -9,7 +9,7 @@ use Swagger\Annotations as SWG;
  * WeatherDataCache contains cached weather data for a specific weather location
  *
  * @SWG\Definition(
- *   @SWG\Xml(name="WeatherData")
+ *   @SWG\Xml(name="WeatherDataCache")
  * )
  *
  * @ODM\EmbeddedDocument
