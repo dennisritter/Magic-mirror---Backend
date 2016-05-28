@@ -1,9 +1,8 @@
 <?php
 
 use Doctrine\ODM\MongoDB\DocumentManager;
-use Doctrine\ODM\MongoDB\Mapping\Annotations\Document;
-use Perna\Document\Weather\DailyWeatherData;
-use Perna\Document\Weather\TemporalWeatherData;
+use Perna\Document\DailyWeatherData;
+use Perna\Document\TemporalWeatherData;
 use Perna\Factory\DependencyTypes;
 use Perna\Factory\Factory;
 use Perna\Hydrator\CityDumpHydrator;

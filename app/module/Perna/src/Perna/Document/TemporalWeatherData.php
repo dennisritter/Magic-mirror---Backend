@@ -1,6 +1,6 @@
 <?php
 
-namespace Perna\Document\Weather;
+namespace Perna\Document;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 

@@ -2,7 +2,7 @@
 
 namespace Perna\Hydrator\Weather;
 
-use Perna\Document\Weather\DailyWeatherData;
+use Perna\Document\DailyWeatherData;
 
 class DailyWeatherDataHydrator extends AbstractWeatherDataHydrator {
 

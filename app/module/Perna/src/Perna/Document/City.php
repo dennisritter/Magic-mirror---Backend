@@ -3,7 +3,6 @@
 namespace Perna\Document;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
-use Perna\Document\Weather\WeatherDataCache;
 use Swagger\Annotations as SWG;
 
 /**

@@ -2,9 +2,9 @@
 
 namespace Perna\Service\Weather;
 
-use Perna\Document\Weather\CurrentWeatherData;
-use Perna\Document\Weather\DailyWeatherData;
-use Perna\Document\Weather\TemporalWeatherData;
+use Perna\Document\CurrentWeatherData;
+use Perna\Document\DailyWeatherData;
+use Perna\Document\TemporalWeatherData;
 use Perna\Exception\WeatherDataAccessException;
 use Perna\Hydrator\Weather\CurrentWeatherDataHydrator;
 use Perna\Hydrator\Weather\DailyWeatherDataHydrator;
