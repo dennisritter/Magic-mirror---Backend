@@ -22,6 +22,7 @@ use Perna\Service\GUIDGenerator;
 use Perna\Service\PasswordService;
 use Perna\Service\UserService;
 use Perna\Service\Weather\WeatherDataAccessService;
+use Perna\Service\Weather\WeatherDataService;
 use Perna\Service\WeatherLocationService;
 use Zend\Di\ServiceLocator;
 
@@ -68,6 +69,10 @@ return [
 			CurrentWeatherDataHydrator::class => DependencyTypes::HYDRATOR,
 			TemporalWeatherData::class => DependencyTypes::HYDRATOR,
 			DailyWeatherData::class => DependencyTypes::HYDRATOR
+		]),
+		WeatherDataService::class => new Factory(WeatherDataService::class, [
+			WeatherDataAccessService::class => DependencyTypes::SERVICE,
+			DocumentManager::class => DependencyTypes::SERVICE
 		])
 	],
 	'invokables' => [
