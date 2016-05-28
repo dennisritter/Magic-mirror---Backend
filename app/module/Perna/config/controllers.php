@@ -10,6 +10,7 @@ use Perna\Controller\RegisterController;
 use Perna\Controller\LoginController;
 use Perna\Controller\LogoutController;
 use Perna\Controller\UserController;
+use Perna\Controller\Weather\WeatherDataController;
 use Perna\Controller\Weather\WeatherLocationAutocompleteController;
 use Perna\Controller\Weather\WeatherLocationNearbyController;
 use Perna\Factory\DependencyTypes;
@@ -20,6 +21,7 @@ use Perna\Service\CityImportService;
 use Perna\Service\GoogleAuthenticationService;
 use Perna\Service\GoogleCalendarService;
 use Perna\Service\UserService;
+use Perna\Service\Weather\WeatherDataService;
 use Perna\Service\WeatherLocationService;
 
 return [
@@ -68,6 +70,10 @@ return [
 		WeatherLocationAutocompleteController::class => new Factory(WeatherLocationAutocompleteController::class, [
 			AuthenticationService::class => DependencyTypes::SERVICE,
 			WeatherLocationService::class => DependencyTypes::SERVICE
+		]),
+		WeatherDataController::class => new Factory(WeatherDataController::class, [
+			AuthenticationService::class => DependencyTypes::SERVICE,
+			WeatherDataService::class => DependencyTypes::SERVICE
 		])
 	]
 ];

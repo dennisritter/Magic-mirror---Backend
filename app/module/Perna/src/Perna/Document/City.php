@@ -91,6 +91,15 @@ class City {
 	protected $location;
 
 	/**
+	 * The WeatherDataCache for this weather location
+	 *
+	 * @ODM\EmbedOne(targetDocument="WeatherDataCache")
+	 *
+	 * @var       WeatherDataCache
+	 */
+	protected $weatherDataCache;
+
+	/**
 	 * @return int
 	 */
 	public function getId() : int {
@@ -144,5 +153,19 @@ class City {
 	 */
 	public function setLocation( array $location ) {
 		$this->location = $location;
+	}
+
+	/**
+	 * @return WeatherDataCache
+	 */
+	public function getWeatherDataCache() {
+		return $this->weatherDataCache;
+	}
+
+	/**
+	 * @param WeatherDataCache $weatherDataCache
+	 */
+	public function setWeatherDataCache( $weatherDataCache ) {
+		$this->weatherDataCache = $weatherDataCache;
 	}
 }

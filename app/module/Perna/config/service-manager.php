@@ -1,23 +1,26 @@
 <?php
 
 use Doctrine\ODM\MongoDB\DocumentManager;
-use Doctrine\ODM\MongoDB\Mapping\Annotations\Document;
 use Perna\Factory\DependencyTypes;
 use Perna\Factory\Factory;
 use Perna\Hydrator\CityDumpHydrator;
 use Perna\Hydrator\GoogleAccessTokenHydrator;
 use Perna\Hydrator\GoogleCalendarHydrator;
 use Perna\Hydrator\GoogleEventHydrator;
+use Perna\Hydrator\Weather\CurrentWeatherDataHydrator;
+use Perna\Hydrator\Weather\DailyWeatherDataHydrator;
+use Perna\Hydrator\Weather\TemporalWeatherDataHydrator;
 use Perna\InputFilter\CityDumpInputFilter;
 use Perna\Service\AuthenticationService;
 use Perna\Service\CityImportService;
-use Perna\Service\Factory\GoogleCalendarServiceFactory;
 use Perna\Service\GoogleAuthenticationService;
 use Perna\Service\GoogleCalendarEventsService;
 use Perna\Service\GoogleCalendarService;
 use Perna\Service\GUIDGenerator;
 use Perna\Service\PasswordService;
 use Perna\Service\UserService;
+use Perna\Service\Weather\WeatherDataAccessService;
+use Perna\Service\Weather\WeatherDataService;
 use Perna\Service\WeatherLocationService;
 use Zend\Di\ServiceLocator;
 
@@ -58,6 +61,15 @@ return [
 			DocumentManager::class => DependencyTypes::SERVICE
 		]),
 		WeatherLocationService::class => new Factory(WeatherLocationService::class, [
+			DocumentManager::class => DependencyTypes::SERVICE
+		]),
+		WeatherDataAccessService::class => new Factory(WeatherDataAccessService::class, [
+			CurrentWeatherDataHydrator::class => DependencyTypes::HYDRATOR,
+			TemporalWeatherDataHydrator::class => DependencyTypes::HYDRATOR,
+			DailyWeatherDataHydrator::class => DependencyTypes::HYDRATOR
+		]),
+		WeatherDataService::class => new Factory(WeatherDataService::class, [
+			WeatherDataAccessService::class => DependencyTypes::SERVICE,
 			DocumentManager::class => DependencyTypes::SERVICE
 		])
 	],
