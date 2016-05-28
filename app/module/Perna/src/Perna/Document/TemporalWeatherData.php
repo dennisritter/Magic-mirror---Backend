@@ -3,9 +3,14 @@
 namespace Perna\Document;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
+use Swagger\Annotations as SWG;
 
 /**
  * Temporal Weather Data describes the weather for one specific point of time
+ *
+ * @SWG\Definition(
+ *   @SWG\Xml(name="TemporalWeatherData")
+ * )
  *
  * @ODM\EmbeddedDocument()
  *
@@ -17,6 +22,7 @@ class TemporalWeatherData extends AbstractWeatherData {
 	/**
 	 * The temperature for the specified point of time in Kelvin.
 	 *
+	 * @SWG\Property()
 	 * @ODM\Field()
 	 *
 	 * @var       float

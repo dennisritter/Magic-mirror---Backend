@@ -3,9 +3,14 @@
 namespace Perna\Document;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
+use Swagger\Annotations as SWG;
 
 /**
  * WeatherDataCache contains cached weather data for a specific weather location
+ *
+ * @SWG\Definition(
+ *   @SWG\Xml(name="WeatherData")
+ * )
  *
  * @ODM\EmbeddedDocument
  *
@@ -44,6 +49,9 @@ class WeatherDataCache {
 	/**
 	 * The current weather data
 	 *
+	 * @SWG\Property(
+	 *   @SWG\Schema(ref="CurrentWeatherData")
+	 * )
 	 * @ODM\EmbedOne(targetDocument="CurrentWeatherData")
 	 *
 	 * @var       CurrentWeatherData
@@ -54,6 +62,10 @@ class WeatherDataCache {
 	 * Temporal data for current day.
 	 * Supposed to be only future data points for today.
 	 *
+	 * @SWG\Property(
+	 *   type="array",
+	 *   @SWG\Items(ref="TemporalWeatherData")
+	 * )
 	 * @ODM\EmbedMany(targetDocument="TemporalWeatherData")
 	 *
 	 * @var       TemporalWeatherData[]
@@ -63,6 +75,10 @@ class WeatherDataCache {
 	/**
 	 * Daily weather data for the upcoming days
 	 *
+	 * @SWG\Property(
+	 *   type="array",
+	 *   @SWG\Items(ref="DailyWeatherData")
+	 * )
 	 * @ODM\EmbedMany(targetDocument="DailyWeatherData")
 	 *
 	 * @var       DailyWeatherData[]

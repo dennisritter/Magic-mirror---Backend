@@ -3,6 +3,7 @@
 namespace Perna\Document;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
+use Swagger\Annotations as SWG;
 
 /**
  * Abstraction for Weather Data Documents
@@ -19,6 +20,7 @@ abstract class AbstractWeatherData {
 	 * More Information on http://openweathermap.org/weather-conditions
 	 *
 	 * @ODM\Field()
+	 * @SWG\Property()
 	 *
 	 * @var       int
 	 */
@@ -28,6 +30,7 @@ abstract class AbstractWeatherData {
 	 * Wind speed in m/s
 	 *
 	 * @ODM\Field()
+	 * @SWG\Property()
 	 *
 	 * @var       float
 	 */
@@ -36,6 +39,7 @@ abstract class AbstractWeatherData {
 	/**
 	 * Cloudiness in percent
 	 *
+	 * @SWG\Property()
 	 * @ODM\Field()
 	 *
 	 * @var       float
@@ -45,6 +49,7 @@ abstract class AbstractWeatherData {
 	/**
 	 * The date and time of this forecast data
 	 *
+	 * @SWG\Property(type="string", format="date-time")
 	 * @ODM\Field(type="date")
 	 *
 	 * @var       \DateTime

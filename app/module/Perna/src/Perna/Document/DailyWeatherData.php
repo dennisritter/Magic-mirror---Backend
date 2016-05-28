@@ -2,9 +2,14 @@
 
 namespace Perna\Document;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
+use Swagger\Annotations as SWG;
 
 /**
  * Document representing the weather data for a whole day
+ *
+ * @SWG\Definition(
+ *   @SWG\Xml(name="DailyWeatherData")
+ * )
  *
  * @ODM\EmbeddedDocument
  *
@@ -16,6 +21,15 @@ class DailyWeatherData extends AbstractWeatherData {
 	/**
 	 * Key-Value-Pairs containing information on the average, min and max temperatures on the specific day.
 	 * Temperatures are specified in Kelvin.
+	 *
+	 * @SWG\Property(
+	 *   @SWG\Schema(
+	 *    required={"average", "min", "max"},
+	 *    @SWG\Property(property="average", type="number", format="float", description="The average temperature on that day in Kelvin."),
+	 *    @SWG\Property(property="min", type="number", format="float", description="The min day temperature on that day in Kelvin."),
+	 *    @SWG\Property(property="max", type="number", format="float", description="The max day temperature on that day in Kelvin.")
+	 *   )
+	 * )
 	 *
 	 * @ODM\Field(type="hash")
 	 *
