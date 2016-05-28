@@ -11,6 +11,7 @@ use Perna\Hydrator\UserTokenHydrator;
 use Perna\Hydrator\Weather\CurrentWeatherDataHydrator;
 use Perna\Hydrator\Weather\DailyWeatherDataHydrator;
 use Perna\Hydrator\Weather\TemporalWeatherDataHydrator;
+use Perna\Hydrator\Weather\WeatherDataCacheHydrator;
 
 return [
 	'invokables' => [
@@ -24,6 +25,7 @@ return [
 		CityHydrator::class => CityHydrator::class,
 		CurrentWeatherDataHydrator::class => CurrentWeatherDataHydrator::class,
 		TemporalWeatherDataHydrator::class => TemporalWeatherDataHydrator::class,
-		DailyWeatherDataHydrator::class => DailyWeatherDataHydrator::class
+		DailyWeatherDataHydrator::class => DailyWeatherDataHydrator::class,
+		WeatherDataCacheHydrator::class => WeatherDataCacheHydrator::class
 	]
 ];
