@@ -42,31 +42,47 @@ class WeatherDataService {
 		if ( !$city instanceof City )
 			throw new NotFoundException("The weather location with id {$location} could not be found.");
 
+		$cache = $city->getWeatherDataCache();
+		if ( !$cache instanceof WeatherDataCache ) {
+			$cache = new WeatherDataCache();
+			$city->setWeatherDataCache( $cache );
+		}
 
+		$changed = $this->populateCurrentWeatherData( $city->getId(), $cache );
+		$changed = $this->populateTodayWeatherData( $city->getId(), $cache ) || $changed;
+		$changed = $this->populateDailyWeatherData( $city->getId(), $cache ) || $changed;
+
+		if ( $changed )
+			$this->documentManager->flush();
+
+		return $cache;
 	}
 
-	protected function populateCurrentWeatherData ( int $location, WeatherDataCache $cache ) {
+	protected function populateCurrentWeatherData ( int $location, WeatherDataCache $cache ) : bool {
 		$hasData = $cache->getCurrent() instanceof CurrentWeatherData;
 		if ( $hasData && $cache->getFetchedCurrent() >= (new \DateTime('now'))->sub( new \DateInterval('PT15M') ) )
-			return;
+			return false;
 
 		try {
 			$data = $this->accessService->getCurrentWeatherData( $location );
 			$cache->setCurrent( $data );
 			$cache->setFetchedCurrent( new \DateTime('now') );
+			return true;
 		} catch ( WeatherDataAccessException $e ) {
 			if ( !$hasData )
 				throw new ServiceUnavailableException();
+
+			return false;
 		}
 	}
 
-	protected function populateTodayWeatherData ( int $location, WeatherDataCache $cache ) {
+	protected function populateTodayWeatherData ( int $location, WeatherDataCache $cache ) : bool {
 		$today = $cache->getToday();
 		$hasData = ($today instanceof Collection && $today->count() > 0) || ( is_array( $today ) && count( $today ) > 0 );
 		if ( $hasData // If data is already present
 		      && $cache->getFetchedToday() >= (new \DateTime('now'))->sub( new \DateInterval('PT30M') ) // AND the cached data is fresh enough
 					&& $cache->getFetchedToday() >= (new \DateTime('now'))->setTime(0,0,0) ) // AND the cached data has not been fetched yesterday
-			return;
+			return false;
 
 		try {
 			$data = $this->accessService->getTemporalWeatherData( $location );
@@ -80,27 +96,33 @@ class WeatherDataService {
 
 			$cache->setToday( $weatherData );
 			$cache->setFetchedToday( new \DateTime('now') );
+			return true;
 		} catch ( WeatherDataAccessException $e ) {
 			if ( !$hasData )
 				throw new ServiceUnavailableException();
+
+			return false;
 		}
 	}
 
-	protected function pupulateDailyWeatherData ( int $location, WeatherDataCache $cache ) {
+	protected function populateDailyWeatherData ( int $location, WeatherDataCache $cache ) : bool {
 		$daily = $cache->getDaily();
 		$hasData = ($daily instanceof Collection && $daily->count() > 0) || ( is_array( $daily ) && count( $daily ) > 0 );
 		if ( $hasData // If data is already present
 		     && $cache->getFetchedDaily() >= (new \DateTime('now'))->sub( new \DateInterval('PT2H') ) // AND the cached data is fresh enough
 		     && $cache->getFetchedDaily() >= (new \DateTime('now'))->setTime(0,0,0) ) // AND the cached data has not been fetched yesterday
-			return;
+			return false;
 
 		try {
 			$data = $this->accessService->getDailyWeatherData( $location );
 			$cache->setDaily( $data );
 			$cache->setFetchedDaily( new \DateTime('now') );
+			return true;
 		} catch ( WeatherDataAccessException $e ) {
 			if ( !$hasData )
 				throw new ServiceUnavailableException();
+
+			return false;
 		}
 	}
 }
