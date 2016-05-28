@@ -5,23 +5,14 @@ namespace Perna\Document\Weather;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 
 /**
- * Class CurrentWeatherData
+ * Document representing the current weather data
  *
  * @ODM\EmbeddedDocument
  *
  * @author      Jannik Portz
  * @package     Perna\Document\Weather
  */
-class CurrentWeatherData extends AbstractWeatherData {
-
-	/**
-	 * Current temperature in Kelvin
-	 *
-	 * @ODM\Field()
-	 *
-	 * @var       float
-	 */
-	protected $temperature;
+class CurrentWeatherData extends TemporalWeatherData {
 
 	/**
 	 * Time of sunrise on current day
@@ -40,20 +31,6 @@ class CurrentWeatherData extends AbstractWeatherData {
 	 * @var
 	 */
 	protected $sunset;
-
-	/**
-	 * @return float
-	 */
-	public function getTemperature() {
-		return $this->temperature;
-	}
-
-	/**
-	 * @param float $temperature
-	 */
-	public function setTemperature( $temperature ) {
-		$this->temperature = $temperature;
-	}
 
 	/**
 	 * @return \DateTime
