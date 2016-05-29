@@ -39,11 +39,22 @@ class WeatherDataController extends AbstractAuthenticatedApiController {
 	 *    description="The id of the location for which to retrieve weather data.",
 	 *    default=123456
 	 *  ),
+	 *  @SWG\Parameter(ref="#/parameters/accessToken"),
 	 *  @SWG\Response(
-	 *    response="200",
-	 *    description="Weather data has successdfully been retrieved.",
-	 *    @SWG\Schema(ref="WeatherDataCache")
-	 *  )
+	 *   response="200",
+	 *   description="successful operation",
+	 *   @SWG\Schema(
+	 *    required={"success", "data"},
+	 *    @SWG\Property(property="success", type="boolean", default=true),
+	 *    @SWG\Property(property="data", ref="WeatherDataCache")
+	 *   )
+	 *  ),
+	 *  @SWG\Response(
+	 *   response="default",
+	 *   description="unprocessable entity.",
+	 *   @SWG\Schema(ref="ResponseError")
+	 *  ),
+	 *   @SWG\Response(response="500", ref="#/responses/500")
 	 * )
 	 */
 	public function get ( array $params ) {

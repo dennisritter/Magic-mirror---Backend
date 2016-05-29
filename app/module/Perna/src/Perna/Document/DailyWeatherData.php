@@ -23,10 +23,8 @@ class DailyWeatherData extends AbstractWeatherData {
 	 * Temperatures are specified in Kelvin.
 	 *
 	 * @SWG\Property(
-	 *   type="object",
-	 *   @SWG\Property(property="average", type="number", format="float", description="The average temperature on that day in Kelvin."),
-	 *   @SWG\Property(property="min", type="number", format="float", description="The min day temperature on that day in Kelvin."),
-	 *   @SWG\Property(property="max", type="number", format="float", description="The max day temperature on that day in Kelvin.")
+	 *   property="temperature",
+	 *   ref="#/definitions/DayTemperatures"
 	 * )
 	 *
 	 * @ODM\Field(type="hash")
