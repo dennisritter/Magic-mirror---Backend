@@ -11,6 +11,7 @@ use Perna\Controller\UserController;
 use Perna\Controller\RegisterController;
 use Perna\Controller\Weather\WeatherDataController;
 use Perna\Controller\Weather\WeatherLocationAutocompleteController;
+use Perna\Controller\Weather\WeatherLocationController;
 use Perna\Controller\Weather\WeatherLocationNearbyController;
 use Zend\Mvc\Router\Http\Literal;
 use Zend\Mvc\Router\Http\Segment;
@@ -152,6 +153,18 @@ return [
 							'route' => '/autocomplete',
 							'defaults' => [
 								'controller' => WeatherLocationAutocompleteController::class
+							]
+						]
+					],
+					'resource' => [
+						'type' => Segment::class,
+						'options' => [
+							'route' => '/:id',
+							'defaults' => [
+								'controller' => WeatherLocationController::class
+							],
+							'constraints' => [
+								'id' => '[0-9]+'
 							]
 						]
 					]

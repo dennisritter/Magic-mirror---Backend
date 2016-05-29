@@ -12,6 +12,7 @@ use Perna\Controller\LogoutController;
 use Perna\Controller\UserController;
 use Perna\Controller\Weather\WeatherDataController;
 use Perna\Controller\Weather\WeatherLocationAutocompleteController;
+use Perna\Controller\Weather\WeatherLocationController;
 use Perna\Controller\Weather\WeatherLocationNearbyController;
 use Perna\Factory\DependencyTypes;
 use Perna\Factory\Factory;
@@ -74,6 +75,10 @@ return [
 		WeatherDataController::class => new Factory(WeatherDataController::class, [
 			AuthenticationService::class => DependencyTypes::SERVICE,
 			WeatherDataService::class => DependencyTypes::SERVICE
+		]),
+		WeatherLocationController::class => new Factory(WeatherLocationController::class, [
+			AuthenticationService::class => DependencyTypes::SERVICE,
+			WeatherLocationService::class => DependencyTypes::SERVICE
 		])
 	]
 ];

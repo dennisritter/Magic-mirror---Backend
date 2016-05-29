@@ -6,6 +6,7 @@ use Doctrine\MongoDB\Query\Query;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ODM\MongoDB\MongoDBException;
 use Perna\Document\City;
+use ZfrRest\Http\Exception\Client\NotFoundException;
 
 /**
  * WeatherLocationService
@@ -20,6 +21,22 @@ class WeatherLocationService {
 
 	public function __construct ( DocumentManager $documentManager ) {
 		$this->documentManager = $documentManager;
+	}
+
+	/**
+	 * Finds a weather location by its id
+	 * @param     int       $id       The id of the location to find
+	 * @return    City                The city document
+	 *
+	 * @throws    NotFoundException   If no object with the specified id exists
+	 */
+	public function findLocation ( int $id ) : City {
+		$result = $this->documentManager->getRepository( City::class )->find( $id );
+
+		if ( !$result instanceof City )
+			throw new NotFoundException("Weather Location with id {$id} does not exist.");
+
+		return $result;
 	}
 
 	/**
