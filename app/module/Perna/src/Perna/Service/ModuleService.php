@@ -54,10 +54,9 @@ class ModuleService {
 
     public function setModule( User $user, string $id, Module $moduledata ){
         /** @var Module $module */
-        foreach (array_keys())
+        $module = $moduledata;
         /** @var PersistentCollection $modules */
         $modules = $user->getModules();
-        $modules->removeElement()
         $this->documentManager->flush();
         return $module;
     }
