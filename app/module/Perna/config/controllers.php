@@ -2,11 +2,11 @@
 
 use Perna\Controller\Calendar\CalendarsController;
 use Perna\Controller\Calendar\EventsController;
-use Perna\Controller\CalendarModuleController;
 use Perna\Controller\Console\ImportCitiesController;
 use Perna\Controller\GoogleAuth\AuthUrlController;
 use Perna\Controller\GoogleAuth\CallbackController;
 use Perna\Controller\ModuleController;
+use Perna\Controller\ModulesController;
 use Perna\Controller\RefreshController;
 use Perna\Controller\RegisterController;
 use Perna\Controller\LoginController;
@@ -60,6 +60,10 @@ return [
 		EventsController::class => new Factory(EventsController::class, [
 			AuthenticationService::class => DependencyTypes::SERVICE,
 			GoogleCalendarService::class => DependencyTypes::SERVICE
+		]),
+		ModulesController::class => new Factory(ModulesController::class, [
+			AuthenticationService::class => DependencyTypes::SERVICE,
+			ModuleService::class => DependencyTypes::SERVICE
 		]),
 		ModuleController::class => new Factory(ModuleController::class, [
 			AuthenticationService::class => DependencyTypes::SERVICE,

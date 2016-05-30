@@ -5,6 +5,7 @@ namespace Perna\Document;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 use Perna\Service\GUIDGenerator;
+use Swagger\Annotations as SWG;
 
 
 /**
@@ -16,6 +17,9 @@ use Perna\Service\GUIDGenerator;
  * @ODM\DiscriminatorMap({
  *     "calendar"="CalendarModule"
  *   })
+ * @SWG\Definition(
+ *   @SWG\Xml(name="Module")
+ * )
  * 
  * @author      Johannes Knauft
  * @package     Perna\Documents
@@ -23,7 +27,11 @@ use Perna\Service\GUIDGenerator;
 abstract class Module {
 
     /**
-     * @ODM\Field()
+     * @ODM\Field(
+     *     name = "id",
+     *     type = "string"
+     * )
+     * @SWG\Property(property="id", type="string")
      * @var string
      */
     protected $id;
@@ -33,6 +41,7 @@ abstract class Module {
      *     name = "type",
      *     type = "string"
      * )
+     * @SWG\Property(property="type", type="string")
      * @var string type of a module
      */
     protected $type;
@@ -42,6 +51,7 @@ abstract class Module {
      *     name = "width",
      *     type = "int"
      * )
+     * @SWG\Property(property="width", type="int")
      * @var int width of a module
      */
     protected $width;
@@ -51,6 +61,7 @@ abstract class Module {
      *     name = "height",
      *     type = "int"
      * )
+     * @SWG\Property(property="height", type="int")
      * @var int height of a module
      */
     protected $height;
@@ -60,6 +71,7 @@ abstract class Module {
      *     name = "xPosition",
      *     type = "int"
      * )
+     * @SWG\Property(property="xPosition", type="int")
      * @var int x-position of a module
      */
     protected $xPosition;
@@ -69,6 +81,7 @@ abstract class Module {
      *     name = "yPosition",
      *     type = "int"
      * )
+     * @SWG\Property(property="yPosition", type="int")
      * @var int y-position of a module
      */
     protected $yPosition;

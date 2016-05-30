@@ -2,6 +2,7 @@
 
 namespace Perna\Document;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
+use Swagger\Annotations as SWG;
 
 /**
  * Document-Class for CalendarModules

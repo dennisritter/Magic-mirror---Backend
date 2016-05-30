@@ -29,16 +29,41 @@ class ModuleService {
     }
 
     public function removeModule( User $user, string $id ) {
-        echo $id;
         /** @var PersistentCollection $modules */
         $modules = $user->getModules();
         
         foreach ( $modules as $module){
             if($module->getId() == $id){
-                $modules->remove($module);
+                $modules->removeElement( $module );
             }
         }
-        $user->setModules($modules);
         $this->documentManager->flush();
+    }
+
+    public function getModuleById( User $user, string $id) : Module{
+        /** @var PersistentCollection $modules */
+        $modules = $user->getModules();
+        $modules->toArray();
+        foreach ( $modules as $module){
+            if($module->getId() == $id){
+                return $module;
+            }
+        }
+        return null;
+    }
+
+    public function setModule( User $user, string $id, Module $moduledata ){
+        /** @var Module $module */
+        foreach (array_keys())
+        /** @var PersistentCollection $modules */
+        $modules = $user->getModules();
+        $modules->removeElement()
+        $this->documentManager->flush();
+        return $module;
+    }
+
+    public function setModules( array $modules, User $user ) {
+        $user->setModules( $modules );
+        return $user->getModules();
     }
 }

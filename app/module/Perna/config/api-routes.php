@@ -7,10 +7,12 @@ use Perna\Controller\GoogleAuth\CallbackController;
 use Perna\Controller\LoginController;
 use Perna\Controller\LogoutController;
 use Perna\Controller\ModuleController;
+use Perna\Controller\ModulesController;
 use Perna\Controller\RefreshController;
 use Perna\Controller\UserController;
 use Perna\Controller\RegisterController;
 use Zend\Mvc\Router\Http\Literal;
+use Zend\Mvc\Router\Http\Segment;
 
 return [
 	'register' => [
@@ -119,12 +121,28 @@ return [
 			]
 		]
 	],
+
 	'modules' => [
 		'type' => Literal::class,
 		'options' => [
 			'route' => '/modules',
 			'defaults' => [
-				'controller' => ModuleController::class
+				'controller' => ModulesController::class
+			]
+		],
+		'may_terminate' => true,
+		'child_routes' => [
+			'id' => [
+				'type' => Segment::class,
+				'options' => [
+					'route' => '/:id',
+					'defaults' => [
+						'controller' => ModuleController::class
+					],
+					'constrains' => [
+						'id'=> '*'
+					]
+				]
 			]
 		]
 	]
