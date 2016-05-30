@@ -18,6 +18,7 @@ use Swagger\Annotations as SWG;
  *     "calendar"="CalendarModule"
  *   })
  * @SWG\Definition(
+ *   required={"id", "height", "width", "xPosition", "yPosition", "type"},
  *   @SWG\Xml(name="Module")
  * )
  * 
@@ -51,7 +52,7 @@ abstract class Module {
      *     name = "width",
      *     type = "int"
      * )
-     * @SWG\Property(property="width", type="int")
+     * @SWG\Property()
      * @var int width of a module
      */
     protected $width;
@@ -61,7 +62,7 @@ abstract class Module {
      *     name = "height",
      *     type = "int"
      * )
-     * @SWG\Property(property="height", type="int")
+     * @SWG\Property()
      * @var int height of a module
      */
     protected $height;
@@ -71,7 +72,7 @@ abstract class Module {
      *     name = "xPosition",
      *     type = "int"
      * )
-     * @SWG\Property(property="xPosition", type="int")
+     * @SWG\Property()
      * @var int x-position of a module
      */
     protected $xPosition;
@@ -81,7 +82,7 @@ abstract class Module {
      *     name = "yPosition",
      *     type = "int"
      * )
-     * @SWG\Property(property="yPosition", type="int")
+     * @SWG\Property()
      * @var int y-position of a module
      */
     protected $yPosition;
