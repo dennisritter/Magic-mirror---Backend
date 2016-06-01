@@ -30,11 +30,17 @@ class EventsController extends AbstractCalendarController {
 	 *        Defaults to the primary calendar.", default="primary")
 	 *      )
 	 *   ),
+	 *   @SWG\Parameter(ref="#/parameters/accessToken"),
 	 *   @SWG\Response(
 	 *    response="201",
 	 *    description="The event has successfully been added to the calendar. Be aware that this does not mean that all parameters have been set to the desired values.",
-	 *    @SWG\Schema(ref="GoogleEvent", description="The newly creates google event")
-	 *  )
+	 *    @SWG\Schema(
+	 *      @SWG\Property(property="success", type="boolean", default=true),
+	 *      @SWG\Property(property="data", ref="GoogleEvent", description="The newly creates google event")
+	 *    )
+	 *  ),
+	 *  @SWG\Response(response="403", ref="#/responses/403"),
+	 *  @SWG\Response(response="422", ref="#/responses/422")
 	 * )
 	 */
 	public function post () {
@@ -60,14 +66,22 @@ class EventsController extends AbstractCalendarController {
 	 *    description="Comma separated list of calendar ids. Unknown ids will be ignored.",
 	 *    default="calendar1,calendar2,calendar3"
 	 *   ),
+	 *   @SWG\Parameter(ref="#/parameters/accessToken"),
 	 *   @SWG\Response(
 	 *    response="200",
 	 *    description="The events have successfully be retrieved",
 	 *    @SWG\Schema(
-	 *      type="array",
-	 *      @SWG\Items(ref="GoogleEvent")
-	 *   )
-	 *  )
+	 *      @SWG\Property(property="success", type="boolean", default=true),
+	 *      @SWG\Property(
+	 *        property="data",
+	 *        type="array",
+	 *        description="Array of events in the specified calendars",
+	 *        @SWG\Items(ref="GoogleEvent")
+	 *      )
+	 *    )
+	 *   ),
+	 *   @SWG\Response(response="422", ref="#/responses/422"),
+	 *   @SWG\Response(response="403", ref="#/responses/403")
 	 * )
 	 */
 	public function get () {

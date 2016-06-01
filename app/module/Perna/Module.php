@@ -30,8 +30,23 @@ use Zend\Uri\UriFactory;
  *   ),
  *   @SWG\Response(
  *    response="422",
- *    description="Unprocessable Entity",
- *    @SWG\Schema(ref="#/definitions/ResponseError")
+ *    description="The provided parameters or parameter values are invalid.",
+ *    @SWG\Schema(
+ *      @SWG\Property(property="status_code", type="number", format="int32", description="The HTTP status code", default=422),
+ *      @SWG\Property(property="message", type="string", default="Validation Error", description="The main error message"),
+ *      @SWG\Property(
+ *        property="errors",
+ *        allOf={ @SWG\Schema(ref="#/definitions/Errors") }
+ *      )
+ *    )
+ *   ),
+ *   @SWG\Response(
+ *    response="403",
+ *    description="Access-Token is not present in the header or invalid.",
+ *    @SWG\Schema(
+ *      @SWG\Property(property="status_code", type="number", format="int32", default=403),
+ *      @SWG\Property(property="message", type="string")
+ *    )
  *   ),
  *   @SWG\Parameter(
  *    parameter="accessToken",
@@ -46,7 +61,15 @@ use Zend\Uri\UriFactory;
  *    @SWG\Property(property="average", type="number", format="float", description="The average temperature on that day in Kelvin."),
  *    @SWG\Property(property="min", type="number", format="float", description="The min day temperature on that day in Kelvin."),
  *    @SWG\Property(property="max", type="number", format="float", description="The max day temperature on that day in Kelvin.")
- *   )
+ *   ),
+ *   @SWG\Definition(
+ *    definition="Errors",
+ *    @SWG\Property(
+ *      property="[parameterName]",
+ *      type="array",
+ *      @SWG\Items(type="string")
+ *    )
+ *  )
  * )
  *
  * @author      Jannik Portz
