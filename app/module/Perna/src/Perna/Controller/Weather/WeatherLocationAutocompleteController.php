@@ -6,6 +6,7 @@ use Perna\Controller\AbstractAuthenticatedApiController;
 use Perna\Hydrator\CityHydrator;
 use Perna\Service\AuthenticationService;
 use Perna\Service\WeatherLocationService;
+use Swagger\Annotations as SWG;
 use ZfrRest\Http\Exception\Client\UnprocessableEntityException;
 
 class WeatherLocationAutocompleteController extends AbstractAuthenticatedApiController {
@@ -35,25 +36,17 @@ class WeatherLocationAutocompleteController extends AbstractAuthenticatedApiCont
 	 *    description="The search query for the weather locations (required)",
 	 *    default="Berlin-Pankow"
 	 *   ),
-	 *   @SWG\Parameter(
-	 *    in="header",
-	 *    name="Access-Token",
-	 *    type="string",
-	 *    required=true,
-	 *    description="A valid access token"
-	 *   ),
+	 *   @SWG\Parameter(ref="#/parameters/accessToken"),
 	 *   @SWG\Response(
 	 *    response="200",
 	 *    description="Locations matching the provided search string. Not more than 10 items.",
 	 *    @SWG\Schema(
-	 *      type="array",
-	 *      @SWG\Items(ref="City")
+	 *      @SWG\Property(property="success", type="boolean", default=true),
+	 *      @SWG\Property(property="data", type="array", description="The autocompleted cities", @SWG\Items(ref="City"))
 	 *    ),
 	 *   ),
-	 *   @SWG\Response(
-	 *    response="422",
-	 *    description="The request is invalid."
-	 *   )
+	 *   @SWG\Response(response="403", ref="#/responses/403"),
+	 *   @SWG\Response(response="422", ref="#/responses/422")
 	 * )
 	 */
 	public function get () {

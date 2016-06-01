@@ -44,25 +44,17 @@ class WeatherLocationNearbyController extends AbstractAuthenticatedApiController
 	 *    description="The longitude of the search location as float value (required)",
 	 *    default="13.3552320"
 	 *   ),
-	 *   @SWG\Parameter(
-	 *    in="header",
-	 *    name="Access-Token",
-	 *    type="string",
-	 *    required=true,
-	 *    description="A valid access token"
-	 *   ),
+	 *   @SWG\Parameter(ref="#/parameters/accessToken"),
 	 *   @SWG\Response(
 	 *    response="200",
 	 *    description="The closest locations have successfully been retrieved",
 	 *    @SWG\Schema(
-	 *      type="array",
-	 *      @SWG\Items(ref="City")
+	 *      @SWG\Property(property="success", type="boolean", default=true),
+	 *      @SWG\Property(property="data", type="array", description="The nearby locations", @SWG\Items(ref="City"))
 	 *    ),
 	 *   ),
-	 *   @SWG\Response(
-	 *    response="422",
-	 *    description="The request is invalid."
-	 *   )
+	 *   @SWG\Response(response="403", ref="#/responses/403"),
+	 *   @SWG\Response(response="422", ref="#/responses/422")
 	 * )
 	 */
 	public function get () {

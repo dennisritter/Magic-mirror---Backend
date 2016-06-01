@@ -39,10 +39,25 @@ class WeatherDataController extends AbstractAuthenticatedApiController {
 	 *    description="The id of the location for which to retrieve weather data.",
 	 *    default=123456
 	 *  ),
+	 *  @SWG\Parameter(ref="#/parameters/accessToken"),
 	 *  @SWG\Response(
-	 *    response="200",
-	 *    description="Weather data has successdfully been retrieved.",
-	 *    @SWG\Schema(ref="WeatherDataCache")
+	 *   response="200",
+	 *   description="successful operation",
+	 *   @SWG\Schema(
+	 *    required={"success", "data"},
+	 *    @SWG\Property(property="success", type="boolean", default=true),
+	 *    @SWG\Property(property="data", ref="WeatherDataCache")
+	 *   )
+	 *  ),
+	 *  @SWG\Response(response="403", ref="#/responses/403"),
+	 *  @SWG\Response(response="422", ref="#/responses/422"),
+	 *  @SWG\Response(
+	 *   response="404",
+	 *   description="Weather location could not be found",
+	 *   @SWG\Schema(
+	 *    @SWG\Property(property="status_code", type="number", format="int32", default=404, description="The HTTP status code"),
+	 *    @SWG\Property(property="message", type="string", description="The error message")
+	 *   )
 	 *  )
 	 * )
 	 */

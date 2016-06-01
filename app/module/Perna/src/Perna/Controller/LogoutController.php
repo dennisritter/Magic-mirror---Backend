@@ -19,14 +19,9 @@ class LogoutController extends AbstractAuthenticatedApiController {
 	 *   description="Deletes the access token specified in the Request Header",
 	 *   operationId="logout",
 	 *   tags={"user"},
-	 *   @SWG\Parameter(
-	 *    in="header",
-	 *    name="Access-Token",
-	 *    type="string",
-	 *    description="The current access token",
-	 *    required=true
-	 *   ),
-	 *   @SWG\Response(response="200", description="The specified access token has been deleted.")
+	 *   @SWG\Parameter(ref="#/parameters/accessToken"),
+	 *   @SWG\Response(response="200", description="The specified access token has been deleted."),
+	 *   @SWG\Response(response="403", ref="#/responses/403")
 	 * )
 	 */
 	public function post () {

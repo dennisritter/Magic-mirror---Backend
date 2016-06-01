@@ -33,18 +33,21 @@ class CalendarsController extends AbstractAuthenticatedApiController {
 	 *   description="Lists up all calendars of the specified user.",
 	 *   operationId="getCalendars",
 	 *   tags={"calendar"},
+	 *   @SWG\Parameter(ref="#/parameters/accessToken"),
 	 *   @SWG\Response(
 	 *    response="200",
 	 *    description="The User's calendars have successfully been retrieved.",
 	 *    @SWG\Schema(
-	 *      type="array",
-	 *      @SWG\Items( ref="GoogleCalendar" )
+	 *      @SWG\Property(property="success", type="boolean", default=true),
+	 *      @SWG\Property(
+	 *        property="data",
+	 *        type="array",
+	 *        description="The User's visible calendars",
+	 *        @SWG\Items(ref="GoogleCalendar")
+	 *      )
 	 *    )
 	 *   ),
-	 *   @SWG\Response(
-	 *    response="403",
-	 *    description="If the user has not authenticated at Google or access has been revoked"
-	 *   )
+	 *   @SWG\Response(response="403", ref="#/responses/403")
 	 * )
 	 */
 	public function get () {

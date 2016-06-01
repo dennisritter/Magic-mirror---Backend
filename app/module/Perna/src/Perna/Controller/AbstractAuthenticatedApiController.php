@@ -5,6 +5,7 @@ namespace Perna\Controller;
 use Perna\Service\AuthenticationService;
 use Zend\Http\Request as HttpRequest;
 use Zend\Mvc\MvcEvent;
+use ZfrRest\Http\Exception\Client\UnauthorizedException;
 use ZfrRest\Http\Exception\Client\UnprocessableEntityException;
 
 /**
@@ -55,6 +56,6 @@ class AbstractAuthenticatedApiController extends AbstractApiController {
 	 */
 	protected function assertAccessToken () {
 		if ( $this->accessToken == null )
-			throw new UnprocessableEntityException("You must provide an Access-Token header with your current access token.");
+			throw new UnauthorizedException("You must provide an Access-Token header with your current access token.");
 	}
 }
