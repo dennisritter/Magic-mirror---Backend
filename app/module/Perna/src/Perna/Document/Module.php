@@ -2,7 +2,6 @@
 
 namespace Perna\Document;
 
-
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 use Perna\Service\GUIDGenerator;
 use Swagger\Annotations as SWG;
