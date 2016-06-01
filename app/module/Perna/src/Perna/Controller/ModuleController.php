@@ -8,7 +8,7 @@ use Perna\Hydrator\CalendarModuleHydrator;
 use Perna\InputFilter\ModuleInputFilter;
 use Perna\Service\AuthenticationService;
 use Perna\Service\ModuleService;
-use Swagger\Annotations;
+use Swagger\Annotations as SWG;
 use Zend\Http\Request;
 
 class ModuleController extends AbstractAuthenticatedApiController {
@@ -27,19 +27,26 @@ class ModuleController extends AbstractAuthenticatedApiController {
      * @SWG\Put(
      *   path="/modules/{id}",
      *   summary="Change module",
-     *   description="Adds a new Module to logged in User",
+     *   description="Replaces the module data",
      *   tags={"modules"},
+     *   @SWG\Parameter(ref="#/parameters/accessToken"),
      *   @SWG\Parameter(
      *    in="body",
      *    name="body",
-     *    @SWG\Schema(ref="Module", description="The changed Moduledata")
+     *    @SWG\Schema(ref="Module", description="The changed Module data")
      *   ),
      *   @SWG\Response(
      *    response="200",
      *    description="Updates the selected Module",
-     *    @SWG\Schema(ref="Module", description="The changed Module")
-     *  )
-     * ) 
+     *    @SWG\Schema(
+     *      @SWG\Property(property="success", type="boolean", default=true),
+     *      @SWG\Property(property="data", ref="Module")
+     *    )
+     *  ),
+     *   @SWG\Response(response="403", ref="#/responses/403"),
+     *   @SWG\Response(response="404", ref="#/responses/404"),
+     *   @SWG\Response(response="422", ref="#/responses/422")
+     * )
      */
     public function put( array $params ) {
         $this->assertAccessToken();
@@ -63,13 +70,16 @@ class ModuleController extends AbstractAuthenticatedApiController {
      *   description="Serves data for one Module",
      *   operationId="getModule",
      *   tags={"modules"},
+     *   @SWG\Parameter(ref="#/parameters/accessToken"),
      *   @SWG\Response(
      *    response="200",
      *    description="The Module have successfully be retrieved",
      *    @SWG\Schema(
-     *      type="array",
-     *      @SWG\Items(ref="Module")
-     *   )
+     *      @SWG\Property(property="success", type="boolean", default=true),
+     *      @SWG\Property(property="data", ref="Module")
+     *   ),
+     *   @SWG\Response(response="403", ref="#/responses/403"),
+     *   @SWG\Response(response="404", ref="#/responses/404")
      *  )
      * )
      */
@@ -92,24 +102,25 @@ class ModuleController extends AbstractAuthenticatedApiController {
     /**
      * @SWG\Delete(
      *   path="/modules/{id}",
-     *   summary="Delets Module",
+     *   summary="Deletes Module",
      *   description="Delete one Module",
      *   operationId="deleteModule",
      *   tags={"modules"},
      *   @SWG\Response(
-     *    response="201",
+     *    response="200",
      *    description="The Module have successfully be deleted",
      *    @SWG\Schema(
-     *      type="array",
-     *      @SWG\Items(ref="Module")
-     *   )
-     *  )
+     *      @SWG\Property(property="success", type="boolean", default=true)
+     *    )
+     *  ),
+     *   @SWG\Response(response="403", ref="#/responses/403"),
+     *   @SWG\Response(response="404", ref="#/responses/404")
      * )
      */
     public function delete( array $params ) {
         $this->assertAccessToken();
         $user = $this->authenticationService->findAuthenticatedUser( $this->accessToken );
         $this->moduleService->removeModule( $user,  $params['id']);
-        return $this->get( $params );
+        return $this->createDefaultViewModel(['success' => true]);
     }
 }

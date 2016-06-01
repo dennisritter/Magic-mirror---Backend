@@ -48,6 +48,14 @@ use Zend\Uri\UriFactory;
  *      @SWG\Property(property="message", type="string")
  *    )
  *   ),
+ *   @SWG\Response(
+ *    response="404",
+ *    description="The specified resource could not be found.",
+ *    @SWG\Schema(
+ *      @SWG\Property(property="status_code", type="number", format="int32", default=404, description="The HTTP Status Code"),
+ *      @SWG\Property(property="message", type="string", description="The error message")
+ *    )
+ *   ),
  *   @SWG\Parameter(
  *    parameter="accessToken",
  *    name="Access-Token",
