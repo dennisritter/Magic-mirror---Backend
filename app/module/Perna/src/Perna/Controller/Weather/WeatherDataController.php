@@ -49,12 +49,16 @@ class WeatherDataController extends AbstractAuthenticatedApiController {
 	 *    @SWG\Property(property="data", ref="WeatherDataCache")
 	 *   )
 	 *  ),
+	 *  @SWG\Response(response="403", ref="#/responses/403"),
+	 *  @SWG\Response(response="422", ref="#/responses/422"),
 	 *  @SWG\Response(
-	 *   response="default",
-	 *   description="unprocessable entity.",
-	 *   @SWG\Schema(ref="ResponseError")
-	 *  ),
-	 *   @SWG\Response(response="500", ref="#/responses/500")
+	 *   response="404",
+	 *   description="Weather location could not be found",
+	 *   @SWG\Schema(
+	 *    @SWG\Property(property="status_code", type="number", format="int32", default=404, description="The HTTP status code"),
+	 *    @SWG\Property(property="message", type="string", description="The error message")
+	 *   )
+	 *  )
 	 * )
 	 */
 	public function get ( array $params ) {

@@ -54,7 +54,8 @@ use Zend\Uri\UriFactory;
  *    in="header",
  *    description="A valid access token for the currently authenticated user",
  *    type="string",
- *    default="A0383A16-A1AF-A68A-DDC2-0DC458340ED4"
+ *    default="A0383A16-A1AF-A68A-DDC2-0DC458340ED4",
+ *    required=true
  *   ),
  *   @SWG\Definition(
  *    definition="DayTemperatures",

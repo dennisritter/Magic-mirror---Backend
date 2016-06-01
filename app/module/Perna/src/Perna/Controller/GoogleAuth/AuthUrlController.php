@@ -32,22 +32,22 @@ class AuthUrlController extends AbstractAuthenticatedApiController {
 	 *   description="Creates a URL for the current user to permit Google OAuth",
 	 *   operationId="googleAuthURL",
 	 *   tags={"google"},
-	 *   @SWG\Parameter(
-	 *    name="Access-Token",
-	 *    in="header",
-	 *    type="string",
-	 *    description="The current access token",
-	 *    required=true
-	 *   ),
+	 *   @SWG\Parameter(ref="#/parameters/accessToken"),
 	 *   @SWG\Response(
 	 *    response="200",
 	 *    description="A Google Auth URL has been created",
 	 *    @SWG\Schema(
-	 *      required={"url", "state"},
-	 *      @SWG\Property(property="url", description="The Google Auth URL for the current user", type="string", format="url"),
-	 *      @SWG\Property(property="state", description="State identifier. Token for current Google Auth session.", type="string", format="GUID")
+	 *      @SWG\Property(property="success", type="boolean", default=true),
+	 *      @SWG\Property(
+	 *        property="data",
+	 *        allOf={ @SWG\Schema(
+	 *          @SWG\Property(property="url", description="The Google Auth URL for the current user", type="string", format="url"),
+	 *          @SWG\Property(property="state", description="State identifier. Token for current Google Auth session.", type="string", format="GUID")
+	 *         ) }
+	 *      )
 	 *    )
-	 *   )
+	 *   ),
+	 *   @SWG\Response(response="403", ref="#/responses/403")
 	 * )
 	 */
 	public function get () {
