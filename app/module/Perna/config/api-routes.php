@@ -6,6 +6,8 @@ use Perna\Controller\GoogleAuth\AuthUrlController;
 use Perna\Controller\GoogleAuth\CallbackController;
 use Perna\Controller\LoginController;
 use Perna\Controller\LogoutController;
+use Perna\Controller\ModuleController;
+use Perna\Controller\ModulesController;
 use Perna\Controller\RefreshController;
 use Perna\Controller\UserController;
 use Perna\Controller\RegisterController;
@@ -124,6 +126,31 @@ return [
 		]
 	],
 
+	'modules' => [
+		'type' => Literal::class,
+		'options' => [
+			'route' => '/modules',
+			'defaults' => [
+				'controller' => ModulesController::class
+			]
+		],
+		'may_terminate' => true,
+		'child_routes' => [
+			'id' => [
+				'type' => Segment::class,
+				'options' => [
+					'route' => '/:id',
+					'defaults' => [
+						'controller' => ModuleController::class
+					],
+					'constraints' => [
+						'id' => '.+'
+					]
+				]
+			]
+		]
+	],
+
 	'weather' => [
 		'type' => Literal::class,
 		'options' => [
@@ -156,6 +183,7 @@ return [
 							]
 						]
 					],
+					
 					'resource' => [
 						'type' => Segment::class,
 						'options' => [

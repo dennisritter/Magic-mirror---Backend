@@ -5,6 +5,8 @@ use Perna\Controller\Calendar\EventsController;
 use Perna\Controller\Console\ImportCitiesController;
 use Perna\Controller\GoogleAuth\AuthUrlController;
 use Perna\Controller\GoogleAuth\CallbackController;
+use Perna\Controller\ModuleController;
+use Perna\Controller\ModulesController;
 use Perna\Controller\RefreshController;
 use Perna\Controller\RegisterController;
 use Perna\Controller\LoginController;
@@ -17,6 +19,7 @@ use Perna\Controller\Weather\WeatherLocationNearbyController;
 use Perna\Factory\DependencyTypes;
 use Perna\Factory\Factory;
 use Perna\Hydrator\UserHydrator;
+use Perna\Service\ModuleService;
 use Perna\Service\AuthenticationService;
 use Perna\Service\CityImportService;
 use Perna\Service\GoogleAuthenticationService;
@@ -64,6 +67,14 @@ return [
 			AuthenticationService::class => DependencyTypes::SERVICE,
 			GoogleCalendarService::class => DependencyTypes::SERVICE
 		]),
+		ModulesController::class => new Factory(ModulesController::class, [
+			AuthenticationService::class => DependencyTypes::SERVICE,
+			ModuleService::class => DependencyTypes::SERVICE
+		]),
+		ModuleController::class => new Factory(ModuleController::class, [
+			AuthenticationService::class => DependencyTypes::SERVICE,
+			ModuleService::class => DependencyTypes::SERVICE
+    ]),
 		WeatherLocationNearbyController::class => new Factory(WeatherLocationNearbyController::class, [
 			AuthenticationService::class => DependencyTypes::SERVICE,
 			WeatherLocationService::class => DependencyTypes::SERVICE

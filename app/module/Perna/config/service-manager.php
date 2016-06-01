@@ -17,6 +17,7 @@ use Perna\Service\GoogleAuthenticationService;
 use Perna\Service\GoogleCalendarEventsService;
 use Perna\Service\GoogleCalendarService;
 use Perna\Service\GUIDGenerator;
+use Perna\Service\ModuleService;
 use Perna\Service\PasswordService;
 use Perna\Service\UserService;
 use Perna\Service\Weather\WeatherDataAccessService;
@@ -53,6 +54,9 @@ return [
 			GoogleCalendarHydrator::class => DependencyTypes::HYDRATOR,
 			GoogleEventHydrator::class => DependencyTypes::HYDRATOR,
 			GoogleCalendarEventsService::class => DependencyTypes::SERVICE,
+			DocumentManager::class => DependencyTypes::SERVICE
+		]),
+		ModuleService::class => new Factory(ModuleService::class, [
 			DocumentManager::class => DependencyTypes::SERVICE
 		]),
 		GoogleCalendarEventsService::class => new Factory(GoogleCalendarEventsService::class, [
