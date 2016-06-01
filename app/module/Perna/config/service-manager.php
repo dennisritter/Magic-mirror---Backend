@@ -57,7 +57,7 @@ return [
 			DocumentManager::class => DependencyTypes::SERVICE
 		]),
 		ModuleService::class => new Factory(ModuleService::class, [
-			GoogleEventHydrator::class => DependencyTypes::HYDRATOR,
+			DocumentManager::class => DependencyTypes::SERVICE
 		]),
 		GoogleCalendarEventsService::class => new Factory(GoogleCalendarEventsService::class, [
 			GoogleEventHydrator::class => DependencyTypes::HYDRATOR,
