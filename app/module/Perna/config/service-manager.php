@@ -1,7 +1,6 @@
 <?php
 
 use Doctrine\ODM\MongoDB\DocumentManager;
-use Doctrine\ODM\MongoDB\Mapping\Annotations\Document;
 use Perna\Factory\DependencyTypes;
 use Perna\Factory\Factory;
 use Perna\Hydrator\CityDumpHydrator;
@@ -11,7 +10,6 @@ use Perna\Hydrator\GoogleEventHydrator;
 use Perna\InputFilter\CityDumpInputFilter;
 use Perna\Service\AuthenticationService;
 use Perna\Service\CityImportService;
-use Perna\Service\Factory\GoogleCalendarServiceFactory;
 use Perna\Service\GoogleAuthenticationService;
 use Perna\Service\GoogleCalendarEventsService;
 use Perna\Service\GoogleCalendarService;

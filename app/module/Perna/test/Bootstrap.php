@@ -50,9 +50,10 @@ class Bootstrap {
 		];
 
 		$serviceManager = new ServiceManager( new ServiceManagerConfig() );
+		$serviceManager->setAllowOverride( true );
 		$serviceManager->setService('ApplicationConfig', $config);
 		$serviceManager->get('ModuleManager')->loadModules();
-		static::$serviceManager = $serviceManager;
+		static::$serviceManager = $serviceManager; var_dump($serviceManager->has('ApplicationConfig'));
 	}
 
 	public static function chroot () {
