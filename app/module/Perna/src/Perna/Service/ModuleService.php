@@ -7,6 +7,7 @@ use Doctrine\ODM\MongoDB\PersistentCollection;
 use Perna\Document\CalendarModule;
 use Perna\Document\Module;
 use Perna\Document\User;
+use ZfrRest\Http\Exception\Client\NotFoundException;
 
 class ModuleService {
 
@@ -32,13 +33,16 @@ class ModuleService {
     public function removeModule( User $user, string $id ) {
         /** @var PersistentCollection $modules */
         $modules = $user->getModules();
-        
-        foreach ( $modules as $module){
-            if($module->getId() == $id){
+
+        foreach ( $modules as $module ){
+            if ( $module->getId() == $id ) {
                 $modules->removeElement( $module );
+                $this->documentManager->flush();
+                return;
             }
         }
-        $this->documentManager->flush();
+
+        throw new NotFoundException("A module with id {$id} is not among the user's saved modules.");
     }
 
     public function getModuleById( User $user, string $id) : Module{
@@ -50,7 +54,8 @@ class ModuleService {
                 return $module;
             }
         }
-        return null;
+
+        throw new NotFoundException("A module with id {$id} is not among the user's saved modules.");
     }
 
     public function setModule( User $user, string $id, $moduledata ){
