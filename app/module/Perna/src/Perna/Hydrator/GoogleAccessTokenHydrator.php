@@ -2,8 +2,8 @@
 
 namespace Perna\Hydrator;
 
-use Perna\Document\GoogleAccessToken;
 use MongoTimestamp;
+use Perna\Document\GoogleAccessToken;
 
 /**
  * Hydrator for a GoogleAccessToken

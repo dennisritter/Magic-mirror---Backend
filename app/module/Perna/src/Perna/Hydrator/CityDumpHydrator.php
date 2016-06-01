@@ -4,7 +4,6 @@ namespace Perna\Hydrator;
 
 use Perna\Document\City;
 use Perna\Document\Location;
-use Zend\Hydrator\HydratorInterface;
 
 /**
  * Hydrator which converts data from a OpenWeatherMap dump file to City objects and vice-versa

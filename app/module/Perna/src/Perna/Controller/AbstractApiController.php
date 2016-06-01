@@ -2,7 +2,6 @@
 
 namespace Perna\Controller;
 
-use Perna\Controller\Plugin\ExtractObject;
 use ZfrRest\Mvc\Controller\AbstractRestfulController;
 use ZfrRest\View\Model\ResourceViewModel;
 

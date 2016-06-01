@@ -2,14 +2,11 @@
 
 namespace Perna\Controller;
 
-use Perna\Document\CalendarModule;
 use Perna\Document\Module;
 use Perna\Hydrator\CalendarModuleHydrator;
-use Perna\InputFilter\ModuleInputFilter;
 use Perna\Service\AuthenticationService;
 use Perna\Service\ModuleService;
 use Swagger\Annotations as SWG;
-use Zend\Http\Request;
 
 class ModuleController extends AbstractAuthenticatedApiController {
 

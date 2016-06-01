@@ -4,7 +4,6 @@ namespace Perna\InputFilter;
 
 use Zend\InputFilter\Input;
 use Zend\InputFilter\InputFilter;
-use Zend\Validator\StringLength;
 
 class ModuleInputFilter extends InputFilter {
 		

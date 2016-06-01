@@ -2,9 +2,9 @@
 
 namespace Perna\Hydrator;
 
+use DateTime;
 use Doctrine\Common\Collections\Collection;
 use Zend\Hydrator\HydratorInterface;
-use DateTime;
 
 /**
  * Abstraction for a Hydrator

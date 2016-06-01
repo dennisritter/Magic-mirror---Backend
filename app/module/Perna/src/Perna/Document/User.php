@@ -4,7 +4,6 @@ namespace Perna\Document;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 use Doctrine\ODM\MongoDB\PersistentCollection;
-use Doctrine\ODM\MongoDB\Tests\Functional\PersistentCollectionCloneTest;
 use Perna\Module as Module;
 use Swagger\Annotations as SWG;
 

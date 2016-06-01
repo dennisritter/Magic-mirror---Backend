@@ -2,7 +2,6 @@
 
 namespace Perna\Controller\Calendar;
 
-use Perna\Document\GoogleEvent;
 use Perna\Hydrator\GoogleEventHydrator;
 use Perna\InputFilter\EventQuickAddInputFilter;
 use Swagger\Annotations as SWG;

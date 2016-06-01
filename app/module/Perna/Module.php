@@ -3,9 +3,9 @@
 namespace Perna;
 
 use Exception;
+use Swagger\Annotations as SWG;
 use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
-use Swagger\Annotations as SWG;
 use Zend\Uri\Uri;
 use Zend\Uri\UriFactory;
 

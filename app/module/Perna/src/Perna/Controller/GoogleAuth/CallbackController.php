@@ -6,8 +6,6 @@ use Perna\Controller\AbstractApiController;
 use Perna\Service\GoogleAuthenticationService;
 use Zend\Http\Request;
 use Zend\View\Model\ViewModel;
-use ZfrRest\Http\Exception\Client\UnauthorizedException;
-use ZfrRest\Http\Exception\Client\UnprocessableEntityException;
 
 /**
  * Controller for Google Auth Callback action

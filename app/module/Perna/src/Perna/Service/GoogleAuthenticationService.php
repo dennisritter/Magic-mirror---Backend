@@ -11,7 +11,6 @@ use Perna\Document\User;
 use Perna\Hydrator\GoogleAccessTokenHydrator;
 use ZfrRest\Http\Exception\Client\ForbiddenException;
 use ZfrRest\Http\Exception\Client\UnauthorizedException;
-use ZfrRest\Http\Exception\Client\UnprocessableEntityException;
 use ZfrRest\Http\Exception\Server\InternalServerErrorException;
 
 /**

@@ -1,9 +1,7 @@
 <?php
 
 use Perna\Document\GoogleAccessToken;
-
 use Perna\Hydrator\AbstractModuleHydrator;
-
 use Perna\Hydrator\AccessTokenHydrator;
 use Perna\Hydrator\CalendarModuleHydrator;
 use Perna\Hydrator\CityDumpHydrator;
