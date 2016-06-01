@@ -8,7 +8,7 @@ use Perna\Hydrator\CalendarModuleHydrator;
 use Perna\InputFilter\ModuleInputFilter;
 use Perna\Service\AuthenticationService;
 use Perna\Service\ModuleService;
-use Swagger\Annotations;
+use Swagger\Annotations as SWG;
 use Zend\Http\Request;
 
 class ModulesController extends AbstractAuthenticatedApiController {
@@ -26,19 +26,29 @@ class ModulesController extends AbstractAuthenticatedApiController {
     /**
      * @SWG\Put(
      *   path="/modules",
-     *   summary="Override all modules",
-     *   description="Adds a new Module to logged in User",
+     *   summary="Update Module collection",
+     *   description="Replaces the whole Module collection",
      *   tags={"modules"},
      *   @SWG\Parameter(
      *    in="body",
      *    name="body",
-     *    @SWG\Schema(ref="Module", description="The changed Modulearray")
+     *    @SWG\Schema(ref="Module", description="The changed Module-array")
      *   ),
+     *   @SWG\Parameter(ref="#/parameters/accessToken"),
      *   @SWG\Response(
      *    response="200",
      *    description="Updates the selected Module",
-     *    @SWG\Schema(ref="Module", description="The changed Module")
-     *  )
+     *    @SWG\Schema(
+     *      @SWG\Property(property="success", type="boolean", default=true),
+     *      @SWG\Property(
+     *          property="data",
+     *          type="array",
+     *          @SWG\Items(ref="Module")
+     *      )
+     *    )
+     *  ),
+     *   @SWG\Response(response="403", ref="#/responses/403"),
+     *   @SWG\Response(response="422", ref="#/responses/422")
      * )
      */
     public function put() {
@@ -66,9 +76,10 @@ class ModulesController extends AbstractAuthenticatedApiController {
     /**
      * @SWG\Post(
      *   path="/modules",
-     *   summary="Save new Module",
+     *   summary="Add new Module",
      *   description="Create a new Module",
      *   tags={"modules"},
+     *   @SWG\Parameter(ref="#/parameters/accessToken"),
      *   @SWG\Parameter(
      *    in="body",
      *    name="body",
@@ -77,8 +88,13 @@ class ModulesController extends AbstractAuthenticatedApiController {
      *   @SWG\Response(
      *    response="200",
      *    description="Created new Module",
-     *    @SWG\Schema(ref="Module", description="The new Module")
-     *  )
+     *    @SWG\Schema(
+     *      @SWG\Property(property="success", type="boolean", default=true),
+     *      @SWG\Property(property="data", ref="Module")
+     *    )
+     *  ),
+     *   @SWG\Response(response="403", ref="#/responses/403"),
+     *   @SWG\Response(response="422", ref="#/responses/422")
      * )
      */
     public function post() {
@@ -107,14 +123,16 @@ class ModulesController extends AbstractAuthenticatedApiController {
      *   description="Serves data for all Modules",
      *   operationId="getModules",
      *   tags={"modules"},
+     *   @SWG\Parameter(ref="#/parameters/accessToken"),
      *   @SWG\Response(
      *    response="200",
      *    description="The Modules have successfully be retrieved",
      *    @SWG\Schema(
-     *      type="array",
-     *      @SWG\Items(ref="Module")
+     *      @SWG\Property(property="success", type="boolean", default=true),
+     *      @SWG\Property(property="data", type="array", @SWG\Items(ref="Module"))
      *   )
-     *  )
+     *  ),
+     *   @SWG\Response(response="403", ref="#/responses/403"),
      * )
      */
     public function get() {
