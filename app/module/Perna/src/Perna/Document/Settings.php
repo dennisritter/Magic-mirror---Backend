@@ -5,10 +5,7 @@ namespace Perna\Document;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 
 /**
- * @ODM\EmbeddedDocument(
- *   db="perna",
- *   collection="settings"
- * )
+ * @ODM\EmbeddedDocument()
  *
  * @SWG\Definition(
  *   @SWG\Xml(name="Settings"),
