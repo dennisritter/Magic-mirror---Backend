@@ -28,15 +28,18 @@ class LoginController extends AbstractAuthenticatedApiController {
 	 *    required=true,
 	 *    @SWG\Schema(
 	 *      @SWG\Property(property="email", type="string", description="The email address of the user"),
-	 *      @SWG\Property(property="password", type="string", description="The password of the user in plain text")
+	 *      @SWG\Property(property="password", type="string", format="password", description="The password of the user in plain text")
 	 *    )
 	 *  ),
 	 *  @SWG\Response(
 	 *    response="200",
 	 *    description="The specified credentials are valid and a new access token has been created. The access token will be valid for 24 hours.",
-	 *    @SWG\Schema(ref="AccessToken")
+	 *    @SWG\Schema(
+	 *      @SWG\Property(property="success", type="boolean", default=true),
+	 *      @SWG\Property(property="data", description="The access token", ref="AccessToken")
+	 *    )
 	 *  ),
-	 *  @SWG\Response(response="422", description="The specified credentials are invalid. No AccessToken has been created.")
+	 *  @SWG\Response(response="422", ref="#/responses/422")
 	 * )
 	 */
 	public function post () {

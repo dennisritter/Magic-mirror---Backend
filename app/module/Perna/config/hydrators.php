@@ -1,14 +1,21 @@
 <?php
 
 use Perna\Document\GoogleAccessToken;
+
 use Perna\Hydrator\AbstractModuleHydrator;
+
 use Perna\Hydrator\AccessTokenHydrator;
 use Perna\Hydrator\CalendarModuleHydrator;
 use Perna\Hydrator\CityDumpHydrator;
+use Perna\Hydrator\CityHydrator;
 use Perna\Hydrator\GoogleCalendarHydrator;
 use Perna\Hydrator\GoogleEventHydrator;
 use Perna\Hydrator\UserHydrator;
 use Perna\Hydrator\UserTokenHydrator;
+use Perna\Hydrator\Weather\CurrentWeatherDataHydrator;
+use Perna\Hydrator\Weather\DailyWeatherDataHydrator;
+use Perna\Hydrator\Weather\TemporalWeatherDataHydrator;
+use Perna\Hydrator\Weather\WeatherDataCacheHydrator;
 
 return [
 	'invokables' => [
@@ -20,6 +27,11 @@ return [
 		GoogleCalendarHydrator::class => GoogleCalendarHydrator::class,
 		GoogleEventHydrator::class => GoogleEventHydrator::class,
 		AbstractModuleHydrator::class => AbstractModuleHydrator::class,
-		CalendarModuleHydrator::class => CalendarModuleHydrator::class
+		CalendarModuleHydrator::class => CalendarModuleHydrator::class,
+		CityHydrator::class => CityHydrator::class,
+		CurrentWeatherDataHydrator::class => CurrentWeatherDataHydrator::class,
+		TemporalWeatherDataHydrator::class => TemporalWeatherDataHydrator::class,
+		DailyWeatherDataHydrator::class => DailyWeatherDataHydrator::class,
+		WeatherDataCacheHydrator::class => WeatherDataCacheHydrator::class
 	]
 ];

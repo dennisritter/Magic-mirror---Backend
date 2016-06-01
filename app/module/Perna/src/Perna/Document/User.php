@@ -206,7 +206,7 @@ class User {
 	}
 
 	/**
-	 * @return mixed
+	 * @return GoogleCalendar[]
 	 */
 	public function getGoogleCalendars() {
 		return $this->googleCalendars;

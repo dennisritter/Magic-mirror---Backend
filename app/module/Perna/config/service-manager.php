@@ -7,15 +7,22 @@ use Perna\Hydrator\CityDumpHydrator;
 use Perna\Hydrator\GoogleAccessTokenHydrator;
 use Perna\Hydrator\GoogleCalendarHydrator;
 use Perna\Hydrator\GoogleEventHydrator;
+use Perna\Hydrator\Weather\CurrentWeatherDataHydrator;
+use Perna\Hydrator\Weather\DailyWeatherDataHydrator;
+use Perna\Hydrator\Weather\TemporalWeatherDataHydrator;
 use Perna\InputFilter\CityDumpInputFilter;
 use Perna\Service\AuthenticationService;
 use Perna\Service\CityImportService;
 use Perna\Service\GoogleAuthenticationService;
+use Perna\Service\GoogleCalendarEventsService;
 use Perna\Service\GoogleCalendarService;
 use Perna\Service\GUIDGenerator;
 use Perna\Service\ModuleService;
 use Perna\Service\PasswordService;
 use Perna\Service\UserService;
+use Perna\Service\Weather\WeatherDataAccessService;
+use Perna\Service\Weather\WeatherDataService;
+use Perna\Service\WeatherLocationService;
 use Zend\Di\ServiceLocator;
 
 return [
@@ -45,9 +52,28 @@ return [
 		GoogleCalendarService::class => new Factory(GoogleCalendarService::class, [
 			GoogleAuthenticationService::class => DependencyTypes::SERVICE,
 			GoogleCalendarHydrator::class => DependencyTypes::HYDRATOR,
-			GoogleEventHydrator::class => DependencyTypes::HYDRATOR
+			GoogleEventHydrator::class => DependencyTypes::HYDRATOR,
+			GoogleCalendarEventsService::class => DependencyTypes::SERVICE,
+			DocumentManager::class => DependencyTypes::SERVICE
 		]),
 		ModuleService::class => new Factory(ModuleService::class, [
+			GoogleEventHydrator::class => DependencyTypes::HYDRATOR,
+		]),
+		GoogleCalendarEventsService::class => new Factory(GoogleCalendarEventsService::class, [
+			GoogleEventHydrator::class => DependencyTypes::HYDRATOR,
+			GUIDGenerator::class => DependencyTypes::SERVICE,
+			DocumentManager::class => DependencyTypes::SERVICE
+		]),
+		WeatherLocationService::class => new Factory(WeatherLocationService::class, [
+			DocumentManager::class => DependencyTypes::SERVICE
+		]),
+		WeatherDataAccessService::class => new Factory(WeatherDataAccessService::class, [
+			CurrentWeatherDataHydrator::class => DependencyTypes::HYDRATOR,
+			TemporalWeatherDataHydrator::class => DependencyTypes::HYDRATOR,
+			DailyWeatherDataHydrator::class => DependencyTypes::HYDRATOR
+		]),
+		WeatherDataService::class => new Factory(WeatherDataService::class, [
+			WeatherDataAccessService::class => DependencyTypes::SERVICE,
 			DocumentManager::class => DependencyTypes::SERVICE
 		])
 	],

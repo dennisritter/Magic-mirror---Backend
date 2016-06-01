@@ -11,6 +11,10 @@ use Perna\Controller\ModulesController;
 use Perna\Controller\RefreshController;
 use Perna\Controller\UserController;
 use Perna\Controller\RegisterController;
+use Perna\Controller\Weather\WeatherDataController;
+use Perna\Controller\Weather\WeatherLocationAutocompleteController;
+use Perna\Controller\Weather\WeatherLocationController;
+use Perna\Controller\Weather\WeatherLocationNearbyController;
 use Zend\Mvc\Router\Http\Literal;
 use Zend\Mvc\Router\Http\Segment;
 
@@ -139,8 +143,71 @@ return [
 					'defaults' => [
 						'controller' => ModuleController::class
 					],
-					'constrains' => [
-						'id'=> '*'
+					'constraints' => [
+						'id' => '.+'
+					]
+				]
+			]
+		]
+	],
+
+	'weather' => [
+		'type' => Literal::class,
+		'options' => [
+			'route' => '/weather'
+		],
+		'may_terminate' => false,
+		'child_routes' => [
+			'locations' => [
+				'type' => Literal::class,
+				'options' => [
+					'route' => '/locations'
+				],
+				'may_terminate' => false,
+				'child_routes' => [
+					'nearby' => [
+						'type' => Literal::class,
+						'options' => [
+							'route' => '/nearby',
+							'defaults' => [
+								'controller' => WeatherLocationNearbyController::class
+							]
+						]
+					],
+					'autocomplete' => [
+						'type' => Literal::class,
+						'options' => [
+							'route' => '/autocomplete',
+							'defaults' => [
+								'controller' => WeatherLocationAutocompleteController::class
+							]
+						]
+					],
+					
+					'resource' => [
+						'type' => Segment::class,
+						'options' => [
+							'route' => '/:id',
+							'defaults' => [
+								'controller' => WeatherLocationController::class
+							],
+							'constraints' => [
+								'id' => '[0-9]+'
+							]
+						]
+					]
+				]
+			],
+
+			'weatherData' => [
+				'type' => Segment::class,
+				'options' => [
+					'route' => '/:id',
+					'defaults' => [
+						'controller' => WeatherDataController::class
+					],
+					'constraints' => [
+						'id' => '[0-9]+'
 					]
 				]
 			]

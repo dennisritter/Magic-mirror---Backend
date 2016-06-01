@@ -24,10 +24,18 @@ class RegisterController extends AbstractUserController {
 	 *        @SWG\Property(property="email", type="string"),
 	 *        @SWG\Property(property="firstName", type="string"),
 	 *        @SWG\Property(property="lastName", type="string"),
-	 *        @SWG\Property(property="password", type="string")
+	 *        @SWG\Property(property="password", type="string", format="password")
 	 *      )
 	 *    ),
-	 *    @SWG\Response(response="201", description="New user has successfully been created.", @SWG\Schema( ref="User" ))
+	 *    @SWG\Response(
+	 *      response="201",
+	 *      description="New user has successfully been created.",
+	 *      @SWG\Schema(
+	 *        @SWG\Property(property="success", type="boolean", default=true),
+	 *        @SWG\Property(property="data", ref="User", description="The newly created user.")
+	 *      )
+	 *    ),
+	 *    @SWG\Response(response="422", ref="#/responses/422")
 	 * )
 	 */
 	public function post () {

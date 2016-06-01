@@ -23,7 +23,10 @@ class GoogleEvent {
 	/**
 	 * The event Id
 	 * @SWG\Property()
-	 * @ODM\Id()
+	 * @ODM\Id(
+	 *   strategy="NONE",
+	 *   type="string"
+	 * )
 	 * @var       string
 	 */
 	protected $id;
@@ -99,6 +102,14 @@ class GoogleEvent {
 	 * @var       \DateTime
 	 */
 	protected $endTime;
+
+	/**
+	 * The id of the calendar that the event belongs to
+	 * @SWG\Property()
+	 * @ODM\Field()
+	 * @var       string
+	 */
+	protected $calendarId;
 
 	/**
 	 * @return string
@@ -238,5 +249,19 @@ class GoogleEvent {
 	 */
 	public function setEndTime( $endTime ) {
 		$this->endTime = $endTime;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getCalendarId() {
+		return $this->calendarId;
+	}
+
+	/**
+	 * @param string $calendarId
+	 */
+	public function setCalendarId( $calendarId ) {
+		$this->calendarId = $calendarId;
 	}
 }

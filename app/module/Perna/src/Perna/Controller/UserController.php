@@ -26,21 +26,19 @@ class UserController extends AbstractUserController {
 	 *        @SWG\Property(property="password", type="string")
 	 *      )
 	 *    ),
-	 *    @SWG\Parameter(
-	 *    	in="header",
-	 *    	name="Access-Token",
-	 *    	type="string",
-	 *    	description="The current access token",
-	 *    	required=true
-	 *   ),
+	 *    @SWG\Parameter(ref="#/parameters/accessToken"),
 	 *    @SWG\Response(
-	 *		response="200",
-	 *		description="User was successfully updated.",
-	 *		@SWG\Schema( ref="User" )
-	 *	  )
+	 *		  response="200",
+	 *		  description="User was successfully updated.",
+	 *		  @SWG\Schema(
+	 *        @SWG\Property(property="success", type="boolean", default=true),
+	 *        @SWG\Property(property="data", ref="User", description="The updated user data.")
+	 *      )
+	 *	  ),
+	 *    @SWG\Response(response="422", ref="#/responses/422"),
+	 *    @SWG\Response(response="403", ref="#/responses/403")
 	 * )
 	 */
-
 	public function put () {
 		$data = $this->validateIncomingData( UserPutInputFilter::class );
 		$this->assertAccessToken();
@@ -57,22 +55,18 @@ class UserController extends AbstractUserController {
 	 *    summary="Get current user",
 	 *    operationId="getUser",
 	 *	  tags={"user"},
-	 *
-	 *    @SWG\Parameter(
-	 *    	in="header",
-	 *    	name="Access-Token",
-	 *    	type="string",
-	 *    	description="The current access token",
-	 *    	required=true
-	 *   ),
+	 *    @SWG\Property(ref="#/properties/accessToken"),
 	 *    @SWG\Response(
-	 *		response="200",
-	 *		description="Get current logged in user.",
-	 *		@SWG\Schema( ref="User" )
-	 *	  )
+	 *		  response="200",
+	 *		  description="Get current logged in user.",
+	 *		  @SWG\Schema(
+	 *        @SWG\Property(property="success", type="boolean", default=true),
+	 *        @SWG\Property(property="data", ref="User", description="The user data")
+	 *      )
+	 *	  ),
+	 *    @SWG\Response(response="403", ref="#/responses/403")
 	 * )
 	 */
-
 	public function get() {
 		$this->assertAccessToken();
 		$user = $this->authenticationService->findAuthenticatedUser( $this->accessToken );
