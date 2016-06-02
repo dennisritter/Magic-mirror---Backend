@@ -65,7 +65,6 @@ class ModulesController extends AbstractAuthenticatedApiController {
                 case 'calendar' :
                     if( !array_key_exists ( "id", $item ) ){
                         $module = new CalendarModule();
-                        print_r($module);
                     }else{
                         $module = $this->moduleService->setModule( $user, $item['id'], $item );
                     }
