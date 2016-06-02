@@ -67,6 +67,7 @@ class Module {
 			'Zend\Loader\StandardAutoloader' => [
 				'namespaces' => [
 					__NAMESPACE__ => __DIR__ . '/src/' . __NAMESPACE__,
+					__NAMESPACE__ . '\Test' => __DIR__ . '/test'
 				],
 			],
 		];
