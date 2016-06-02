@@ -63,7 +63,12 @@ class ModulesController extends AbstractAuthenticatedApiController {
             /** @var Module $module */
             switch ($item['type']){
                 case 'calendar' :
-                    $module = $this->moduleService->setModule( $user, $item['id'], $item );
+                    if( !array_key_exists ( "id", $item ) ){
+                        $module = new CalendarModule();
+                        print_r($module);
+                    }else{
+                        $module = $this->moduleService->setModule( $user, $item['id'], $item );
+                    }
                     $this->hydrateObject(CalendarModuleHydrator::class, $module, $item);
                     array_push( $modules, $module);
                     break;
