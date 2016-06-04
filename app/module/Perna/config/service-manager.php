@@ -76,7 +76,8 @@ return [
 		]),
 		WeatherDataService::class => new Factory(WeatherDataService::class, [
 			WeatherDataAccessService::class => DependencyTypes::SERVICE,
-			DocumentManager::class => DependencyTypes::SERVICE
+			DocumentManager::class => DependencyTypes::SERVICE,
+			GeoNamesAccessService::class => DependencyTypes::SERVICE
 		]),
 		GeoNamesAccessService::class => new Factory(GeoNamesAccessService::class, [
 			CityHydrator::class => DependencyTypes::HYDRATOR,
