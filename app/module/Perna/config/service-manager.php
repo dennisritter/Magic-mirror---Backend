@@ -4,6 +4,7 @@ use Doctrine\ODM\MongoDB\DocumentManager;
 use Perna\Factory\DependencyTypes;
 use Perna\Factory\Factory;
 use Perna\Hydrator\CityDumpHydrator;
+use Perna\Hydrator\CityHydrator;
 use Perna\Hydrator\GoogleAccessTokenHydrator;
 use Perna\Hydrator\GoogleCalendarHydrator;
 use Perna\Hydrator\GoogleEventHydrator;
@@ -20,6 +21,7 @@ use Perna\Service\GUIDGenerator;
 use Perna\Service\ModuleService;
 use Perna\Service\PasswordService;
 use Perna\Service\UserService;
+use Perna\Service\Weather\GeoNamesAccessService;
 use Perna\Service\Weather\WeatherDataAccessService;
 use Perna\Service\Weather\WeatherDataService;
 use Perna\Service\WeatherLocationService;
@@ -75,6 +77,9 @@ return [
 		WeatherDataService::class => new Factory(WeatherDataService::class, [
 			WeatherDataAccessService::class => DependencyTypes::SERVICE,
 			DocumentManager::class => DependencyTypes::SERVICE
+		]),
+		GeoNamesAccessService::class => new Factory(GeoNamesAccessService::class, [
+			CityHydrator::class => DependencyTypes::HYDRATOR
 		])
 	],
 	'invokables' => [
