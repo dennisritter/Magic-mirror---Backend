@@ -79,7 +79,8 @@ return [
 			DocumentManager::class => DependencyTypes::SERVICE
 		]),
 		GeoNamesAccessService::class => new Factory(GeoNamesAccessService::class, [
-			CityHydrator::class => DependencyTypes::HYDRATOR
+			CityHydrator::class => DependencyTypes::HYDRATOR,
+			DocumentManager::class => DependencyTypes::SERVICE
 		])
 	],
 	'invokables' => [
