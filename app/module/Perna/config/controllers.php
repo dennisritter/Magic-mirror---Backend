@@ -32,9 +32,6 @@ use Perna\Service\WeatherLocationService;
 
 return [
 	'factories' => [
-		ImportCitiesController::class => new Factory(ImportCitiesController::class, [
-			CityImportService::class => DependencyTypes::SERVICE
-		]),
 		RegisterController::class => new Factory(RegisterController::class, [
 			AuthenticationService::class => DependencyTypes::SERVICE,
 			UserService::class => DependencyTypes::SERVICE,

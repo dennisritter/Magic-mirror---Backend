@@ -32,11 +32,6 @@ return [
 		DocumentManager::class => 'doctrine.documentmanager.odm_default'
 	],
 	'factories' => [
-		CityImportService::class => new Factory(CityImportService::class, [
-			DocumentManager::class => DependencyTypes::SERVICE,
-			CityDumpHydrator::class => DependencyTypes::HYDRATOR,
-			CityDumpInputFilter::class => DependencyTypes::INPUT_FILTER
-		]),
 		UserService::class => new Factory(UserService::class, [
 			PasswordService::class => DependencyTypes::SERVICE,
 			DocumentManager::class => DependencyTypes::SERVICE
