@@ -91,7 +91,7 @@ return [
 		]),
 		WeatherLocationController::class => new Factory(WeatherLocationController::class, [
 			AuthenticationService::class => DependencyTypes::SERVICE,
-			WeatherLocationService::class => DependencyTypes::SERVICE
+			GeoNamesAccessService::class => DependencyTypes::SERVICE
 		]),
 		WeatherLocationSearchController::class => new Factory(WeatherLocationSearchController::class, [
 			AuthenticationService::class => DependencyTypes::SERVICE,

@@ -6,19 +6,20 @@ namespace Perna\Controller\Weather;
 use Perna\Controller\AbstractAuthenticatedApiController;
 use Perna\Hydrator\CityHydrator;
 use Perna\Service\AuthenticationService;
+use Perna\Service\Weather\GeoNamesAccessService;
 use Perna\Service\WeatherLocationService;
 use Swagger\Annotations as SWG;
 
 class WeatherLocationController extends AbstractAuthenticatedApiController {
 
 	/**
-	 * @var       WeatherLocationService
+	 * @var       GeoNamesAccessService
 	 */
-	protected $weatherLocationService;
+	protected $geoNamesService;
 	
-	public function __construct( AuthenticationService $authenticationService, WeatherLocationService $weatherLocationService ) {
+	public function __construct( AuthenticationService $authenticationService, GeoNamesAccessService $geoNamesService ) {
 		parent::__construct( $authenticationService );
-		$this->weatherLocationService = $weatherLocationService;
+		$this->geoNamesService = $geoNamesService;
 	}
 
 	/**
@@ -52,7 +53,7 @@ class WeatherLocationController extends AbstractAuthenticatedApiController {
 		$this->authenticationService->findAuthenticatedUser( $this->accessToken );
 		$id = (int) $params['id'];
 		
-		$location = $this->weatherLocationService->findLocation( $id );
+		$location = $this->geoNamesService->getCityById( $id );
 		return $this->createDefaultViewModel( $this->extractObject( CityHydrator::class, $location ) );
 	}
 }
