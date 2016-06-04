@@ -26,6 +26,11 @@ class GeoNamesAccessService {
 		$this->cityHydrator = $cityHydrator;
 	}
 
+	/**
+	 * Performs a Search on the GeoNames API
+	 * @param     string    $query    The search query to use
+	 * @return    City[]              Results as City-objects
+	 */
 	public function searchCities ( string $query ) : array {
 		$request = $this->createBasicRequest();
 		$request->setUri( self::API_HOST . 'searchJSON' );
@@ -39,6 +44,10 @@ class GeoNamesAccessService {
 		return $this->getCitiesFromData( $data['geonames'] );
 	}
 
+	/**
+	 * Creates a basic request with commonly used fields for GeoNames API
+	 * @return    Request
+	 */
 	protected function createBasicRequest () : Request {
 		$r = new Request();
 		$r->setMethod( Request::METHOD_GET );
@@ -50,13 +59,12 @@ class GeoNamesAccessService {
 		return $r;
 	}
 
-	protected function getCitiesFromData ( array $data ) : array {
-		$cities = [];
-		foreach ( $data as $gn )
-			$cities[] = $this->cityHydrator->hydrateFromGeoNameResult( $gn, new City() );
-		return $cities;
-	}
-
+	/**
+	 * Sends the Request and returns the results as associative array
+	 * @param     Request   $request  The request to send
+	 * @return    array               Associative array containing the response data
+	 * @throws    ServiceUnavailableException If the request could not be sent or the response content could not be parsed
+	 */
 	protected function getResultData ( Request $request ) : array {
 		$client = new Client();
 
@@ -74,4 +82,17 @@ class GeoNamesAccessService {
 
 		return $data;
 	}
+
+	/**
+	 * Converts an array of geoname data sets to City-objects
+	 * @param     array     $data     Sequential array containing data sets as associative arrays
+	 * @return    City[]              List of hydrated Cities
+	 */
+	protected function getCitiesFromData ( array $data ) : array {
+		$cities = [];
+		foreach ( $data as $gn )
+			$cities[] = $this->cityHydrator->hydrateFromGeoNameResult( $gn, new City() );
+		return $cities;
+	}
+
 }
