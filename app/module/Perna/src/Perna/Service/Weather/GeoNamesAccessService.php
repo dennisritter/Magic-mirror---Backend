@@ -2,6 +2,7 @@
 
 namespace Perna\Service\Weather;
 
+use Doctrine\ODM\MongoDB\DocumentManager;
 use Perna\Document\City;
 use Perna\Hydrator\CityHydrator;
 use Zend\Http\Client;
@@ -23,8 +24,11 @@ class GeoNamesAccessService {
 
 	protected $cityHydrator;
 
-	public function __construct ( CityHydrator $cityHydrator ) {
+	protected $documentManager;
+
+	public function __construct ( CityHydrator $cityHydrator, DocumentManager $documentManager ) {
 		$this->cityHydrator = $cityHydrator;
+		$this->documentManager = $documentManager;
 	}
 
 	/**
@@ -66,6 +70,33 @@ class GeoNamesAccessService {
 
 		$gn = $data['geonames'][0];
 		return $this->cityHydrator->hydrateFromGeoNameResult( $gn, new City() );
+	}
+
+	/**
+	 * Tries to find a city by name. Checks if a city exists in the database and if not tries to retrieve it from GeoName API and then writes it in the database
+	 * @param     int       $id       The id of the location
+	 *
+	 * @return    City                The result
+	 * @throws    NotFoundException   If a city with the specified id does not exist
+	 */
+	public function getCityById ( int $id ) : City {
+		$city = $this->documentManager->getRepository( City::class )->find( $id );
+		if ( $city instanceof City )
+			return $city;
+
+		$request = $this->createBasicRequest();
+		$request->setUri( self::API_HOST . 'getJSON' );
+		$request->getQuery()->set('geonameId', $id);
+
+		$data = $this->getResultData( $request );
+		if ( !array_key_exists('geonameId', $data) || $data['geonameId'] != $id )
+			throw new NotFoundException("A geo location with id {$id} does not exist.");
+
+		$city = $this->cityHydrator->hydrateFromGeoNameResult( $data, new City() );
+		$this->documentManager->persist( $city );
+		$this->documentManager->flush();
+
+		return $city;
 	}
 
 	/**
