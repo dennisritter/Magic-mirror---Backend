@@ -21,7 +21,7 @@ abstract class AbstractWeatherDataHydrator extends AbstractHydrator {
 	/** @inheritdoc */
 	public function hydrate( array $data, $object ) {
 		/** @var AbstractWeatherData $object */
-		$object->setWeatherId( $data['weather'][0]['id'] );
+		$object->setWeatherId( (int) $data['weather'][0]['id'] );
 		$object->setWindSpeed( $data['wind']['speed'] ?? $data['speed'] );
 		$object->setCloudiness( $data['clouds']['all'] ?? $data['clouds'] );
 		$object->setDateTime( $this->createDate( $data['dt'] ) );

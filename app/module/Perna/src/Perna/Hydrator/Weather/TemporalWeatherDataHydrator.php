@@ -18,7 +18,7 @@ class TemporalWeatherDataHydrator extends AbstractWeatherDataHydrator {
 	public function hydrate ( array $data, $object ) {
 		/** @var TemporalWeatherData $object */
 		parent::hydrate( $data, $object );
-		$object->setTemperature( $data['main']['temp'] );
+		$object->setTemperature( (float) $data['main']['temp'] );
 		return $object;
 	}
 }
