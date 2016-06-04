@@ -27,6 +27,7 @@ class WeatherLocationAutocompleteController extends AbstractAuthenticatedApiCont
 	 *   summary="Weather Location Autocomplete",
 	 *   description="Autocompletes the provided search query and returns matching weather locations. The search is case-insensitive and tries to be agnostic concerning separators like hyphens or whitespace.",
 	 *   operationId="weatherLocationsAutocomplete",
+	 *   deprecated=true,
 	 *   tags={"weather"},
 	 *   @SWG\Parameter(
 	 *    in="query",
