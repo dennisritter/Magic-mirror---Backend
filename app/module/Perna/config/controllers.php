@@ -79,7 +79,7 @@ return [
     ]),
 		WeatherLocationNearbyController::class => new Factory(WeatherLocationNearbyController::class, [
 			AuthenticationService::class => DependencyTypes::SERVICE,
-			WeatherLocationService::class => DependencyTypes::SERVICE
+			GeoNamesAccessService::class => DependencyTypes::SERVICE
 		]),
 		WeatherLocationAutocompleteController::class => new Factory(WeatherLocationAutocompleteController::class, [
 			AuthenticationService::class => DependencyTypes::SERVICE,

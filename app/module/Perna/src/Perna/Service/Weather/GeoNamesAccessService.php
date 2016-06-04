@@ -6,6 +6,7 @@ use Perna\Document\City;
 use Perna\Hydrator\CityHydrator;
 use Zend\Http\Client;
 use Zend\Http\Request;
+use ZfrRest\Http\Exception\Client\NotFoundException;
 use ZfrRest\Http\Exception\Server\ServiceUnavailableException;
 
 /**
@@ -42,6 +43,29 @@ class GeoNamesAccessService {
 			return [];
 		
 		return $this->getCitiesFromData( $data['geonames'] );
+	}
+
+	/**
+	 * Finds the nearest city according to the specified coordinates
+	 * @param     float     $latitude   The Latitude
+	 * @param     float     $longitude  The Longitude
+	 *
+	 * @return    City                  The nearest city to the specified coordinates
+	 * @throws    NotFoundException     If no city has been found
+	 */
+	public function findNearestCity ( float $latitude, float $longitude ) : City {
+		$request = $this->createBasicRequest();
+		$request->setUri( self::API_HOST . 'findNearbyPlaceNameJSON' );
+		$q = $request->getQuery();
+		$q->set('lat', $latitude);
+		$q->set('lng', $longitude);
+
+		$data = $this->getResultData( $request );
+		if ( !array_key_exists('geonames', $data) || count( $data['geonames'] ) < 1 )
+			throw new NotFoundException("No close city could be found for the specified coordinates.");
+
+		$gn = $data['geonames'][0];
+		return $this->cityHydrator->hydrateFromGeoNameResult( $gn, new City() );
 	}
 
 	/**

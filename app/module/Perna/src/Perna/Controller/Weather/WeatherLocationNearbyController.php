@@ -5,6 +5,7 @@ namespace Perna\Controller\Weather;
 use Perna\Controller\AbstractAuthenticatedApiController;
 use Perna\Hydrator\CityHydrator;
 use Perna\Service\AuthenticationService;
+use Perna\Service\Weather\GeoNamesAccessService;
 use Perna\Service\WeatherLocationService;
 use Swagger\Annotations as SWG;
 use ZfrRest\Http\Exception\Client\UnprocessableEntityException;
@@ -16,9 +17,14 @@ class WeatherLocationNearbyController extends AbstractAuthenticatedApiController
 	 */
 	protected $locationService;
 
-	public function __construct( AuthenticationService $authenticationService, WeatherLocationService $weatherLocationService ) {
+	/**
+	 * @var       GeoNamesAccessService
+	 */
+	protected $geoNamesService;
+
+	public function __construct( AuthenticationService $authenticationService, GeoNamesAccessService $geoNamesService ) {
 		parent::__construct( $authenticationService );
-		$this->locationService = $weatherLocationService;
+		$this->geoNamesService = $geoNamesService;
 	}
 
 	/**
@@ -70,7 +76,7 @@ class WeatherLocationNearbyController extends AbstractAuthenticatedApiController
 		if ( $lat === null || $lng === null )
 			throw new UnprocessableEntityException("The query parameters 'latitude' and 'longitude' must be present and valid.");
 
-		$results = $this->locationService->findNearbyLocations( $lat, $lng, 20 );
-		return $this->createDefaultViewModel( $this->extractObject( CityHydrator::class, $results ) );
+		$result = $this->geoNamesService->findNearestCity( $lat, $lng );
+		return $this->createDefaultViewModel( $this->extractObject( CityHydrator::class, $result ) );
 	}
 }
