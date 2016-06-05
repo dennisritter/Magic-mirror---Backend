@@ -19,9 +19,9 @@ class DailyWeatherDataHydrator extends AbstractWeatherDataHydrator {
 		/** @var DailyWeatherData $object */
 		parent::hydrate( $data, $object );
 		$object->setTemperature([
-			'average' => $data['temp']['day'],
-			'min' => $data['temp']['min'],
-			'max' => $data['temp']['max']
+			'average' => (float) $data['temp']['day'],
+			'min' => (float) $data['temp']['min'],
+			'max' => (float) $data['temp']['max']
 		]);
 		return $object;
 	}

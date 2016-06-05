@@ -18,7 +18,6 @@ use Perna\Hydrator\WeatherModuleHydrator;
 
 return [
 	'invokables' => [
-		CityDumpHydrator::class => CityDumpHydrator::class,
 		UserHydrator::class => UserHydrator::class,
 		UserTokenHydrator::class => UserTokenHydrator::class,
 		AccessTokenHydrator::class => AccessTokenHydrator::class,

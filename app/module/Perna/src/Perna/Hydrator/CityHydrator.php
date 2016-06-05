@@ -24,4 +24,12 @@ class CityHydrator extends AbstractHydrator {
 		$object->setCountryCode( $data['countryCode'] );
 		$object->setLocation( $data['location'] );
 	}
+
+	public function hydrateFromGeoNameResult ( array $data, City $city ) : City {
+		$city->setId( (int) $data['geonameId'] );
+		$city->setCountryCode( $data['countryCode'] );
+		$city->setLocation( [(float) $data['lat'], (float) $data['lng']] );
+		$city->setName( $data['name'] );
+		return $city;
+	}
 }

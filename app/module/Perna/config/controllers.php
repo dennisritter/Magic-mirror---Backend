@@ -16,6 +16,7 @@ use Perna\Controller\Weather\WeatherDataController;
 use Perna\Controller\Weather\WeatherLocationAutocompleteController;
 use Perna\Controller\Weather\WeatherLocationController;
 use Perna\Controller\Weather\WeatherLocationNearbyController;
+use Perna\Controller\Weather\WeatherLocationSearchController;
 use Perna\Factory\DependencyTypes;
 use Perna\Factory\Factory;
 use Perna\Hydrator\UserHydrator;
@@ -25,14 +26,12 @@ use Perna\Service\GoogleAuthenticationService;
 use Perna\Service\GoogleCalendarService;
 use Perna\Service\ModuleService;
 use Perna\Service\UserService;
+use Perna\Service\Weather\GeoNamesAccessService;
 use Perna\Service\Weather\WeatherDataService;
 use Perna\Service\WeatherLocationService;
 
 return [
 	'factories' => [
-		ImportCitiesController::class => new Factory(ImportCitiesController::class, [
-			CityImportService::class => DependencyTypes::SERVICE
-		]),
 		RegisterController::class => new Factory(RegisterController::class, [
 			AuthenticationService::class => DependencyTypes::SERVICE,
 			UserService::class => DependencyTypes::SERVICE,
@@ -77,7 +76,7 @@ return [
     ]),
 		WeatherLocationNearbyController::class => new Factory(WeatherLocationNearbyController::class, [
 			AuthenticationService::class => DependencyTypes::SERVICE,
-			WeatherLocationService::class => DependencyTypes::SERVICE
+			GeoNamesAccessService::class => DependencyTypes::SERVICE
 		]),
 		WeatherLocationAutocompleteController::class => new Factory(WeatherLocationAutocompleteController::class, [
 			AuthenticationService::class => DependencyTypes::SERVICE,
@@ -89,7 +88,11 @@ return [
 		]),
 		WeatherLocationController::class => new Factory(WeatherLocationController::class, [
 			AuthenticationService::class => DependencyTypes::SERVICE,
-			WeatherLocationService::class => DependencyTypes::SERVICE
+			GeoNamesAccessService::class => DependencyTypes::SERVICE
+		]),
+		WeatherLocationSearchController::class => new Factory(WeatherLocationSearchController::class, [
+			AuthenticationService::class => DependencyTypes::SERVICE,
+			GeoNamesAccessService::class => DependencyTypes::SERVICE
 		])
 	]
 ];

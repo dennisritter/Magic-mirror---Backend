@@ -5,6 +5,7 @@ namespace Perna\Controller\Weather;
 use Perna\Controller\AbstractAuthenticatedApiController;
 use Perna\Hydrator\CityHydrator;
 use Perna\Service\AuthenticationService;
+use Perna\Service\Weather\GeoNamesAccessService;
 use Perna\Service\WeatherLocationService;
 use Swagger\Annotations as SWG;
 use ZfrRest\Http\Exception\Client\UnprocessableEntityException;
@@ -16,16 +17,21 @@ class WeatherLocationNearbyController extends AbstractAuthenticatedApiController
 	 */
 	protected $locationService;
 
-	public function __construct( AuthenticationService $authenticationService, WeatherLocationService $weatherLocationService ) {
+	/**
+	 * @var       GeoNamesAccessService
+	 */
+	protected $geoNamesService;
+
+	public function __construct( AuthenticationService $authenticationService, GeoNamesAccessService $geoNamesService ) {
 		parent::__construct( $authenticationService );
-		$this->locationService = $weatherLocationService;
+		$this->geoNamesService = $geoNamesService;
 	}
 
 	/**
 	 * @SWG\Get(
 	 *   path="/weather/locations/nearby",
 	 *   summary="Weather Location Nearby Search",
-	 *   description="Determines weather locations that are near the specified geo coordinates. Results are automatically sorted by closeness.",
+	 *   description="Determines the nearest city to the specified geo coordinates",
 	 *   operationId="weatherLocationsNearby",
 	 *   tags={"weather"},
 	 *   @SWG\Parameter(
@@ -47,14 +53,15 @@ class WeatherLocationNearbyController extends AbstractAuthenticatedApiController
 	 *   @SWG\Parameter(ref="#/parameters/accessToken"),
 	 *   @SWG\Response(
 	 *    response="200",
-	 *    description="The closest locations have successfully been retrieved",
+	 *    description="The closest location has successfully been retrieved",
 	 *    @SWG\Schema(
 	 *      @SWG\Property(property="success", type="boolean", default=true),
-	 *      @SWG\Property(property="data", type="array", description="The nearby locations", @SWG\Items(ref="City"))
+	 *      @SWG\Property(property="data", ref="City", description="The nearest location")
 	 *    ),
 	 *   ),
 	 *   @SWG\Response(response="403", ref="#/responses/403"),
-	 *   @SWG\Response(response="422", ref="#/responses/422")
+	 *   @SWG\Response(response="422", ref="#/responses/422"),
+	 *   @SWG\Response(response="404", ref="#/responses/404")
 	 * )
 	 */
 	public function get () {
@@ -70,7 +77,7 @@ class WeatherLocationNearbyController extends AbstractAuthenticatedApiController
 		if ( $lat === null || $lng === null )
 			throw new UnprocessableEntityException("The query parameters 'latitude' and 'longitude' must be present and valid.");
 
-		$results = $this->locationService->findNearbyLocations( $lat, $lng, 20 );
-		return $this->createDefaultViewModel( $this->extractObject( CityHydrator::class, $results ) );
+		$result = $this->geoNamesService->findNearestCity( $lat, $lng );
+		return $this->createDefaultViewModel( $this->extractObject( CityHydrator::class, $result ) );
 	}
 }
