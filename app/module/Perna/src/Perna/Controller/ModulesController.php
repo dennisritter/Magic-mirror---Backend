@@ -166,8 +166,10 @@ class ModulesController extends AbstractAuthenticatedApiController {
             switch ($type){
                 case 'calendar':
                     array_push( $data, $this->extractObject(CalendarModuleHydrator::class, $module) );
+                    break;
                 case 'weather': 
                     array_push( $data, $this->extractObject(WeatherModuleHydrator::class, $module) );
+                    break;
             }
         }
         return $this->createDefaultViewModel( $data );
