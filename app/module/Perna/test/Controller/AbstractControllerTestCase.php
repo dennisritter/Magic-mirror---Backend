@@ -8,6 +8,7 @@ class AbstractControllerTestCase extends AbstractHttpControllerTestCase {
 
 	public function setUp () {
 		$this->setApplicationConfig( include __DIR__ . '/../../../../config/application.config.php' );
+		$this->traceError = false;
 		parent::setUp();
 	}
 
