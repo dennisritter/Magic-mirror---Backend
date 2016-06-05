@@ -70,6 +70,7 @@ class ModuleService {
             case "calendar" :
                 /** @var CalendarModule $module */
                 $module->setCalendarIds( $moduledata['calendarIds']);
+                break;
         }
         $this->documentManager->flush();
         return $module;
