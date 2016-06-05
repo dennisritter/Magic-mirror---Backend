@@ -4,6 +4,7 @@ namespace Perna\Controller;
 
 use Perna\Document\Module;
 use Perna\Hydrator\CalendarModuleHydrator;
+use Perna\Hydrator\WeatherModuleHydrator;
 use Perna\Service\AuthenticationService;
 use Perna\Service\ModuleService;
 use Swagger\Annotations as SWG;
@@ -57,6 +58,13 @@ class ModuleController extends AbstractAuthenticatedApiController {
                 $module = $this->moduleService->setModule( $user, $params['id'], $rawdata );
                 return $this->createDefaultViewModel($this->extractObject(CalendarModuleHydrator::class, $module));
                 break;
+            case 'weather' :
+                $this->hydrateObject(WeatherModuleHydrator::class, $module, $rawdata);
+                $module = $this->moduleService->setModule( $user, $params['id'], $rawdata );
+                return $this->createDefaultViewModel($this->extractObject(WeatherModuleHydrator::class, $module));
+                break;
+            default:
+                return $this->get($params);
         }
     }
 
@@ -89,6 +97,9 @@ class ModuleController extends AbstractAuthenticatedApiController {
         switch ($type){
             case 'calendar':
                 $data = $this->extractObject(CalendarModuleHydrator::class, $module);
+                break;
+            case 'weather':
+                $data = $this->extractObject(WeatherModuleHydrator::class, $module);
                 break;
             default :
                 $data = null;

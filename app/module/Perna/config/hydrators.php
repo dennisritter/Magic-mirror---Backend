@@ -14,6 +14,7 @@ use Perna\Hydrator\Weather\CurrentWeatherDataHydrator;
 use Perna\Hydrator\Weather\DailyWeatherDataHydrator;
 use Perna\Hydrator\Weather\TemporalWeatherDataHydrator;
 use Perna\Hydrator\Weather\WeatherDataCacheHydrator;
+use Perna\Hydrator\WeatherModuleHydrator;
 
 return [
 	'invokables' => [
@@ -26,6 +27,7 @@ return [
 		GoogleEventHydrator::class => GoogleEventHydrator::class,
 		AbstractModuleHydrator::class => AbstractModuleHydrator::class,
 		CalendarModuleHydrator::class => CalendarModuleHydrator::class,
+		WeatherModuleHydrator::class => WeatherModuleHydrator::class,
 		CityHydrator::class => CityHydrator::class,
 		CurrentWeatherDataHydrator::class => CurrentWeatherDataHydrator::class,
 		TemporalWeatherDataHydrator::class => TemporalWeatherDataHydrator::class,

@@ -4,7 +4,9 @@ namespace Perna\Controller;
 
 use Perna\Document\CalendarModule;
 use Perna\Document\Module;
+use Perna\Document\WeatherModule;
 use Perna\Hydrator\CalendarModuleHydrator;
+use Perna\Hydrator\WeatherModuleHydrator;
 use Perna\InputFilter\ModuleInputFilter;
 use Perna\Service\AuthenticationService;
 use Perna\Service\ModuleService;
@@ -71,6 +73,15 @@ class ModulesController extends AbstractAuthenticatedApiController {
                     $this->hydrateObject(CalendarModuleHydrator::class, $module, $item);
                     array_push( $modules, $module);
                     break;
+                case 'weather' :
+                    if( !array_key_exists ( "id", $item ) ){
+                        $module = new WeatherModule();
+                    }else{
+                        $module = $this->moduleService->setModule( $user, $item['id'], $item );
+                    }
+                    $this->hydrateObject(WeatherModuleHydrator::class, $module, $item);
+                    array_push( $modules, $module);
+                    break;
             }
         }
         $this->moduleService->setModules( $modules, $user );
@@ -115,6 +126,11 @@ class ModulesController extends AbstractAuthenticatedApiController {
                 $data['calendarIds'] = $rawData['calendarIds'];
                 $module = new CalendarModule();
                 $this->hydrateObject(CalendarModuleHydrator::class, $module, $data);
+                break;
+            case 'weather':
+                $module = new WeatherModule();
+                $this->hydrateObject(WeatherModuleHydrator::class, $module, $data);
+                break;
         }
         $this->moduleService->addModule($user, $module);
         return $this->createDefaultViewModel( $this->extractObject( CalendarModuleHydrator::class, $module) );
@@ -150,6 +166,8 @@ class ModulesController extends AbstractAuthenticatedApiController {
             switch ($type){
                 case 'calendar':
                     array_push( $data, $this->extractObject(CalendarModuleHydrator::class, $module) );
+                case 'weather': 
+                    array_push( $data, $this->extractObject(WeatherModuleHydrator::class, $module) );
             }
         }
         return $this->createDefaultViewModel( $data );
