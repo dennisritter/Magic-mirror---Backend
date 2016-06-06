@@ -89,6 +89,7 @@ class GoogleAuthenticationService {
 
 		$auth = $client->getAuth();
 		$auth->setState( $stateToken->getToken() );
+		$client->setPrompt('consent');
 
 		return [
 			'url' => $client->createAuthUrl(),
