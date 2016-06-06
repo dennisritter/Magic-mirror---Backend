@@ -19,7 +19,7 @@ abstract class AbstractWeatherData {
 	 * The OpenWeatherMap weather state id.
 	 * More Information on http://openweathermap.org/weather-conditions
 	 *
-	 * @ODM\Field()
+	 * @ODM\Field(type="int")
 	 * @SWG\Property()
 	 *
 	 * @var       int
@@ -29,7 +29,7 @@ abstract class AbstractWeatherData {
 	/**
 	 * Wind speed in m/s
 	 *
-	 * @ODM\Field()
+	 * @ODM\Field(type="float")
 	 * @SWG\Property()
 	 *
 	 * @var       float
@@ -39,8 +39,8 @@ abstract class AbstractWeatherData {
 	/**
 	 * Cloudiness in percent
 	 *
+	 * @ODM\Field(type="float")
 	 * @SWG\Property()
-	 * @ODM\Field()
 	 *
 	 * @var       float
 	 */
