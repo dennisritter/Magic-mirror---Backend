@@ -23,7 +23,7 @@ class TemporalWeatherData extends AbstractWeatherData {
 	 * The temperature for the specified point of time in Kelvin.
 	 *
 	 * @SWG\Property()
-	 * @ODM\Field()
+	 * @ODM\Field(type="float")
 	 *
 	 * @var       float
 	 */
