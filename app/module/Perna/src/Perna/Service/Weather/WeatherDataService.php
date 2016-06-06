@@ -10,6 +10,7 @@ use Perna\Document\CurrentWeatherData;
 use Perna\Document\TemporalWeatherData;
 use Perna\Document\WeatherDataCache;
 use Perna\Exception\WeatherDataAccessException;
+use Zend\Stdlib\DateTime;
 use ZfrRest\Http\Exception\Client\NotFoundException;
 use ZfrRest\Http\Exception\Server\ServiceUnavailableException;
 
@@ -113,14 +114,16 @@ class WeatherDataService {
 
 		try {
 			$data = $this->accessService->getTemporalWeatherData( $location );
+			$now = new \DateTime('now');
 			$last = new \DateTime('now');
 			$last->setTime(23,59,59);
 
-			// Remove weather data that is not for today
-			$weatherData = array_filter( $data, function ( TemporalWeatherData $wd ) use ( $last ) {
-				return $wd->getDateTime() <= $last;
-			}, ARRAY_FILTER_USE_BOTH);
-
+			$weatherData = [];
+			for ( $i = 0; $i < count( $data ) && count( $weatherData ) < 5; ++$i ) {
+				$wd = $data[$i];
+				if ( $wd->getDateTime() >= $now )
+					$weatherData[] = $wd;
+			}
 
 			$cache->setToday( $weatherData );
 			$cache->setFetchedToday( new \DateTime('now') );
