@@ -6,9 +6,17 @@ use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ODM\MongoDB\DocumentRepository;
 use Perna\Controller\RegisterController;
 use Perna\Document\User;
-use ZfrRest\Http\Exception\Client\UnprocessableEntityException;
 
 class RegisterControllerTest extends AbstractControllerTestCase {
+
+	const ENDPOINT = '/v1/register';
+
+	const DUMMY_DATA = [
+		'email' => 'meine@emailadresse.de',
+		'firstName' => 'Jannik',
+		'lastName' => 'Portz',
+		'password' => 'vkwovbwfvw'
+	];
 
 	/** @var \PHPUnit_Framework_MockObject_MockObject */
 	protected $documentManager;
@@ -22,7 +30,7 @@ class RegisterControllerTest extends AbstractControllerTestCase {
 		$repoMock = $this->getMockBuilder( DocumentRepository::class )->disableOriginalConstructor()->getMock();
 
 		$dmMock = $this->getMockBuilder( DocumentManager::class )->disableOriginalConstructor()->getMock();
-		$dmMock->expects( $this->once() )->method('getRepository')
+		$dmMock->method('getRepository')
 		       ->with( $this->equalTo( User::class ) )
 		       ->willReturn( $repoMock );
 
@@ -90,5 +98,53 @@ class RegisterControllerTest extends AbstractControllerTestCase {
 		
 		$this->assertResponseStatusCode( 422 );
 		$this->getErrorResponseContent( 422 );
+	}
+
+	protected function abstractValidationTest ( array $requestData, bool $success, string $property = '' ) {
+		foreach ( ['getRepository', 'persist', 'flush'] as $m )
+			$this->documentManager->expects( $this->never() )->method( $m );
+
+		$this->dispatch( self::ENDPOINT, 'POST', $requestData );
+		$this->assertControllerIs( RegisterController::class );
+
+		if ( !$success ) {
+			$this->assertResponseStatusCode( 422 );
+			$data = $this->getErrorResponseContent( 422 );
+			$this->assertArrayHasKey('message', $data);
+			$this->assertArrayHasKey('errors', $data);
+			$this->assertTrue( is_array($data['errors']) );
+			$this->assertArrayHasKey($property, $data['errors']);
+			$this->assertTrue( is_array( $data['errors'][$property] ) );
+			$this->assertGreaterThanOrEqual( 1, count( $data['errors'][$property] ) );
+		} else {
+			$this->assertResponseStatusCode( 201 );
+			$data = $this->getSuccessResponseData();
+			unset( $data['login'] );
+			$this->assertArraySubset( $data, $requestData );
+		}
+	}
+
+	public function testFirstNameMissing () {
+		$d = self::DUMMY_DATA;
+		unset( $d['firstName'] );
+		$this->abstractValidationTest( $d, false, 'firstName');
+	}
+
+	public function testFirstNameTooShort () {
+		$this->abstractValidationTest( array_merge(self::DUMMY_DATA, [
+			'firstName' => 'J'
+		]), false, 'firstName' );
+	}
+
+	public function testFirstNameLongEnough () {
+		$this->abstractValidationTest( array_merge(self::DUMMY_DATA, [
+			'firstName' => 'Ja'
+		]), true, 'firstName' );
+	}
+
+	public function testFirstNameTooLong () {
+		$this->abstractValidationTest( array_merge(self::DUMMY_DATA, [
+			'firstName' => 'J'
+		]), false, 'firstName' );
 	}
 }
