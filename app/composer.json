@@ -14,6 +14,10 @@
     "outeredge/swagger-module": "^2.0",
     "kbrabrand/zf2-swagger-ui": "^1.0",
     "zfr/zfr-cors": "^1.2",
-    "google/apiclient": "1.*"
+    "google/apiclient": "1.*",
+    "guzzlehttp/guzzle": "^6.2"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^5.3"
   }
 }
