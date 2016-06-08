@@ -67,4 +67,18 @@ class AbstractControllerTestCase extends AbstractHttpControllerTestCase {
 		$reflect = new \ReflectionClass( $controllerClass );
 		$this->assertControllerClass( $reflect->getShortName() );
 	}
+
+	/**
+	 * Generates a random String
+	 * @param     int       $length   The length of the random string
+	 * @return    string              The random string
+	 */
+	protected function randomString ( int $length ) : string {
+		$characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+		$str = '';
+		for ( $i = 0; $i < $length; ++$i ) {
+			$str .= $characters[(int) rand(0, strlen($characters) - 1)];
+		}
+		return $str;
+	}
 }

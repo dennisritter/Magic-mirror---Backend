@@ -101,26 +101,42 @@ class RegisterControllerTest extends AbstractControllerTestCase {
 	}
 
 	protected function abstractValidationTest ( array $requestData, bool $success, string $property = '' ) {
-		foreach ( ['getRepository', 'persist', 'flush'] as $m )
-			$this->documentManager->expects( $this->never() )->method( $m );
+		if ( $success ) {
+			$this->documentRepository
+				->expects( $this->once() )
+				->method('findBy')
+				->with( $this->equalTo( ['email' => $requestData['email']] ) );
+
+			$this->documentManager
+				->expects( $this->once() )
+				->method('flush');
+
+			$this->documentManager
+				->expects( $this->once() )
+				->method('persist')
+				->with( $this->isInstanceOf( User::class ) );
+		} else {
+			foreach ( ['getRepository', 'persist', 'flush'] as $m )
+				$this->documentManager->expects( $this->never() )->method( $m );
+		}
 
 		$this->dispatch( self::ENDPOINT, 'POST', $requestData );
 		$this->assertControllerIs( RegisterController::class );
 
-		if ( !$success ) {
-			$this->assertResponseStatusCode( 422 );
-			$data = $this->getErrorResponseContent( 422 );
-			$this->assertArrayHasKey('message', $data);
-			$this->assertArrayHasKey('errors', $data);
-			$this->assertTrue( is_array($data['errors']) );
-			$this->assertArrayHasKey($property, $data['errors']);
-			$this->assertTrue( is_array( $data['errors'][$property] ) );
-			$this->assertGreaterThanOrEqual( 1, count( $data['errors'][$property] ) );
-		} else {
+		if ( $success ) {
 			$this->assertResponseStatusCode( 201 );
 			$data = $this->getSuccessResponseData();
-			unset( $data['login'] );
+			unset( $data['lastLogin'] );
 			$this->assertArraySubset( $data, $requestData );
+		} else {
+			$this->assertResponseStatusCode( 422 );
+			$data = $this->getErrorResponseContent( 422 );
+			$this->assertArrayHasKey( 'message', $data );
+			$this->assertArrayHasKey( 'errors', $data );
+			$this->assertTrue( is_array( $data['errors'] ) );
+			$this->assertArrayHasKey( $property, $data['errors'] );
+			$this->assertTrue( is_array( $data['errors'][ $property ] ) );
+			$this->assertGreaterThanOrEqual( 1, count( $data['errors'][ $property ] ) );
 		}
 	}
 
@@ -144,7 +160,50 @@ class RegisterControllerTest extends AbstractControllerTestCase {
 
 	public function testFirstNameTooLong () {
 		$this->abstractValidationTest( array_merge(self::DUMMY_DATA, [
-			'firstName' => 'J'
+			'firstName' => $this->randomString(101)
 		]), false, 'firstName' );
 	}
+
+	public function testFirstNameShortEnough () {
+		$this->abstractValidationTest( array_merge(self::DUMMY_DATA, [
+			'firstName' => $this->randomString(100)
+		]), true, 'firstName' );
+	}
+
+	public function testLastNameMissing () {
+		$d = self::DUMMY_DATA;
+		unset( $d['lastName'] );
+		$this->abstractValidationTest( $d, false, 'lastName');
+	}
+
+	public function testLastNameTooShort () {
+		$this->abstractValidationTest( array_merge(self::DUMMY_DATA, [
+			'lastName' => 'J'
+		]), false, 'lastName' );
+	}
+
+	public function testLastNameLongEnough () {
+		$this->abstractValidationTest( array_merge(self::DUMMY_DATA, [
+			'lastName' => 'Ja'
+		]), true, 'lastName' );
+	}
+
+	public function testLastNameTooLong () {
+		$this->abstractValidationTest( array_merge(self::DUMMY_DATA, [
+			'lastName' => $this->randomString(101)
+		]), false, 'lastName' );
+	}
+
+	public function testLastNameShortEnough () {
+		$this->abstractValidationTest( array_merge(self::DUMMY_DATA, [
+			'lastName' => $this->randomString(100)
+		]), true, 'lastName' );
+	}
+
+	public function testEmailInvalid () {
+		$this->abstractValidationTest( array_merge(self::DUMMY_DATA, [
+			'email' => 'no-email-address'
+		]), false, 'email' );
+	}
+
 }
