@@ -3,17 +3,17 @@
 namespace Perna\Hydrator;
 
 
-use Perna\Document\WeatherModule;
+use Perna\Document\TimeModule;
 
-class WeatherModuleHydrator extends AbstractModuleHydrator {
+class TimeModuleHydrator extends AbstractModuleHydrator {
     public function extract($object) : array {
-        /** @var WeatherModule $object */
+        /** @var TimeModule $object */
         $data = parent::extract($object);
         return $data;
     }
 
     public function hydrate(array $data, $object) {
-        /** @var WeatherModule $object */
+        /** @var TimeModule $object */
         parent::hydrate($data, $object);
         return $object;
     }

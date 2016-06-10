@@ -8,6 +8,7 @@ use Perna\Hydrator\CityDumpHydrator;
 use Perna\Hydrator\CityHydrator;
 use Perna\Hydrator\GoogleCalendarHydrator;
 use Perna\Hydrator\GoogleEventHydrator;
+use Perna\Hydrator\TimeModuleHydrator;
 use Perna\Hydrator\UserHydrator;
 use Perna\Hydrator\UserTokenHydrator;
 use Perna\Hydrator\Weather\CurrentWeatherDataHydrator;
@@ -27,6 +28,7 @@ return [
 		AbstractModuleHydrator::class => AbstractModuleHydrator::class,
 		CalendarModuleHydrator::class => CalendarModuleHydrator::class,
 		WeatherModuleHydrator::class => WeatherModuleHydrator::class,
+		TimeModuleHydrator::class => TimeModuleHydrator::class,
 		CityHydrator::class => CityHydrator::class,
 		CurrentWeatherDataHydrator::class => CurrentWeatherDataHydrator::class,
 		TemporalWeatherDataHydrator::class => TemporalWeatherDataHydrator::class,
