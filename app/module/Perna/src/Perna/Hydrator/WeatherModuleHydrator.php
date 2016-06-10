@@ -17,6 +17,4 @@ class WeatherModuleHydrator extends AbstractModuleHydrator {
         parent::hydrate($data, $object);
         return $object;
     }
-
-
 }
