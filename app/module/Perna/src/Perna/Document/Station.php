@@ -79,6 +79,24 @@ class Station {
 	protected $products;
 
 	/**
+	 * The next departures at this station
+	 *
+	 * @ODM\EmbedMany(targetDocument="Departure")
+	 *
+	 * @var       Departure[]
+	 */
+	protected $departures;
+
+	/**
+	 * The date and time when the departures have been refreshed for the last time
+	 *
+	 * @ODM\Field(type="date")
+	 *
+	 * @var       \DateTime
+	 */
+	protected $fetchedDepartures;
+
+	/**
 	 * @return string
 	 */
 	public function getId() {
@@ -146,5 +164,33 @@ class Station {
 	 */
 	public function setProducts( $products ) {
 		$this->products = $products;
+	}
+
+	/**
+	 * @return Departure[]
+	 */
+	public function getDepartures() {
+		return $this->departures;
+	}
+
+	/**
+	 * @param Departure[] $departures
+	 */
+	public function setDepartures( $departures ) {
+		$this->departures = $departures;
+	}
+
+	/**
+	 * @return \DateTime
+	 */
+	public function getFetchedDepartures() {
+		return $this->fetchedDepartures;
+	}
+
+	/**
+	 * @param \DateTime $fetchedDepartures
+	 */
+	public function setFetchedDepartures( $fetchedDepartures ) {
+		$this->fetchedDepartures = $fetchedDepartures;
 	}
 }
