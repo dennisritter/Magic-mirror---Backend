@@ -3,6 +3,7 @@
 namespace Perna\Document;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
+use Swagger\Annotations as SWG;
 
 /**
  * Document representing a train station
@@ -10,6 +11,10 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
  * @ODM\Document(
  *   db="perna",
  *   collection="stations"
+ * )
+ *
+ * @SWG\Definition(
+ *   @SWG\Xml(name="Station")
  * )
  *
  * @author      Jannik Portz
@@ -30,6 +35,7 @@ class Station {
 	 * The external ID of the station
 	 *
 	 * @ODM\Field(type="string")
+	 * @SWG\Property(property="id", type="string")
 	 *
 	 * @var       string
 	 */
@@ -39,6 +45,7 @@ class Station {
 	 * The name of the station
 	 *
 	 * @ODM\Field(type="string")
+	 * @SWG\Property(type="string")
 	 *
 	 * @var       string
 	 */
@@ -48,6 +55,11 @@ class Station {
 	 * The Geo-Location of the Station as [lat, lng] array
 	 *
 	 * @ODM\Field(type="collection")
+	 * @SWG\Property(
+	 *   type="array"
+	 *   @SWG\Items(type="number"),
+	 *   default={52.5451160, 13.3552320}
+	 * )
 	 *
 	 * @var       array
 	 */
@@ -57,6 +69,10 @@ class Station {
 	 * Array of product-identifiers that are available on this station
 	 *
 	 * @ODM\Field(type="collection")
+	 * @SWG\Property(
+	 *   type="array",
+	 *   @SWG\Items(type="string")
+	 * )
 	 *
 	 * @var       array
 	 */
