@@ -3,11 +3,16 @@
 namespace Perna\Document;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
+use Swagger\Annotations as SWG;
 
 /**
  * Document representing a departure at a Station
  *
  * @ODM\EmbeddedDocument()
+ *
+ * @SWG\Definition(
+ *   @SWG\Xml(name="Departure")
+ * )
  *
  * @author      Jannik Portz
  * @package     Perna\Document
@@ -18,6 +23,7 @@ class Departure {
 	 * Identifier for the product
 	 *
 	 * @ODM\Field(type="string")
+	 * @SWG\Property()
 	 *
 	 * @var       string
 	 */
@@ -27,6 +33,7 @@ class Departure {
 	 * The train direction / departure station
 	 *
 	 * @ODM\Field(type="string")
+	 * @SWG\Property()
 	 *
 	 * @var       string
 	 */
@@ -36,6 +43,7 @@ class Departure {
 	 * The name of the train line
 	 *
 	 * @ODM\Field(type="string")
+	 * @SWG\Property()
 	 *
 	 * @var       string
 	 */
@@ -45,6 +53,7 @@ class Departure {
 	 * The date and time when the train will actually arrive
 	 *
 	 * @ODM\Field(type="date")
+	 * @SWG\Property(type="string", format="date-time")
 	 *
 	 * @var       \DateTime
 	 */
@@ -54,6 +63,7 @@ class Departure {
 	 * The date and time when the departure was planned
 	 *
 	 * @ODM\Field(type="date")
+	 * @SWG\Property(type="string", format="date-time")
 	 *
 	 * @var       \DateTime
 	 */
