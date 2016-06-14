@@ -4,8 +4,10 @@ namespace Perna\Controller;
 
 use Perna\Document\CalendarModule;
 use Perna\Document\Module;
+use Perna\Document\TimeModule;
 use Perna\Document\WeatherModule;
 use Perna\Hydrator\CalendarModuleHydrator;
+use Perna\Hydrator\TimeModuleHydrator;
 use Perna\Hydrator\WeatherModuleHydrator;
 use Perna\InputFilter\ModuleInputFilter;
 use Perna\Service\AuthenticationService;
@@ -82,6 +84,15 @@ class ModulesController extends AbstractAuthenticatedApiController {
                     $this->hydrateObject(WeatherModuleHydrator::class, $module, $item);
                     array_push( $modules, $module);
                     break;
+                case 'time' :
+                    if( !array_key_exists ( "id", $item ) ){
+                        $module = new TimeModule();
+                    }else{
+                        $module = $this->moduleService->setModule( $user, $item['id'], $item );
+                    }
+                    $this->hydrateObject(TimeModuleHydrator::class, $module, $item);
+                    array_push( $modules, $module);
+                    break;
             }
         }
         $this->moduleService->setModules( $modules, $user );
@@ -129,10 +140,16 @@ class ModulesController extends AbstractAuthenticatedApiController {
                 $this->moduleService->addModule($user, $module);
                 return $this->createDefaultViewModel( $this->extractObject( CalendarModuleHydrator::class, $module) );
             case 'weather':
+                $data['locationId'] = $rawData['locationId'] || 2813472;
                 $module = new WeatherModule();
                 $this->hydrateObject(WeatherModuleHydrator::class, $module, $data);
                 $this->moduleService->addModule($user, $module);
                 return $this->createDefaultViewModel( $this->extractObject( WeatherModuleHydrator::class, $module) );
+            case 'time':
+                $module = new TimeModule();
+                $this->hydrateObject(TimeModuleHydrator::class, $module, $data);
+                $this->moduleService->addModule($user, $module);
+                return $this->createDefaultViewModel( $this->extractObject( TimeModuleHydrator::class, $module) );
         }
         return null;
     }
@@ -168,8 +185,11 @@ class ModulesController extends AbstractAuthenticatedApiController {
                 case 'calendar':
                     array_push( $data, $this->extractObject(CalendarModuleHydrator::class, $module) );
                     break;
-                case 'weather': 
+                case 'weather':
                     array_push( $data, $this->extractObject(WeatherModuleHydrator::class, $module) );
+                    break;
+                case 'time':
+                    array_push( $data, $this->extractObject(TimeModuleHydrator::class, $module) );
                     break;
             }
         }

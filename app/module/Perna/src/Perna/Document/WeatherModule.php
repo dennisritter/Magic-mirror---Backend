@@ -18,6 +18,32 @@ class WeatherModule extends Module {
         parent::__construct();
         $this->type = "weather";
     }
+
+    /**
+     * @ODM\Field(
+     *     name = "calendarIds",
+     *     type = "int"
+     * )
+     * @var int array of calendar ids
+     */
+    protected $locationId;
+
+    /**
+     * @return int
+     */
+    public function getLocationId()
+    {
+        return $this->locationId;
+    }
+
+    /**
+     * @param int $locationId
+     */
+    public function setLocationId($locationId)
+    {
+        $this->locationId = $locationId;
+    }
+    
     
 
     function __toString()

@@ -73,7 +73,7 @@ return [
 		ModuleController::class => new Factory(ModuleController::class, [
 			AuthenticationService::class => DependencyTypes::SERVICE,
 			ModuleService::class => DependencyTypes::SERVICE
-    ]),
+    	]),
 		WeatherLocationNearbyController::class => new Factory(WeatherLocationNearbyController::class, [
 			AuthenticationService::class => DependencyTypes::SERVICE,
 			GeoNamesAccessService::class => DependencyTypes::SERVICE
