@@ -34,7 +34,11 @@ class Station {
 	/**
 	 * The external ID of the station
 	 *
-	 * @ODM\Field(type="string")
+	 * @ODM\Id(
+	 *   strategy="NONE",
+	 *   type="string"
+	 * )
+	 * 
 	 * @SWG\Property(property="id", type="string")
 	 *
 	 * @var       string
@@ -55,8 +59,9 @@ class Station {
 	 * The Geo-Location of the Station as [lat, lng] array
 	 *
 	 * @ODM\Field(type="collection")
+	 *
 	 * @SWG\Property(
-	 *   type="array"
+	 *   type="array",
 	 *   @SWG\Items(type="number"),
 	 *   default={52.5451160, 13.3552320}
 	 * )
