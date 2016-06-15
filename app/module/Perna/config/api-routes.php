@@ -8,6 +8,7 @@ use Perna\Controller\LoginController;
 use Perna\Controller\LogoutController;
 use Perna\Controller\ModuleController;
 use Perna\Controller\ModulesController;
+use Perna\Controller\PublicTransport\StationSearchController;
 use Perna\Controller\RefreshController;
 use Perna\Controller\RegisterController;
 use Perna\Controller\UserController;
@@ -219,6 +220,34 @@ return [
 					],
 					'constraints' => [
 						'id' => '[0-9]+'
+					]
+				]
+			]
+		]
+	],
+
+	'publicTransport' => [
+		'type' => Literal::class,
+		'options' => [
+			'route' => '/publicTransport',
+		],
+		'may_terminate' => false,
+		'child_routes' => [
+			'stations' => [
+				'type' => Literal::class,
+				'options' => [
+					'route' => '/stations'
+				],
+				'may_terminate' => false,
+				'child_routes' => [
+					'searchStations' => [
+						'type' => Literal::class,
+						'options' => [
+							'route' => '/search',
+							'defaults' => [
+								'controller' => StationSearchController::class
+							]
+						]
 					]
 				]
 			]
