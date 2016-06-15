@@ -46,7 +46,11 @@ class VBBAccessService {
 		$query->set('type', 'S');
 
 		$client = new Client();
-		$response = $client->send( $request );
+		try {
+			$response = $client->send( $request );
+		} catch ( Client\Adapter\Exception\RuntimeException $e ) {
+			throw new ServiceUnavailableException();
+		}
 
 		if ( !$response->isSuccess() )
 			throw new ServiceUnavailableException();
