@@ -30,6 +30,7 @@ class StationHydrator extends AbstractHydrator {
 	/** @inheritdoc */
 	public function hydrate( array $data, $object ) {
 		/** @var Station $object */
+		$object->setId( $data['id'] );
 		$object->setExtId( $data['extId'] );
 		$object->setName( $data['name'] );
 		$object->setLocation( [$data['lat'], $data['lon']] );
