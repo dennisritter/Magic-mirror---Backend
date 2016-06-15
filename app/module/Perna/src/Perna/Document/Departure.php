@@ -60,14 +60,14 @@ class Departure {
 	protected $realTime;
 
 	/**
-	 * The date and time when the departure was planned
+	 * The date and time when the departure was scheduled
 	 *
 	 * @ODM\Field(type="date")
 	 * @SWG\Property(type="string", format="date-time")
 	 *
 	 * @var       \DateTime
 	 */
-	protected $plannedTime;
+	protected $scheduledTime;
 
 	/**
 	 * @return string
@@ -128,14 +128,14 @@ class Departure {
 	/**
 	 * @return \DateTime
 	 */
-	public function getPlannedTime() {
-		return $this->plannedTime;
+	public function getScheduledTime() {
+		return $this->scheduledTime;
 	}
 
 	/**
-	 * @param \DateTime $plannedTime
+	 * @param \DateTime $scheduledTime
 	 */
-	public function setPlannedTime( $plannedTime ) {
-		$this->plannedTime = $plannedTime;
+	public function setScheduledTime( $scheduledTime ) {
+		$this->scheduledTime = $scheduledTime;
 	}
 }

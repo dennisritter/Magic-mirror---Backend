@@ -65,4 +65,28 @@ class ProductsService {
 		}
 		return $bitmap;
 	}
+
+	/**
+	 * Parses a product class available in the product map from an API response
+	 * @param     string    $input    The input string (CatOutL)
+	 * @return    string              The product identifier
+	 *
+	 * @throws    \InvalidArgumentException If the input could not be parsed to a valid product class
+	 */
+	public function parseProduct ( string $input ) : string {
+		$input = trim( $input );
+
+		$map = [
+			'Bus' => self::B,
+			'Tram' => self::T
+		];
+
+		if ( array_key_exists( $input, $map ) )
+			return $map[ $input ];
+
+		if ( !in_array( $input, self::PRODUCT_MAP ) )
+			throw new \InvalidArgumentException("The product type '{$input}' is not available.");
+
+		return $input;
+	}
 }

@@ -7,6 +7,7 @@ use Perna\Hydrator\AbstractModuleHydrator;
 use Perna\Hydrator\AccessTokenHydrator;
 use Perna\Hydrator\CalendarModuleHydrator;
 use Perna\Hydrator\CityHydrator;
+use Perna\Hydrator\DepartureHydrator;
 use Perna\Hydrator\GoogleCalendarHydrator;
 use Perna\Hydrator\GoogleEventHydrator;
 use Perna\Hydrator\StationHydrator;
@@ -39,6 +40,9 @@ return [
 	],
 	'factories' => [
 		StationHydrator::class => new Factory( StationHydrator::class, [
+			ProductsService::class => DependencyTypes::SERVICE
+		]),
+		DepartureHydrator::class => new Factory( DepartureHydrator::class, [
 			ProductsService::class => DependencyTypes::SERVICE
 		])
 	]
