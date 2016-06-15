@@ -9,6 +9,7 @@ use Perna\Controller\LoginController;
 use Perna\Controller\LogoutController;
 use Perna\Controller\ModuleController;
 use Perna\Controller\ModulesController;
+use Perna\Controller\PublicTransport\StationSearchController;
 use Perna\Controller\RefreshController;
 use Perna\Controller\RegisterController;
 use Perna\Controller\UserController;
@@ -25,6 +26,7 @@ use Perna\Service\CityImportService;
 use Perna\Service\GoogleAuthenticationService;
 use Perna\Service\GoogleCalendarService;
 use Perna\Service\ModuleService;
+use Perna\Service\PublicTransport\VBBAccessService;
 use Perna\Service\UserService;
 use Perna\Service\Weather\GeoNamesAccessService;
 use Perna\Service\Weather\WeatherDataService;
@@ -93,6 +95,10 @@ return [
 		WeatherLocationSearchController::class => new Factory(WeatherLocationSearchController::class, [
 			AuthenticationService::class => DependencyTypes::SERVICE,
 			GeoNamesAccessService::class => DependencyTypes::SERVICE
+		]),
+		StationSearchController::class => new Factory(StationSearchController::class, [
+			AuthenticationService::class => DependencyTypes::SERVICE,
+			VBBAccessService::class => DependencyTypes::SERVICE
 		])
 	]
 ];

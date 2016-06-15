@@ -8,6 +8,7 @@ use Perna\Hydrator\CityHydrator;
 use Perna\Hydrator\GoogleAccessTokenHydrator;
 use Perna\Hydrator\GoogleCalendarHydrator;
 use Perna\Hydrator\GoogleEventHydrator;
+use Perna\Hydrator\StationHydrator;
 use Perna\Hydrator\Weather\CurrentWeatherDataHydrator;
 use Perna\Hydrator\Weather\DailyWeatherDataHydrator;
 use Perna\Hydrator\Weather\TemporalWeatherDataHydrator;
@@ -20,6 +21,8 @@ use Perna\Service\GoogleCalendarService;
 use Perna\Service\GUIDGenerator;
 use Perna\Service\ModuleService;
 use Perna\Service\PasswordService;
+use Perna\Service\PublicTransport\ProductsService;
+use Perna\Service\PublicTransport\VBBAccessService;
 use Perna\Service\UserService;
 use Perna\Service\Weather\GeoNamesAccessService;
 use Perna\Service\Weather\WeatherDataAccessService;
@@ -77,10 +80,14 @@ return [
 		GeoNamesAccessService::class => new Factory(GeoNamesAccessService::class, [
 			CityHydrator::class => DependencyTypes::HYDRATOR,
 			DocumentManager::class => DependencyTypes::SERVICE
+		]),
+		VBBAccessService::class => new Factory(VBBAccessService::class, [
+			StationHydrator::class => DependencyTypes::HYDRATOR
 		])
 	],
 	'invokables' => [
 		PasswordService::class => PasswordService::class,
-		GUIDGenerator::class => GUIDGenerator::class
+		GUIDGenerator::class => GUIDGenerator::class,
+		ProductsService::class => ProductsService::class
 	]
 ];

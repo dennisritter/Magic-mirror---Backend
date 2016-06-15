@@ -49,6 +49,14 @@ use Zend\Uri\UriFactory;
  *    )
  *   ),
  *   @SWG\Response(
+ *    response="503",
+ *    description="The service is currently not available. This could be due to an external service that cannot be reached.",
+ *    @SWG\Schema(
+ *      @SWG\Property(property="status_code", type="number", format="int32", default="503"),
+ *      @SWG\Property(property="message", type="string")
+ *    )
+ *   ),
+ *   @SWG\Response(
  *    response="404",
  *    description="The specified resource could not be found.",
  *    @SWG\Schema(
