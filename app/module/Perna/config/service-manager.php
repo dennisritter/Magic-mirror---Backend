@@ -20,6 +20,7 @@ use Perna\Service\GoogleCalendarService;
 use Perna\Service\GUIDGenerator;
 use Perna\Service\ModuleService;
 use Perna\Service\PasswordService;
+use Perna\Service\PublicTransport\ProductsService;
 use Perna\Service\UserService;
 use Perna\Service\Weather\GeoNamesAccessService;
 use Perna\Service\Weather\WeatherDataAccessService;
@@ -81,6 +82,7 @@ return [
 	],
 	'invokables' => [
 		PasswordService::class => PasswordService::class,
-		GUIDGenerator::class => GUIDGenerator::class
+		GUIDGenerator::class => GUIDGenerator::class,
+		ProductsService::class => ProductsService::class
 	]
 ];
