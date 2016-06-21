@@ -53,4 +53,77 @@ class LoginControllerTest extends AbstractUserControllerTestCase {
 		$this->assertArrayHasKey('expirationDate', $rt);
 		$this->assertEquals( (new \DateTime('now'))->add(new \DateInterval('P2D')), new \DateTime($rt['expirationDate']) );
 	}
+
+	public function testUnknownUser () {
+		$this->documentRepository
+			->expects( $this->once() )
+			->method('findOneBy')
+			->with( $this->equalTo(['email' => self::DUMMY_DATA['email']]) )
+			->willReturn( null );
+
+		$this->documentManager
+			->expects( $this->never() )
+			->method('persist');
+
+		$this->documentManager
+			->expects( $this->never() )
+			->method('flush');
+
+		$this->dispatch( self::ENDPOINT, Request::METHOD_POST, self::DUMMY_DATA );
+		$this->assertControllerIs( LoginController::class );
+		$this->getErrorResponseContent(422);
+	}
+
+	public function testPasswordIncorrect () {
+		$user = new User();
+		$user->setPassword( $this->generatePasswordHash( 'meinpasswor' ) );
+
+		$this->documentRepository
+			->expects( $this->once() )
+			->method('findOneBy')
+			->with( $this->equalTo(['email' => self::DUMMY_DATA['email']]) )
+			->willReturn( $user );
+
+		$this->documentManager
+			->expects( $this->never() )
+			->method('persist');
+
+		$this->documentManager
+			->expects( $this->never() )
+			->method('flush');
+
+		$this->dispatch( self::ENDPOINT, Request::METHOD_POST, self::DUMMY_DATA );
+		$this->assertControllerIs( LoginController::class );
+		$this->getErrorResponseContent(422);
+	}
+
+	protected function abstractValidationErrorTest ( array $data ) {
+		$this->documentRepository
+			->expects( $this->never() )
+			->method('findOneBy');
+
+		$this->documentManager
+			->expects( $this->never() )
+			->method('persist');
+
+		$this->documentManager
+			->expects( $this->never() )
+			->method('flush');
+
+		$this->dispatch( self::ENDPOINT, Request::METHOD_POST, $data );
+		$this->assertControllerIs( LoginController::class );
+		$this->assertResponseStatusCode( 422 );
+	}
+
+	public function testEmailMissing () {
+		$this->abstractValidationErrorTest([
+			'password' => 'xyz'
+		]);
+	}
+
+	public function testPasswordMissing () {
+		$this->abstractValidationErrorTest([
+			'email' => 'meine@emailadresse.de'
+		]);
+	}
 }
