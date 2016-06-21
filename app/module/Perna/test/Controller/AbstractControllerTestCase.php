@@ -62,7 +62,7 @@ class AbstractControllerTestCase extends AbstractHttpControllerTestCase {
 		$this->assertControllerName( $controllerClass );
 
 		if ( !class_exists( $controllerClass ) )
-			throw new \AssertionError("The controller class {$controllerClass} does not exist.");
+			$this->fail("The controller class {$controllerClass} does not exist.");
 
 		$reflect = new \ReflectionClass( $controllerClass );
 		$this->assertControllerClass( $reflect->getShortName() );
@@ -80,5 +80,18 @@ class AbstractControllerTestCase extends AbstractHttpControllerTestCase {
 			$str .= $characters[(int) rand(0, strlen($characters) - 1)];
 		}
 		return $str;
+	}
+
+	/**
+	 * Asserts that the specified value is a GUID
+	 * @param     string    $guid     The value to check
+	 */
+	protected function assertGUID ( $guid ) {
+		if ( !is_string( $guid ) )
+			$this->fail(sprintf("GUID must be a string, got %s", gettype($guid)));
+
+		$regex = '/^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$/';
+		if ( preg_match( $regex, $guid ) === false )
+			$this->fail("string {$guid} is not a valid GUID.");
 	}
 }

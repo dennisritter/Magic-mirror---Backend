@@ -4,6 +4,7 @@ namespace Perna\Test\Controller\User;
 
 use Perna\Controller\RegisterController;
 use Perna\Document\User;
+use Zend\Http\Request;
 
 class RegisterControllerTest extends AbstractUserControllerTestCase {
 
@@ -33,7 +34,7 @@ class RegisterControllerTest extends AbstractUserControllerTestCase {
 			->method('persist')
 			->with( $this->isInstanceOf( User::class ) );
 
-		$this->dispatch( '/v1/register', 'POST', $requestData );
+		$this->dispatch( self::ENDPOINT, Request::METHOD_POST, $requestData );
 		$this->assertControllerIs( RegisterController::class );
 
 		$this->assertResponseStatusCode( 201 );
@@ -62,7 +63,7 @@ class RegisterControllerTest extends AbstractUserControllerTestCase {
 		$this->documentManager->expects( $this->never() )->method('persist');
 		$this->documentManager->expects( $this->never() )->method('flush');
 
-		$this->dispatch( '/v1/register', 'POST', $requestData );
+		$this->dispatch( self::ENDPOINT, 'POST', $requestData );
 		$this->assertControllerIs( RegisterController::class );
 		
 		$this->assertResponseStatusCode( 422 );

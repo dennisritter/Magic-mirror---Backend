@@ -6,6 +6,7 @@ use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ODM\MongoDB\DocumentRepository;
 use Perna\Document\User;
 use Perna\Test\Controller\AbstractControllerTestCase;
+use Zend\Crypt\Password\Bcrypt;
 
 class AbstractUserControllerTestCase extends AbstractControllerTestCase {
 
@@ -31,5 +32,10 @@ class AbstractUserControllerTestCase extends AbstractControllerTestCase {
 		$sm = $this->getApplicationServiceLocator();
 		$sm->setAllowOverride( true );
 		$sm->setService( DocumentManager::class, $dmMock );
+	}
+
+	protected function generatePasswordHash ( string $password ) : string {
+		$bcrypt = new Bcrypt();
+		return $bcrypt->create( $password );
 	}
 }
