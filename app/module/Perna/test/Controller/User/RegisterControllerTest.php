@@ -1,13 +1,11 @@
 <?php
 
-namespace Perna\Test\Controller;
+namespace Perna\Test\Controller\User;
 
-use Doctrine\ODM\MongoDB\DocumentManager;
-use Doctrine\ODM\MongoDB\DocumentRepository;
 use Perna\Controller\RegisterController;
 use Perna\Document\User;
 
-class RegisterControllerTest extends AbstractControllerTestCase {
+class RegisterControllerTest extends AbstractUserControllerTestCase {
 
 	const ENDPOINT = '/v1/register';
 
@@ -18,37 +16,8 @@ class RegisterControllerTest extends AbstractControllerTestCase {
 		'password' => 'vkwovbwfvw'
 	];
 
-	/** @var \PHPUnit_Framework_MockObject_MockObject */
-	protected $documentManager;
-
-	/** @var \PHPUnit_Framework_MockObject_MockObject */
-	protected $documentRepository;
-
-	public function setUp () {
-		parent::setUp();
-
-		$repoMock = $this->getMockBuilder( DocumentRepository::class )->disableOriginalConstructor()->getMock();
-
-		$dmMock = $this->getMockBuilder( DocumentManager::class )->disableOriginalConstructor()->getMock();
-		$dmMock->method('getRepository')
-		       ->with( $this->equalTo( User::class ) )
-		       ->willReturn( $repoMock );
-
-		$this->documentManager = $dmMock;
-		$this->documentRepository = $repoMock;
-
-		$sm = $this->getApplicationServiceLocator();
-		$sm->setAllowOverride( true );
-		$sm->setService( DocumentManager::class, $dmMock );
-	}
-	
 	public function testRegistrationSuccess () {
-		$requestData = [
-			'email' => 'meine@emailadresse.de',
-			'firstName' => 'Jannik',
-			'lastName' => 'Portz',
-			'password' => 'auvgqovgrovo'
-		];
+		$requestData = self::DUMMY_DATA;
 
 		$this->documentRepository
 			->expects( $this->once() )
