@@ -2,6 +2,7 @@
 
 namespace Perna\Test\Controller;
 
+use Perna\Service\GUIDGenerator;
 use Zend\Http\Request;
 use Zend\Test\PHPUnit\Controller\AbstractHttpControllerTestCase;
 
@@ -133,5 +134,14 @@ class AbstractControllerTestCase extends AbstractHttpControllerTestCase {
 			$this->dispatch( $endpoint, $method );
 			$this->assertResponseStatusCode( 405 );
 		}
+	}
+
+	/**
+	 * Generates a random GUID
+	 * @return    string    The GUID
+	 */
+	protected function generateGUID () : string {
+		$generator = new GUIDGenerator();
+		return $generator->generateGUID();
 	}
 }
