@@ -23,7 +23,6 @@ class AbstractUserControllerTestCase extends AbstractControllerTestCase {
 
 		$dmMock = $this->getMockBuilder( DocumentManager::class )->disableOriginalConstructor()->getMock();
 		$dmMock->method('getRepository')
-		       ->with( $this->equalTo( User::class ) )
 		       ->willReturn( $repoMock );
 
 		$this->documentManager = $dmMock;

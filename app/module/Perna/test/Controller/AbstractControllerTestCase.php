@@ -2,6 +2,7 @@
 
 namespace Perna\Test\Controller;
 
+use Zend\Http\Request;
 use Zend\Test\PHPUnit\Controller\AbstractHttpControllerTestCase;
 
 class AbstractControllerTestCase extends AbstractHttpControllerTestCase {
@@ -93,5 +94,16 @@ class AbstractControllerTestCase extends AbstractHttpControllerTestCase {
 		$regex = '/^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$/';
 		if ( preg_match( $regex, $guid ) === false )
 			$this->fail("string {$guid} is not a valid GUID.");
+	}
+
+	/**
+	 * Sets a line in the request header
+	 * @param     string    $name     The header name
+	 * @param     string    $content  The header content
+	 */
+	protected function setRequestHeaderLine ( string $name, $content ) {
+		/** @var Request $request */
+		$request = $this->getRequest();
+		$request->getHeaders()->addHeaderLine( $name, $content );
 	}
 }
