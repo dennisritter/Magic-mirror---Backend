@@ -6,8 +6,7 @@ use Perna\Document\AccessToken;
 use Zend\Http\Request;
 
 class LogoutControllerTest extends AbstractUserControllerTestCase {
-
-	const DUMMY_ACCESS_TOKEN = 'C57A25FF-A9E9-5870-2E2A-6A3156EFDB22';
+	
 	const ENDPOINT = '/v1/logout';
 
 	public function setUp() {
