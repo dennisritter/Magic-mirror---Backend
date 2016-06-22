@@ -66,4 +66,8 @@ class LogoutControllerTest extends AbstractUserControllerTestCase {
 		$this->dispatch( self::ENDPOINT, Request::METHOD_POST );
 		$this->getErrorResponseContent( 401 );
 	}
+
+	public function testMethodsNotAllowed () {
+		$this->assertOtherMethodsNotAllowed( self::ENDPOINT, [Request::METHOD_POST] );
+	}
 }

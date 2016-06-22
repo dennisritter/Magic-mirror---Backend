@@ -126,4 +126,8 @@ class LoginControllerTest extends AbstractUserControllerTestCase {
 			'email' => 'meine@emailadresse.de'
 		]);
 	}
+	
+	public function testMethodsNotAllowed () {
+		$this->assertOtherMethodsNotAllowed( self::ENDPOINT, [Request::METHOD_POST] );
+	}
 }

@@ -176,4 +176,7 @@ class RegisterControllerTest extends AbstractUserControllerTestCase {
 		]), false, 'email' );
 	}
 
+	public function testMethodsNotAllowed () {
+		$this->assertOtherMethodsNotAllowed( self::ENDPOINT, [Request::METHOD_POST] );
+	}
 }

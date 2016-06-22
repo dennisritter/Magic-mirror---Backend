@@ -69,4 +69,8 @@ class RefreshControllerTest extends AbstractUserControllerTestCase {
 		$this->assertArrayHasKey('expirationDate', $rt);
 		$this->assertEquals( (new \DateTime('now'))->add(new \DateInterval('P2D')), new \DateTime($rt['expirationDate']) );
 	}
+
+	public function testMethodsNotAllowed () {
+		$this->assertOtherMethodsNotAllowed( self::ENDPOINT, [Request::METHOD_POST] );
+	}
 }

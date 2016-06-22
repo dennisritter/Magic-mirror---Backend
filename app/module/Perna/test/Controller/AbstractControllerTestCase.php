@@ -7,6 +7,18 @@ use Zend\Test\PHPUnit\Controller\AbstractHttpControllerTestCase;
 
 class AbstractControllerTestCase extends AbstractHttpControllerTestCase {
 
+	const HTTP_METHODS = [
+		Request::METHOD_GET,
+		Request::METHOD_POST,
+		Request::METHOD_PUT,
+		Request::METHOD_DELETE,
+		Request::METHOD_PATCH,
+		Request::METHOD_HEAD,
+		Request::METHOD_TRACE,
+		Request::METHOD_CONNECT,
+		Request::METHOD_PROPFIND
+	];
+
 	/** @inheritdoc */
 	public function setUp () {
 		$this->setApplicationConfig( include __DIR__ . '/../../../../config/application.config.php' );
@@ -105,5 +117,21 @@ class AbstractControllerTestCase extends AbstractHttpControllerTestCase {
 		/** @var Request $request */
 		$request = $this->getRequest();
 		$request->getHeaders()->addHeaderLine( $name, $content );
+	}
+
+	/**
+	 * Asserts that all methods not contained in $allowedMethods are not allowed
+	 *
+	 * @param     string    $endpoint         The endpoint to call
+	 * @param     string[]  $allowedMethods  Array of method names that are allowed
+	 */
+	protected function assertOtherMethodsNotAllowed ( string $endpoint, array $allowedMethods ) {
+		foreach ( self::HTTP_METHODS as $method ) {
+			if ( in_array( $method, $allowedMethods ) )
+				continue;
+
+			$this->dispatch( $endpoint, $method );
+			$this->assertResponseStatusCode( 405 );
+		}
 	}
 }
