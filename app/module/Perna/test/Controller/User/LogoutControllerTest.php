@@ -14,7 +14,6 @@ class LogoutControllerTest extends AbstractUserControllerTestCase {
 		parent::setUp();
 
 		$this->documentManager
-			->expects( $this->once() )
 			->method('getRepository')
 			->with( $this->equalTo( AccessToken::class ) )
 			->willReturn( $this->documentRepository );
@@ -46,5 +45,26 @@ class LogoutControllerTest extends AbstractUserControllerTestCase {
 		$this->setRequestHeaderLine('Access-Token', self::DUMMY_ACCESS_TOKEN);
 		$this->dispatch( self::ENDPOINT, Request::METHOD_POST );
 		$this->assertResponseStatusCode(201);
+	}
+
+	public function testAccessTokenMissingError () {
+		$this->documentManager
+			->expects( $this->never() )
+			->method('getRepository');
+
+		$this->documentManager
+			->expects( $this->never() )
+			->method('remove');
+
+		$this->documentManager
+			->expects( $this->never() )
+			->method('flush');
+
+		$this->documentRepository
+			->expects( $this->never() )
+			->method('find');
+
+		$this->dispatch( self::ENDPOINT, Request::METHOD_POST );
+		$this->getErrorResponseContent( 401 );
 	}
 }
