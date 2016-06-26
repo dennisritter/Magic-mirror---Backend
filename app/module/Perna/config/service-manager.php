@@ -22,6 +22,7 @@ use Perna\Service\GoogleCalendarService;
 use Perna\Service\GUIDGenerator;
 use Perna\Service\ModuleService;
 use Perna\Service\PasswordService;
+use Perna\Service\PublicTransport\DepartureService;
 use Perna\Service\PublicTransport\ProductsService;
 use Perna\Service\PublicTransport\StationsService;
 use Perna\Service\PublicTransport\VBBAccessService;
@@ -87,6 +88,10 @@ return [
 			StationHydrator::class => DependencyTypes::HYDRATOR,
 			DepartureHydrator::class => DependencyTypes::HYDRATOR
 			DocumentManager::class => DependencyTypes::SERVICE
+		]),
+		DepartureService::class => new Factory(DepartureService::class, [
+			DocumentManager::class => DependencyTypes::SERVICE,
+			VBBAccessService::class => DependencyTypes::SERVICE
 		])
 	],
 	'invokables' => [

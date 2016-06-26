@@ -9,12 +9,12 @@
 namespace Perna\Service\PublicTransport;
 
 
-use DoctrineMongoODMModule\Options\DocumentManager;
+use Doctrine\ODM\MongoDB\DocumentManager;
 use Perna\Document\Station;
 
 class DepartureService{
 
-    protected $documentManger;
+    protected $documentManager;
 
     protected $accessService;
 
@@ -39,12 +39,17 @@ class DepartureService{
         
     }
 
-    function getNewData ( Station $station){
+    function getNewData ( Station $station) : array {
         $cachedDepartures = $this->accessService->getDepartures( $station );
         $station->setDepartures( $cachedDepartures );
         $station->setFetchedDepartures( new \DateTime("now"));
-        $this->documentManger->flush();
+        $this->documentManager->flush();
         return $cachedDepartures;
+    }
+
+    function getDepartureData ( string $stationId) : array {
+        $station = $this->documentManager->getRepository( Station::class )->find( $stationId );
+        return $this->getDepartures( $station );
     }
 
 }

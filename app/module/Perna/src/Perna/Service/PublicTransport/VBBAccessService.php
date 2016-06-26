@@ -83,7 +83,7 @@ class VBBAccessService {
 	}
 
 	public function getDepartures( Station $station ) : array{
-		$request = $this->createBasicRequest( 'depatureBoard' );
+		$request = $this->createBasicRequest( 'departureBoard' );
 		$query = $request->getQuery();
 		$query->set('id', $station->getId());
 
