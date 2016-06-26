@@ -5,6 +5,7 @@ namespace Perna\Controller\PublicTransport;
 use Perna\Controller\AbstractAuthenticatedApiController;
 use Perna\Hydrator\StationHydrator;
 use Perna\Service\AuthenticationService;
+use Perna\Service\PublicTransport\StationsService;
 use Perna\Service\PublicTransport\VBBAccessService;
 use Swagger\Annotations as SWG;
 use ZfrRest\Http\Exception\Client\UnprocessableEntityException;
@@ -12,13 +13,13 @@ use ZfrRest\Http\Exception\Client\UnprocessableEntityException;
 class StationSearchController extends AbstractAuthenticatedApiController {
 
 	/**
-	 * @var VBBAccessService
+	 * @var StationsService
 	 */
-	protected $vbbAccessService;
+	protected $stationsService;
 
-	public function __construct( AuthenticationService $authenticationService, VBBAccessService $vbbAccessService ) {
+	public function __construct( AuthenticationService $authenticationService, StationsService $stationsService ) {
 		parent::__construct( $authenticationService );
-		$this->vbbAccessService = $vbbAccessService;
+		$this->stationsService = $stationsService;
 	}
 
 	/**
@@ -59,7 +60,7 @@ class StationSearchController extends AbstractAuthenticatedApiController {
 		if ( $query === null )
 			throw new UnprocessableEntityException("The query parameter 'query' must be present.");
 
-		$results = $this->vbbAccessService->findStations( $query );
+		$results = $this->stationsService->findStations( $query );
 		return $this->createDefaultViewModel( $this->extractObject( StationHydrator::class, $results ) );
 	}
 }

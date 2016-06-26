@@ -22,6 +22,7 @@ use Perna\Service\GUIDGenerator;
 use Perna\Service\ModuleService;
 use Perna\Service\PasswordService;
 use Perna\Service\PublicTransport\ProductsService;
+use Perna\Service\PublicTransport\StationsService;
 use Perna\Service\PublicTransport\VBBAccessService;
 use Perna\Service\UserService;
 use Perna\Service\Weather\GeoNamesAccessService;
@@ -83,6 +84,10 @@ return [
 		]),
 		VBBAccessService::class => new Factory(VBBAccessService::class, [
 			StationHydrator::class => DependencyTypes::HYDRATOR
+		]),
+		StationsService::class => new Factory(StationsService::class, [
+			VBBAccessService::class => DependencyTypes::SERVICE,
+			DocumentManager::class => DependencyTypes::SERVICE
 		])
 	],
 	'invokables' => [

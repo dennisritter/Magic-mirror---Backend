@@ -26,6 +26,7 @@ use Perna\Service\CityImportService;
 use Perna\Service\GoogleAuthenticationService;
 use Perna\Service\GoogleCalendarService;
 use Perna\Service\ModuleService;
+use Perna\Service\PublicTransport\StationsService;
 use Perna\Service\PublicTransport\VBBAccessService;
 use Perna\Service\UserService;
 use Perna\Service\Weather\GeoNamesAccessService;
@@ -98,7 +99,7 @@ return [
 		]),
 		StationSearchController::class => new Factory(StationSearchController::class, [
 			AuthenticationService::class => DependencyTypes::SERVICE,
-			VBBAccessService::class => DependencyTypes::SERVICE
+			StationsService::class => DependencyTypes::SERVICE
 		])
 	]
 ];
