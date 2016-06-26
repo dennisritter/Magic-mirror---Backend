@@ -86,12 +86,17 @@ return [
 		]),
 		VBBAccessService::class => new Factory(VBBAccessService::class, [
 			StationHydrator::class => DependencyTypes::HYDRATOR,
-			DepartureHydrator::class => DependencyTypes::HYDRATOR
+			DepartureHydrator::class => DependencyTypes::HYDRATOR,
 			DocumentManager::class => DependencyTypes::SERVICE
 		]),
 		DepartureService::class => new Factory(DepartureService::class, [
 			DocumentManager::class => DependencyTypes::SERVICE,
-			VBBAccessService::class => DependencyTypes::SERVICE
+			VBBAccessService::class => DependencyTypes::SERVICE,
+			StationsService::class => DependencyTypes::SERVICE
+		]),
+		StationsService::class => new Factory(StationsService::class, [
+			VBBAccessService::class => DependencyTypes::SERVICE,
+			DocumentManager::class => DependencyTypes::SERVICE
 		])
 	],
 	'invokables' => [

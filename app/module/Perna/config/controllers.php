@@ -101,7 +101,6 @@ return [
 		]),
 		StationSearchController::class => new Factory(StationSearchController::class, [
 			AuthenticationService::class => DependencyTypes::SERVICE,
-			VBBAccessService::class => DependencyTypes::SERVICE,
 		    StationsService::class => DependencyTypes::SERVICE
 		]),
 		DepartureController::class => new Factory(DepartureController::class, [

@@ -34,7 +34,7 @@ class VBBAccessService {
 
 	public function __construct ( StationHydrator $stationHydrator, DepartureHydrator $departureHydrator ) {
 		$this->stationHydrator = $stationHydrator;
-
+		$this->departureHydrator = $departureHydrator;
 	}
 
 	/**
@@ -98,9 +98,10 @@ class VBBAccessService {
 			throw new ServiceUnavailableException();
 
 		$body = $response->getBody();
-		$data = json_decode( $body, true );
+		$data = json_decode( $body, true )["Departure"];
+		$departures = [];
 
-		return $this->departureHydrator->hydrateMany($data["Departure"], Departure::class);
+		return $this->departureHydrator->hydrateMany( $data, Departure::class );
 	}
 
 

@@ -10,17 +10,32 @@ namespace Perna\Service\PublicTransport;
 
 
 use Doctrine\ODM\MongoDB\DocumentManager;
+use Doctrine\ODM\MongoDB\PersistentCollection;
 use Perna\Document\Station;
 
 class DepartureService{
 
+
+    /**
+     * @var DocumentManager
+     */
     protected $documentManager;
 
+    /**
+     * @var VBBAccessService
+     */
     protected $accessService;
 
-    function __construct( DocumentManager $documentManager, VBBAccessService $accessService ) {
+
+    /**
+     * @var StationsService
+     */
+    protected $stationsService;
+
+    function __construct( DocumentManager $documentManager, VBBAccessService $accessService, StationsService $stationsService ) {
         $this->documentManger = $documentManager;
         $this->accessService = $accessService;
+        $this->stationsService = $stationsService;
     }
 
     function getDepartures ( Station $station ) : array {
@@ -48,8 +63,8 @@ class DepartureService{
     }
 
     function getDepartureData ( string $stationId) : array {
-        $station = $this->documentManager->getRepository( Station::class )->find( $stationId );
-        return $this->getDepartures( $station );
+        $station = $this->stationsService->getStation( $stationId );
+        return $this->getNewData( $station );
     }
 
 }
