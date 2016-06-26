@@ -48,6 +48,10 @@ class AbstractControllerTestCase extends AbstractHttpControllerTestCase {
 	 */
 	protected function getSuccessResponseData () {
 		$data = $this->getJSONResponse();
+		$statusCode = $this->getResponseStatusCode();
+		if ( !in_array($statusCode, [200,201]) )
+			$this->fail("Success responses must have the status code 200 or 201. Got {$statusCode}.");
+
 		$this->assertArrayHasKey('success', $data);
 		$this->assertTrue( $data['success'] );
 		$this->assertArrayHasKey('data', $data);
@@ -143,5 +147,15 @@ class AbstractControllerTestCase extends AbstractHttpControllerTestCase {
 	protected function generateGUID () : string {
 		$generator = new GUIDGenerator();
 		return $generator->generateGUID();
+	}
+
+	/**
+	 * Tests whether an error occurs when Access-Token ist not set
+	 * @param     string    $endpoint The endpoint
+	 * @param     string    $method   The HTTP method to use
+	 */
+	protected function abstractTestAccessTokenRequired ( string $endpoint, string $method ) {
+		$this->dispatch( $endpoint, $method );
+		$this->getErrorResponseContent(401);
 	}
 }
