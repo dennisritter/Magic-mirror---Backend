@@ -34,8 +34,7 @@ class DepartureHydrator extends AbstractHydrator {
 	 */
 	public function hydrate ( array $data, $object ) {
 		/** @var Departure $object */
-		//$p = $this->productsService->parseProduct( $data['Product']['CatOutL'] );
-		$p = "Bus";
+		$p = $this->productsService->parseProduct( $data['Product']['catOutL'] );
 		$object->setProduct( $p );
 		$name = (in_array( $p, [ProductsService::ICE, ProductsService::IC] ))
 			? trim( $data['Product']['name'] )

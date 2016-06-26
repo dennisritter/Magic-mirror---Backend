@@ -26,14 +26,13 @@ class DepartureService{
      */
     protected $accessService;
 
-
     /**
      * @var StationsService
      */
     protected $stationsService;
 
     function __construct( DocumentManager $documentManager, VBBAccessService $accessService, StationsService $stationsService ) {
-        $this->documentManger = $documentManager;
+        $this->documentManager = $documentManager;
         $this->accessService = $accessService;
         $this->stationsService = $stationsService;
     }
@@ -66,5 +65,4 @@ class DepartureService{
         $station = $this->stationsService->getStation( $stationId );
         return $this->getNewData( $station );
     }
-
 }
