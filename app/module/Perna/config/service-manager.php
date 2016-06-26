@@ -5,6 +5,7 @@ use Perna\Factory\DependencyTypes;
 use Perna\Factory\Factory;
 use Perna\Hydrator\CityDumpHydrator;
 use Perna\Hydrator\CityHydrator;
+use Perna\Hydrator\DepartureHydrator;
 use Perna\Hydrator\GoogleAccessTokenHydrator;
 use Perna\Hydrator\GoogleCalendarHydrator;
 use Perna\Hydrator\GoogleEventHydrator;
@@ -82,7 +83,8 @@ return [
 			DocumentManager::class => DependencyTypes::SERVICE
 		]),
 		VBBAccessService::class => new Factory(VBBAccessService::class, [
-			StationHydrator::class => DependencyTypes::HYDRATOR
+			StationHydrator::class => DependencyTypes::HYDRATOR,
+			DepartureHydrator::class => DependencyTypes::HYDRATOR
 		])
 	],
 	'invokables' => [
