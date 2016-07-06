@@ -8,6 +8,7 @@ use Perna\Hydrator\StationHydrator;
 use Perna\Service\AuthenticationService;
 use Perna\Service\PublicTransport\DepartureService;
 use Swagger\Annotations as SWG;
+use Zend\Http\Request;
 use ZfrRest\Http\Exception\Client\UnprocessableEntityException;
 
 class DepartureController extends AbstractAuthenticatedApiController {
@@ -51,16 +52,21 @@ class DepartureController extends AbstractAuthenticatedApiController {
 	 *   @SWG\Response(response="503", ref="#/responses/503")
 	 * )
 	 */
-	public function get () {
+	public function get ( array $params ) {
 		$this->assertAccessToken();
 		$this->authenticationService->findAuthenticatedUser( $this->accessToken );
 
-		$id = "009003201";
+		/** @var Request $r */
+		$r = $this->getRequest();
+		$products = $r->getQuery()->get('products', null);
+		$products = $products != null
+			? explode(',', trim( $products, '\t\n\r\0\x0B,' ))
+			: [];
 
-		if ( $id === null )
+		if ( !array_key_exists('id', $params) )
 			throw new UnprocessableEntityException("The query parameter 'id' must be present.");
 
-		$results = $this->departureService->getDepartureData( $id );
+		$results = $this->departureService->getDepartureData( $params['id'], $products );
 		return $this->createDefaultViewModel( $this->extractObject( DepartureHydrator::class, $results ) );
 	}
 }

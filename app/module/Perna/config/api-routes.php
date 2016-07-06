@@ -253,11 +253,14 @@ return [
 				]
 			],
 			'departures' => [
-				'type' => Literal::class,
+				'type' => Segment::class,
 				'options' => [
-					'route' => '/departures',
+					'route' => '/departures/:id',
 					'defaults' => [
 						'controller' => DepartureController::class
+					],
+					'constraints' => [
+						'id' => '[0-9]+'
 					]
 				]
 			]

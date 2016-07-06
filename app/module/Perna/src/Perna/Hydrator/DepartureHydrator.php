@@ -36,9 +36,7 @@ class DepartureHydrator extends AbstractHydrator {
 		/** @var Departure $object */
 		$p = $this->productsService->parseProduct( $data['Product']['catOutL'] );
 		$object->setProduct( $p );
-		$name = (in_array( $p, [ProductsService::ICE, ProductsService::IC] ))
-			? trim( $data['Product']['name'] )
-			: trim( $data['Product']['line'] );
+		$name = trim( $data['Product']['line'] );
 		$object->setName( $name );
 		$object->setDirection( $data['direction'] );
 		$object->setScheduledTime( new \DateTime( $data['date'].' '.$data['time'] ) );

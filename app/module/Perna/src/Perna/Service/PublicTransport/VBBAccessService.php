@@ -101,7 +101,14 @@ class VBBAccessService {
 		$data = json_decode( $body, true )["Departure"];
 		$departures = [];
 
-		return $this->departureHydrator->hydrateMany( $data, Departure::class );
+		foreach ( $data as $dd ) {
+			try {
+				$dep = $this->departureHydrator->hydrate( $dd, new Departure() );
+				$departures[] = $dep;
+			} catch ( \InvalidArgumentException $e ) {}
+		}
+
+		return $departures;
 	}
 
 

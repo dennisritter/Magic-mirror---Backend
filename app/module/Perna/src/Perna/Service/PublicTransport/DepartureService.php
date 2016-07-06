@@ -12,8 +12,9 @@ namespace Perna\Service\PublicTransport;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ODM\MongoDB\PersistentCollection;
 use Perna\Document\Station;
+use ZfrRest\Http\Exception\Client\NotFoundException;
 
-class DepartureService{
+class DepartureService {
 
 
     /**
@@ -37,20 +38,28 @@ class DepartureService{
         $this->stationsService = $stationsService;
     }
 
-    function getDepartures ( Station $station ) : array {
-        $cachedDepartures = $station->getDepartures();
+    function getDepartures ( Station $station, array $products ) : array {
+        $cachedDepartures = $station->getDepartures()->toArray();
 
-        if( count( $cachedDepartures ) < 1 ){
-            return $this->getNewData( $station );
-
+        if ( count( $cachedDepartures ) < 1 ){
+            $deps = $this->getNewData( $station );
+        } elseif ( $station->getFetchedDepartures() >= (new \DateTime('now'))->sub(new \DateInterval('PT2M')) ) {
+            $deps = $cachedDepartures;
         } else {
-            if( $station->getFetchedDepartures() >= (new \DateTime('now'))->sub(new \DateInterval('PT2M'))){
-                return $cachedDepartures;
-            }
-
-            return $this->getNewData( $station );
+            $deps = $this->getNewData( $station );
         }
-        
+
+        if ( count( $products ) < 1 ) {
+            return $deps;
+        }
+
+        $data = [];
+        foreach ( $deps as $departure ) {
+            if ( in_array( $departure->getProduct(), $products ) )
+                $data[] = $departure;
+        }
+
+        return $data;
     }
 
     function getNewData ( Station $station) : array {
@@ -61,8 +70,11 @@ class DepartureService{
         return $cachedDepartures;
     }
 
-    function getDepartureData ( string $stationId) : array {
+    function getDepartureData ( string $stationId, array $products ) : array {
         $station = $this->stationsService->getStation( $stationId );
-        return $this->getNewData( $station );
+        if ( $station == null )
+            throw new NotFoundException("Station with id {$stationId} could not be found.");
+
+        return $this->getDepartures( $station, $products );
     }
 }
