@@ -59,7 +59,7 @@ class UserControllerTest extends AbstractUserControllerTestCase {
 		$this->assertEquals('max@mustermann.de', $data['email']);
 		$this->assertEquals($lastLogin->format( \DateTime::RFC3339 ), $data['lastLogin']);
 	}
-	
+
 	public function testPutSuccess () {
 		$newData = [
 			'firstName' => 'Peter',
@@ -70,7 +70,21 @@ class UserControllerTest extends AbstractUserControllerTestCase {
 
 		$this->documentManager->expects($this->once())->method('flush');
 		$userMock = $this->getMockBuilder( User::class )->disableOriginalConstructor()->getMock();
+
+		foreach ( $newData as $key => $value ) {
+			$pascal = strtoupper(substr($key, 0, 1)).substr($key,1);
+			$userMock->expects($this->once())->method('set'.$pascal)->with($this->equalTo($value));
+			$userMock->expects($this->any())->method('get'.$pascal)->willReturn($value);
+		}
+
 		$userMock->expects($this->once())->method('setFirstName')->with($this->equalTo($newData['firstName']));
+		$userMock->expects($this->once())->method('setLastName')->with($this->equalTo($newData['lastName']));
+		$userMock->expects($this->once())->method('setEmail')->with($this->equalTo($newData['email']));
+		/** @var User $userMock */
+		$ac = $this->getValidAccessToken();
+		$ac->setUser( $userMock );
+
+		$this->documentRepository->expects($this->once())->method('find')->with($this->equalTo($ac->getToken()));
 
 		$this->setRequestHeaderLine( 'Access-Token', self::DUMMY_ACCESS_TOKEN );
 		$this->dispatch( self::ENDPOINT, Request::METHOD_PUT, $newData );
