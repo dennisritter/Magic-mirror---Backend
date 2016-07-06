@@ -10,27 +10,38 @@ namespace Perna\Service\PublicTransport;
  */
 class ProductsService {
 
-	const ICE = 'ICE';
-	const IC = 'IC';
+	// Regional Trains
 	const RE = 'RE';
+
+	// S-Bahn
 	const S = 'S';
+
+	// Bus
 	const B = 'B';
+
+	// U-Bahn / Underground
 	const U = 'U';
+
+	// Tram
 	const T = 'T';
 
+	// Ferry
+	const F = 'F';
+
 	/**
-	 * Array mapping HAFAS Zugart IDs to internal Product code
-	 * The data is currently not correct!
+	 * Array mapping HAFAS Zugart IDs to internal Product code with:
+	 *  key:      int w/ position in the bitmap, starting at 0
+	 *  value:    string w/ product key
+	 *
 	 * @var       array
 	 */
 	const PRODUCT_MAP = [
-		0 => self::ICE,
-		1 => self::IC,
-		2 => self::RE,
-		4 => self::S,
-		5 => self::B,
-		7 => self::U,
-		8 => self::T
+		0 => self::S,
+		1 => self::U,
+		2 => self::T,
+		3 => self::B,
+		4 => self::F,
+		6 => self::RE
 	];
 
 	/**
@@ -40,7 +51,7 @@ class ProductsService {
 	 */
 	public function bitmapToProducts ( int $bitmap ) : array {
 		$products = [];
-		$binDigits = ceil( sqrt( $bitmap ) );
+		$binDigits = strlen( decbin( $bitmap ) );
 		for ( $i = 0; $i < $binDigits; ++$i ) {
 			$val = $bitmap & 1;
 			if ( $val === 1 && array_key_exists( $i, self::PRODUCT_MAP ) )
