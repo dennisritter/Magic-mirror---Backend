@@ -7,10 +7,8 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Perna\Document\City;
 use Perna\Document\CurrentWeatherData;
-use Perna\Document\TemporalWeatherData;
 use Perna\Document\WeatherDataCache;
 use Perna\Exception\WeatherDataAccessException;
-use Zend\Stdlib\DateTime;
 use ZfrRest\Http\Exception\Client\NotFoundException;
 use ZfrRest\Http\Exception\Server\ServiceUnavailableException;
 
