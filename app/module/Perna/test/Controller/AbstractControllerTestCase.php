@@ -31,6 +31,8 @@ class AbstractControllerTestCase extends AbstractHttpControllerTestCase {
 
 	/** @inheritdoc */
 	public function setUp () {
+		parent::setUp();
+
 		$this->setApplicationConfig( include __DIR__ . '/../../../../config/application.config.php' );
 		$this->traceError = false;
 
@@ -46,8 +48,6 @@ class AbstractControllerTestCase extends AbstractHttpControllerTestCase {
 		$sm = $this->getApplicationServiceLocator();
 		$sm->setAllowOverride( true );
 		$sm->setService( DocumentManager::class, $dmMock );
-
-		parent::setUp();
 	}
 
 	/**
