@@ -38,6 +38,13 @@ class DepartureController extends AbstractAuthenticatedApiController {
 	 *    description="The station id for the departures (required)",
 	 *    default="9100001"
 	 *   ),
+	 *   @SWG\Parameter(
+	 *    in="query",
+	 *    name="products",
+	 *    type="string",
+	 *    required=false,
+	 *    description="Comma-separated string of product ids. Product ids might be: T (Tram), B (Bus), "
+	 *   ),
 	 *   @SWG\Parameter(ref="#/parameters/accessToken"),
 	 *   @SWG\Response(
 	 *    response="200",
