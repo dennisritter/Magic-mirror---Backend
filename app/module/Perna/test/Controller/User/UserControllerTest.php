@@ -10,6 +10,11 @@ use Zend\Http\Request;
 class UserControllerTest extends AbstractUserControllerTestCase {
 
 	const ENDPOINT = '/v1/user';
+	const DUMMY_DATA = [
+		'firstName' => 'Peter',
+		'lastName' => 'Lustig',
+		'email' => 'peter@lustig.de'
+	];
 
 	public function setUp () {
 		parent::setUp();
@@ -95,6 +100,39 @@ class UserControllerTest extends AbstractUserControllerTestCase {
 		$this->assertEquals('Peter', $data['firstName']);
 		$this->assertEquals('Lustig', $data['lastName']);
 		$this->assertEquals('peter@lustig.de', $data['email']);
+	}
+
+	protected function abstractPutValidationTest ( $data, $property ) {
+		$this->documentManager->expects($this->never())->method('flush');
+		$this->documentManager->expects($this->never())->method('getRepository');
+		$this->documentRepository->expects($this->never())->method('find');
+
+		$this->setRequestHeaderLine( 'Access-Token', self::DUMMY_ACCESS_TOKEN );
+		$this->dispatch( self::ENDPOINT, Request::METHOD_PUT, $data );
+		$this->assertControllerIs(UserController::class);
+		$data = $this->getErrorResponseContent(422);
+		$this->assertArrayHasKey('errors', $data);
+		$errors = $data['errors'];
+		$this->assertEquals(1, count($errors));
+		$this->assertArrayHasKey($property, $errors);
+	}
+
+	public function testPutFirstNameMissing () {
+		$data = self::DUMMY_DATA;
+		unset($data['firstName']);
+		$this->abstractPutValidationTest($data, 'firstName');
+	}
+
+	public function testPutLastNameMissing () {
+		$data = self::DUMMY_DATA;
+		unset($data['lastName']);
+		$this->abstractPutValidationTest($data, 'lastName');
+	}
+
+	public function testPutEmailMissing () {
+		$data = self::DUMMY_DATA;
+		unset($data['email']);
+		$this->abstractPutValidationTest($data, 'email');
 	}
 
 	public function testMethodsNotAllowed () {
