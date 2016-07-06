@@ -164,6 +164,7 @@ class ModulesController extends AbstractAuthenticatedApiController {
             case 'publicTransport':
                 $data['stationId'] = $rawData['stationId'] || "009003201";
                 $data['stationName'] = $rawData['stationName'] || "Hauptbahnhof";
+                $data['products'] = $rawData['products'] || [];
                 $module = new PublicTransportModule();
                 $this->hydrateObject(PublicTransportModuleHydrator::class, $module, $data);
                 $this->moduleService->addModule($user, $module);

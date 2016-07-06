@@ -38,6 +38,15 @@ class PublicTransportModule extends Module {
     protected $stationName;
 
     /**
+     * @ODM\Field(
+     *     name = "stationName",
+     *     type = "collection"
+     * )
+     * @var array of Products
+     */
+    protected $products;
+
+    /**
      * @return string
      */
     public function getStationId()
@@ -69,6 +78,20 @@ class PublicTransportModule extends Module {
         $this->stationName = $stationName;
     }
 
+    /**
+     * @return array
+     */
+    public function getProducts()
+    {
+        return $this->products;
+    }
 
+    /**
+     * @param array $products
+     */
+    public function setProducts($products)
+    {
+        $this->products = $products;
+    }
 }
 
