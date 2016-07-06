@@ -10,7 +10,6 @@ namespace Perna\Service\PublicTransport;
 
 
 use Doctrine\ODM\MongoDB\DocumentManager;
-use Doctrine\ODM\MongoDB\PersistentCollection;
 use Perna\Document\Station;
 use ZfrRest\Http\Exception\Client\NotFoundException;
 
