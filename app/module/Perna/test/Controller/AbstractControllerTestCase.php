@@ -2,9 +2,27 @@
 
 namespace Perna\Test\Controller;
 
+use Perna\Service\GUIDGenerator;
+use Zend\Http\Request;
+use Zend\Mvc\Controller\Plugin\Params;
+use Zend\Mvc\Router\Http\Method;
+use Zend\Server\Method\Parameter;
+use Zend\Stdlib\Parameters;
 use Zend\Test\PHPUnit\Controller\AbstractHttpControllerTestCase;
 
 class AbstractControllerTestCase extends AbstractHttpControllerTestCase {
+
+	const HTTP_METHODS = [
+		Request::METHOD_GET,
+		Request::METHOD_POST,
+		Request::METHOD_PUT,
+		Request::METHOD_DELETE,
+		Request::METHOD_PATCH,
+		Request::METHOD_HEAD,
+		Request::METHOD_TRACE,
+		Request::METHOD_CONNECT,
+		Request::METHOD_PROPFIND
+	];
 
 	/** @inheritdoc */
 	public function setUp () {
@@ -34,6 +52,10 @@ class AbstractControllerTestCase extends AbstractHttpControllerTestCase {
 	 */
 	protected function getSuccessResponseData () {
 		$data = $this->getJSONResponse();
+		$statusCode = $this->getResponseStatusCode();
+		if ( !in_array($statusCode, [200,201]) )
+			$this->fail("Success responses must have the status code 200 or 201. Got {$statusCode}.");
+
 		$this->assertArrayHasKey('success', $data);
 		$this->assertTrue( $data['success'] );
 		$this->assertArrayHasKey('data', $data);
@@ -62,7 +84,7 @@ class AbstractControllerTestCase extends AbstractHttpControllerTestCase {
 		$this->assertControllerName( $controllerClass );
 
 		if ( !class_exists( $controllerClass ) )
-			throw new \AssertionError("The controller class {$controllerClass} does not exist.");
+			$this->fail("The controller class {$controllerClass} does not exist.");
 
 		$reflect = new \ReflectionClass( $controllerClass );
 		$this->assertControllerClass( $reflect->getShortName() );
@@ -80,5 +102,86 @@ class AbstractControllerTestCase extends AbstractHttpControllerTestCase {
 			$str .= $characters[(int) rand(0, strlen($characters) - 1)];
 		}
 		return $str;
+	}
+
+	/**
+	 * Asserts that the specified value is a GUID
+	 * @param     string    $guid     The value to check
+	 */
+	protected function assertGUID ( $guid ) {
+		if ( !is_string( $guid ) )
+			$this->fail(sprintf("GUID must be a string, got %s", gettype($guid)));
+
+		$regex = '/^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$/';
+		if ( preg_match( $regex, $guid ) === false )
+			$this->fail("string {$guid} is not a valid GUID.");
+	}
+
+	/**
+	 * Sets a line in the request header
+	 * @param     string    $name     The header name
+	 * @param     string    $content  The header content
+	 */
+	protected function setRequestHeaderLine ( string $name, $content ) {
+		/** @var Request $request */
+		$request = $this->getRequest();
+		$request->getHeaders()->addHeaderLine( $name, $content );
+	}
+
+	/**
+	 * Asserts that all methods not contained in $allowedMethods are not allowed
+	 *
+	 * @param     string    $endpoint         The endpoint to call
+	 * @param     string[]  $allowedMethods  Array of method names that are allowed
+	 */
+	protected function assertOtherMethodsNotAllowed ( string $endpoint, array $allowedMethods ) {
+		foreach ( self::HTTP_METHODS as $method ) {
+			if ( in_array( $method, $allowedMethods ) )
+				continue;
+
+			$this->dispatch( $endpoint, $method );
+			$this->assertResponseStatusCode( 405 );
+		}
+	}
+
+	/**
+	 * Generates a random GUID
+	 * @return    string    The GUID
+	 */
+	protected function generateGUID () : string {
+		$generator = new GUIDGenerator();
+		return $generator->generateGUID();
+	}
+
+	/**
+	 * Tests whether an error occurs when Access-Token ist not set
+	 * @param     string    $endpoint The endpoint
+	 * @param     string    $method   The HTTP method to use
+	 */
+	protected function abstractTestAccessTokenRequired ( string $endpoint, string $method ) {
+		$this->dispatch( $endpoint, $method );
+		$this->getErrorResponseContent(401);
+	}
+
+	/**
+	 * Transforms associative array data
+	 * @inheritdoc
+	 * @param     array     $query    Associative array containing query parameters
+	 */
+	public function dispatch( $url, $method = null, $params = [], $query = [], $isXmlHttpRequest = false ) {
+		/** @var Request $r */
+		$r = $this->getRequest();
+
+		if ( is_array( $query ) && count( $query ) > 0 ) {
+			$r->setQuery( new Parameters( $query ) );
+		}
+
+		if ( is_array( $params ) && count( $params ) > 0
+			&& in_array( $method, [Request::METHOD_POST, Request::METHOD_PATCH, Request::METHOD_PUT] ) ) {
+			$r->setContent( json_encode( $params ) );
+			$params = null;
+		}
+
+		return parent::dispatch( $url, $method, [], $isXmlHttpRequest );
 	}
 }
