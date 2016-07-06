@@ -77,9 +77,6 @@ class UserControllerTest extends AbstractUserControllerTestCase {
 			$userMock->expects($this->any())->method('get'.$pascal)->willReturn($value);
 		}
 
-		$userMock->expects($this->once())->method('setFirstName')->with($this->equalTo($newData['firstName']));
-		$userMock->expects($this->once())->method('setLastName')->with($this->equalTo($newData['lastName']));
-		$userMock->expects($this->once())->method('setEmail')->with($this->equalTo($newData['email']));
 		/** @var User $userMock */
 		$ac = $this->getValidAccessToken();
 		$ac->setUser( $userMock );
