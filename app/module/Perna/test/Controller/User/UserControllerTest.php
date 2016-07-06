@@ -67,10 +67,11 @@ class UserControllerTest extends AbstractUserControllerTestCase {
 			'email' => 'peter@lustig.de'
 		];
 
-		$this->documentManager->expects($this->once())->method('flush');
 
-		$at = $this->getValidAccessToken();
-		$user = $at->getUser();
+		$this->documentManager->expects($this->once())->method('flush');
+		$userMock = $this->getMockBuilder( User::class )->disableOriginalConstructor()->getMock();
+		$userMock->expects($this->once())->method('setFirstName')->with($this->equalTo($newData['firstName']));
+
 		$this->setRequestHeaderLine( 'Access-Token', self::DUMMY_ACCESS_TOKEN );
 		$this->dispatch( self::ENDPOINT, Request::METHOD_PUT, $newData );
 		$this->assertControllerIs( UserController::class );
