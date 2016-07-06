@@ -25,14 +25,14 @@ class DepartureController extends AbstractAuthenticatedApiController {
 
 	/**
 	 * @SWG\Get(
-	 *   path="/publicTransport/departures",
+	 *   path="/publicTransport/departures/{stationId}",
 	 *   summary="VBB Departures",
 	 *   description="Gets Departures for station at VBB API",
 	 *   operationId="publicTransportDepartures",
 	 *   tags={"publicTransport"},
 	 *   @SWG\Parameter(
-	 *    in = "query",
-	 *    name="id",
+	 *    in = "path",
+	 *    name="stationId",
 	 *    type="string",
 	 *    required=true,
 	 *    description="The station id for the departures (required)",
