@@ -3,7 +3,6 @@
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Perna\Factory\DependencyTypes;
 use Perna\Factory\Factory;
-use Perna\Hydrator\CityDumpHydrator;
 use Perna\Hydrator\CityHydrator;
 use Perna\Hydrator\DepartureHydrator;
 use Perna\Hydrator\GoogleAccessTokenHydrator;
@@ -13,9 +12,7 @@ use Perna\Hydrator\StationHydrator;
 use Perna\Hydrator\Weather\CurrentWeatherDataHydrator;
 use Perna\Hydrator\Weather\DailyWeatherDataHydrator;
 use Perna\Hydrator\Weather\TemporalWeatherDataHydrator;
-use Perna\InputFilter\CityDumpInputFilter;
 use Perna\Service\AuthenticationService;
-use Perna\Service\CityImportService;
 use Perna\Service\GoogleAuthenticationService;
 use Perna\Service\GoogleCalendarEventsService;
 use Perna\Service\GoogleCalendarService;
@@ -32,6 +29,7 @@ use Perna\Service\Weather\WeatherDataAccessService;
 use Perna\Service\Weather\WeatherDataService;
 use Perna\Service\WeatherLocationService;
 use Zend\Di\ServiceLocator;
+use Zend\Http\Client;
 
 return [
 	'aliases' => [
@@ -102,6 +100,7 @@ return [
 	'invokables' => [
 		PasswordService::class => PasswordService::class,
 		GUIDGenerator::class => GUIDGenerator::class,
-		ProductsService::class => ProductsService::class
+		ProductsService::class => ProductsService::class,
+		Client::class => Client::class
 	]
 ];

@@ -2,11 +2,10 @@
 
 namespace Perna\Test\Controller;
 
+use Doctrine\ODM\MongoDB\DocumentManager;
+use Doctrine\ODM\MongoDB\DocumentRepository;
 use Perna\Service\GUIDGenerator;
 use Zend\Http\Request;
-use Zend\Mvc\Controller\Plugin\Params;
-use Zend\Mvc\Router\Http\Method;
-use Zend\Server\Method\Parameter;
 use Zend\Stdlib\Parameters;
 use Zend\Test\PHPUnit\Controller\AbstractHttpControllerTestCase;
 
@@ -23,11 +22,31 @@ class AbstractControllerTestCase extends AbstractHttpControllerTestCase {
 		Request::METHOD_CONNECT,
 		Request::METHOD_PROPFIND
 	];
+	
+	/** @var \PHPUnit_Framework_MockObject_MockObject */
+	protected $documentManager;
+
+	/** @var \PHPUnit_Framework_MockObject_MockObject */
+	protected $documentRepository;
 
 	/** @inheritdoc */
 	public function setUp () {
 		$this->setApplicationConfig( include __DIR__ . '/../../../../config/application.config.php' );
 		$this->traceError = false;
+
+		$repoMock = $this->getMockBuilder( DocumentRepository::class )->disableOriginalConstructor()->getMock();
+
+		$dmMock = $this->getMockBuilder( DocumentManager::class )->disableOriginalConstructor()->getMock();
+		$dmMock->method('getRepository')
+		       ->willReturn( $repoMock );
+
+		$this->documentManager = $dmMock;
+		$this->documentRepository = $repoMock;
+
+		$sm = $this->getApplicationServiceLocator();
+		$sm->setAllowOverride( true );
+		$sm->setService( DocumentManager::class, $dmMock );
+
 		parent::setUp();
 	}
 

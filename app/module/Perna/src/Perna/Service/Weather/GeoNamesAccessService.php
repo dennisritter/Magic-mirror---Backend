@@ -149,5 +149,4 @@ class GeoNamesAccessService {
 			$cities[] = $this->cityHydrator->hydrateFromGeoNameResult( $gn, new City() );
 		return $cities;
 	}
-
 }
