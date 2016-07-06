@@ -2,7 +2,9 @@
 
 namespace Perna\Service\PublicTransport;
 
+use Perna\Document\Departure;
 use Perna\Document\Station;
+use Perna\Hydrator\DepartureHydrator;
 use Perna\Hydrator\StationHydrator;
 use Zend\Http\Client;
 use Zend\Http\Request;
@@ -25,8 +27,14 @@ class VBBAccessService {
 	 */
 	protected $stationHydrator;
 
-	public function __construct ( StationHydrator $stationHydrator ) {
+	/**
+	 * @var DepartureHydrator
+	 */
+	protected $departureHydrator;
+
+	public function __construct ( StationHydrator $stationHydrator, DepartureHydrator $departureHydrator ) {
 		$this->stationHydrator = $stationHydrator;
+		$this->departureHydrator = $departureHydrator;
 	}
 
 	/**
@@ -73,6 +81,36 @@ class VBBAccessService {
 
 		return $stations;
 	}
+
+	public function getDepartures( Station $station ) : array{
+		$request = $this->createBasicRequest( 'departureBoard' );
+		$query = $request->getQuery();
+		$query->set('id', $station->getId());
+
+		$client = new Client();
+		try {
+			$response = $client->send( $request );
+		} catch ( Client\Adapter\Exception\RuntimeException $e ) {
+			throw new ServiceUnavailableException();
+		}
+
+		if ( !$response->isSuccess() )
+			throw new ServiceUnavailableException();
+
+		$body = $response->getBody();
+		$data = json_decode( $body, true )["Departure"];
+		$departures = [];
+
+		foreach ( $data as $dd ) {
+			try {
+				$dep = $this->departureHydrator->hydrate( $dd, new Departure() );
+				$departures[] = $dep;
+			} catch ( \InvalidArgumentException $e ) {}
+		}
+
+		return $departures;
+	}
+
 
 	/**
 	 * Creates a basic HTTP request for a VBB endpoint

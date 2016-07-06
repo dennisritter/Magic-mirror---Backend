@@ -9,6 +9,7 @@ use Perna\Controller\LoginController;
 use Perna\Controller\LogoutController;
 use Perna\Controller\ModuleController;
 use Perna\Controller\ModulesController;
+use Perna\Controller\PublicTransport\DepartureController;
 use Perna\Controller\PublicTransport\StationSearchController;
 use Perna\Controller\RefreshController;
 use Perna\Controller\RegisterController;
@@ -26,6 +27,7 @@ use Perna\Service\CityImportService;
 use Perna\Service\GoogleAuthenticationService;
 use Perna\Service\GoogleCalendarService;
 use Perna\Service\ModuleService;
+use Perna\Service\PublicTransport\DepartureService;
 use Perna\Service\PublicTransport\StationsService;
 use Perna\Service\PublicTransport\VBBAccessService;
 use Perna\Service\UserService;
@@ -99,7 +101,11 @@ return [
 		]),
 		StationSearchController::class => new Factory(StationSearchController::class, [
 			AuthenticationService::class => DependencyTypes::SERVICE,
-			StationsService::class => DependencyTypes::SERVICE
+		    StationsService::class => DependencyTypes::SERVICE
+		]),
+		DepartureController::class => new Factory(DepartureController::class, [
+			AuthenticationService::class => DependencyTypes::SERVICE,
+			DepartureService::class => DependencyTypes::SERVICE
 		])
 	]
 ];

@@ -5,6 +5,7 @@ use Perna\Factory\DependencyTypes;
 use Perna\Factory\Factory;
 use Perna\Hydrator\CityDumpHydrator;
 use Perna\Hydrator\CityHydrator;
+use Perna\Hydrator\DepartureHydrator;
 use Perna\Hydrator\GoogleAccessTokenHydrator;
 use Perna\Hydrator\GoogleCalendarHydrator;
 use Perna\Hydrator\GoogleEventHydrator;
@@ -21,6 +22,7 @@ use Perna\Service\GoogleCalendarService;
 use Perna\Service\GUIDGenerator;
 use Perna\Service\ModuleService;
 use Perna\Service\PasswordService;
+use Perna\Service\PublicTransport\DepartureService;
 use Perna\Service\PublicTransport\ProductsService;
 use Perna\Service\PublicTransport\StationsService;
 use Perna\Service\PublicTransport\VBBAccessService;
@@ -83,7 +85,14 @@ return [
 			DocumentManager::class => DependencyTypes::SERVICE
 		]),
 		VBBAccessService::class => new Factory(VBBAccessService::class, [
-			StationHydrator::class => DependencyTypes::HYDRATOR
+			StationHydrator::class => DependencyTypes::HYDRATOR,
+			DepartureHydrator::class => DependencyTypes::HYDRATOR,
+			DocumentManager::class => DependencyTypes::SERVICE
+		]),
+		DepartureService::class => new Factory(DepartureService::class, [
+			DocumentManager::class => DependencyTypes::SERVICE,
+			VBBAccessService::class => DependencyTypes::SERVICE,
+			StationsService::class => DependencyTypes::SERVICE
 		]),
 		StationsService::class => new Factory(StationsService::class, [
 			VBBAccessService::class => DependencyTypes::SERVICE,
