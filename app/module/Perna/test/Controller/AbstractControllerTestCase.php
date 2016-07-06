@@ -4,6 +4,10 @@ namespace Perna\Test\Controller;
 
 use Perna\Service\GUIDGenerator;
 use Zend\Http\Request;
+use Zend\Mvc\Controller\Plugin\Params;
+use Zend\Mvc\Router\Http\Method;
+use Zend\Server\Method\Parameter;
+use Zend\Stdlib\Parameters;
 use Zend\Test\PHPUnit\Controller\AbstractHttpControllerTestCase;
 
 class AbstractControllerTestCase extends AbstractHttpControllerTestCase {
@@ -157,5 +161,27 @@ class AbstractControllerTestCase extends AbstractHttpControllerTestCase {
 	protected function abstractTestAccessTokenRequired ( string $endpoint, string $method ) {
 		$this->dispatch( $endpoint, $method );
 		$this->getErrorResponseContent(401);
+	}
+
+	/**
+	 * Transforms associative array data
+	 * @inheritdoc
+	 * @param     array     $query    Associative array containing query parameters
+	 */
+	public function dispatch( $url, $method = null, $params = [], $query = [], $isXmlHttpRequest = false ) {
+		/** @var Request $r */
+		$r = $this->getRequest();
+
+		if ( is_array( $query ) && count( $query ) > 0 ) {
+			$r->setQuery( new Parameters( $query ) );
+		}
+
+		if ( is_array( $params ) && count( $params ) > 0
+			&& in_array( $method, [Request::METHOD_POST, Request::METHOD_PATCH, Request::METHOD_PUT] ) ) {
+			$r->setContent( json_encode( $params ) );
+			$params = null;
+		}
+
+		return parent::dispatch( $url, $method, [], $isXmlHttpRequest );
 	}
 }
