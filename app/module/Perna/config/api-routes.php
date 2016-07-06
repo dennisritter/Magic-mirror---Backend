@@ -14,7 +14,6 @@ use Perna\Controller\RefreshController;
 use Perna\Controller\RegisterController;
 use Perna\Controller\UserController;
 use Perna\Controller\Weather\WeatherDataController;
-use Perna\Controller\Weather\WeatherLocationAutocompleteController;
 use Perna\Controller\Weather\WeatherLocationController;
 use Perna\Controller\Weather\WeatherLocationNearbyController;
 use Perna\Controller\Weather\WeatherLocationSearchController;
@@ -177,16 +176,6 @@ return [
 							]
 						]
 					],
-					'autocomplete' => [
-						'type' => Literal::class,
-						'options' => [
-							'route' => '/autocomplete',
-							'defaults' => [
-								'controller' => WeatherLocationAutocompleteController::class
-							]
-						]
-					],
-					
 					'resource' => [
 						'type' => Segment::class,
 						'options' => [

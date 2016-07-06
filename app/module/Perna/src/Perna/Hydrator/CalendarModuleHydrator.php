@@ -2,7 +2,6 @@
 
 namespace Perna\Hydrator;
 
-
 use Perna\Document\CalendarModule;
 
 class CalendarModuleHydrator extends AbstractModuleHydrator {
@@ -19,6 +18,4 @@ class CalendarModuleHydrator extends AbstractModuleHydrator {
         parent::hydrate($data, $object);
         return $object;
     }
-
-
 }

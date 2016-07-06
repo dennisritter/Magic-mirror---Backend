@@ -1,13 +1,12 @@
 <?php
 
-namespace Perna\Test\Controller;
+namespace Perna\Test\Controller\User;
 
-use Doctrine\ODM\MongoDB\DocumentManager;
-use Doctrine\ODM\MongoDB\DocumentRepository;
 use Perna\Controller\RegisterController;
 use Perna\Document\User;
+use Zend\Http\Request;
 
-class RegisterControllerTest extends AbstractControllerTestCase {
+class RegisterControllerTest extends AbstractUserControllerTestCase {
 
 	const ENDPOINT = '/v1/register';
 
@@ -18,37 +17,8 @@ class RegisterControllerTest extends AbstractControllerTestCase {
 		'password' => 'vkwovbwfvw'
 	];
 
-	/** @var \PHPUnit_Framework_MockObject_MockObject */
-	protected $documentManager;
-
-	/** @var \PHPUnit_Framework_MockObject_MockObject */
-	protected $documentRepository;
-
-	public function setUp () {
-		parent::setUp();
-
-		$repoMock = $this->getMockBuilder( DocumentRepository::class )->disableOriginalConstructor()->getMock();
-
-		$dmMock = $this->getMockBuilder( DocumentManager::class )->disableOriginalConstructor()->getMock();
-		$dmMock->method('getRepository')
-		       ->with( $this->equalTo( User::class ) )
-		       ->willReturn( $repoMock );
-
-		$this->documentManager = $dmMock;
-		$this->documentRepository = $repoMock;
-
-		$sm = $this->getApplicationServiceLocator();
-		$sm->setAllowOverride( true );
-		$sm->setService( DocumentManager::class, $dmMock );
-	}
-	
 	public function testRegistrationSuccess () {
-		$requestData = [
-			'email' => 'meine@emailadresse.de',
-			'firstName' => 'Jannik',
-			'lastName' => 'Portz',
-			'password' => 'auvgqovgrovo'
-		];
+		$requestData = self::DUMMY_DATA;
 
 		$this->documentRepository
 			->expects( $this->once() )
@@ -64,7 +34,7 @@ class RegisterControllerTest extends AbstractControllerTestCase {
 			->method('persist')
 			->with( $this->isInstanceOf( User::class ) );
 
-		$this->dispatch( '/v1/register', 'POST', $requestData );
+		$this->dispatch( self::ENDPOINT, Request::METHOD_POST, $requestData );
 		$this->assertControllerIs( RegisterController::class );
 
 		$this->assertResponseStatusCode( 201 );
@@ -93,7 +63,7 @@ class RegisterControllerTest extends AbstractControllerTestCase {
 		$this->documentManager->expects( $this->never() )->method('persist');
 		$this->documentManager->expects( $this->never() )->method('flush');
 
-		$this->dispatch( '/v1/register', 'POST', $requestData );
+		$this->dispatch( self::ENDPOINT, 'POST', $requestData );
 		$this->assertControllerIs( RegisterController::class );
 		
 		$this->assertResponseStatusCode( 422 );
@@ -206,4 +176,7 @@ class RegisterControllerTest extends AbstractControllerTestCase {
 		]), false, 'email' );
 	}
 
+	public function testMethodsNotAllowed () {
+		$this->assertOtherMethodsNotAllowed( self::ENDPOINT, [Request::METHOD_POST] );
+	}
 }

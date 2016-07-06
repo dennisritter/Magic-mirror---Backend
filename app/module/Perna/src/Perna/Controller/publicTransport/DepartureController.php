@@ -4,7 +4,6 @@ namespace Perna\Controller\PublicTransport;
 
 use Perna\Controller\AbstractAuthenticatedApiController;
 use Perna\Hydrator\DepartureHydrator;
-use Perna\Hydrator\StationHydrator;
 use Perna\Service\AuthenticationService;
 use Perna\Service\PublicTransport\DepartureService;
 use Swagger\Annotations as SWG;

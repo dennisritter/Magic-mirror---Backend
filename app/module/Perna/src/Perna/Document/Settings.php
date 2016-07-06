@@ -2,8 +2,8 @@
 
 namespace Perna\Document;
 
-use Swagger\Annotations as SWG;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
+use Swagger\Annotations as SWG;
 
 /**
  * @ODM\EmbeddedDocument()
