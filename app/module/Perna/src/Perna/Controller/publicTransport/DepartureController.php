@@ -43,7 +43,7 @@ class DepartureController extends AbstractAuthenticatedApiController {
 	 *    name="products",
 	 *    type="string",
 	 *    required=false,
-	 *    description="Comma-separated string of product ids. Product ids might be: T (Tram), B (Bus), "
+	 *    description="Comma-separated string of product ids. Product ids might be: T (Tram), B (Bus), S (S-Bahn), U (U-Bahn), F (Ferry)"
 	 *   ),
 	 *   @SWG\Parameter(ref="#/parameters/accessToken"),
 	 *   @SWG\Response(
