@@ -39,7 +39,7 @@ class PublicTransportModule extends Module {
 
     /**
      * @ODM\Field(
-     *     name = "stationName",
+     *     name = "products",
      *     type = "collection"
      * )
      * @var array of Products
@@ -79,7 +79,7 @@ class PublicTransportModule extends Module {
     }
 
     /**
-     * @return array
+     * @return string[]
      */
     public function getProducts()
     {

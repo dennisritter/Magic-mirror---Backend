@@ -23,4 +23,3 @@ class PublicTransportModuleHydrator extends AbstractModuleHydrator {
         return $object;
     }
 }
-
