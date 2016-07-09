@@ -4,7 +4,10 @@ namespace Perna\Test\Controller;
 
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ODM\MongoDB\DocumentRepository;
+use Perna\Document\AccessToken;
+use Perna\Document\User;
 use Perna\Service\GUIDGenerator;
+use Zend\Http\Client;
 use Zend\Http\Request;
 use Zend\Stdlib\Parameters;
 use Zend\Test\PHPUnit\Controller\AbstractHttpControllerTestCase;
@@ -22,12 +25,17 @@ class AbstractControllerTestCase extends AbstractHttpControllerTestCase {
 		Request::METHOD_CONNECT,
 		Request::METHOD_PROPFIND
 	];
+
+	const DUMMY_ACCESS_TOKEN = 'C57A25FF-A9E9-5870-2E2A-6A3156EFDB22';
 	
 	/** @var \PHPUnit_Framework_MockObject_MockObject */
 	protected $documentManager;
 
 	/** @var \PHPUnit_Framework_MockObject_MockObject */
 	protected $documentRepository;
+
+	/** @var \PHPUnit_Framework_MockObject_MockObject */
+	protected $httpClient;
 
 	/** @inheritdoc */
 	public function setUp () {
@@ -36,18 +44,21 @@ class AbstractControllerTestCase extends AbstractHttpControllerTestCase {
 		$this->setApplicationConfig( include __DIR__ . '/../../../../config/application.config.php' );
 		$this->traceError = false;
 
-		$repoMock = $this->getMockBuilder( DocumentRepository::class )->disableOriginalConstructor()->getMock();
+		$this->documentRepository = $this->getMockBuilder( DocumentRepository::class )->disableOriginalConstructor()->getMock();
 
-		$dmMock = $this->getMockBuilder( DocumentManager::class )->disableOriginalConstructor()->getMock();
-		$dmMock->method('getRepository')
-		       ->willReturn( $repoMock );
+		$this->documentManager = $this->getMockBuilder( DocumentManager::class )->disableOriginalConstructor()->getMock();
 
-		$this->documentManager = $dmMock;
-		$this->documentRepository = $repoMock;
+		$this->documentManager
+			->expects($this->any())
+			->method('getRepository')
+			->willReturn( $this->documentRepository );
+
+		$this->httpClient = $this->getMockBuilder( Client::class )->disableOriginalConstructor()->getMock();
 
 		$sm = $this->getApplicationServiceLocator();
 		$sm->setAllowOverride( true );
-		$sm->setService( DocumentManager::class, $dmMock );
+		$sm->setService( DocumentManager::class, $this->documentManager );
+		$sm->setService( Client::class, $this->httpClient );
 	}
 
 	/**
@@ -201,6 +212,29 @@ class AbstractControllerTestCase extends AbstractHttpControllerTestCase {
 			$params = null;
 		}
 
-		return parent::dispatch( $url, $method, [], $isXmlHttpRequest );
+		parent::dispatch( $url, $method, [], $isXmlHttpRequest );
+	}
+
+	protected function getValidAccessToken ( bool $setMockExpectation = true ) : AccessToken {
+		$user = new User();
+		$user->setFirstName('Max');
+		$user->setLastName('Mustermann');
+		$user->setEmail('max@mustermann.de');
+		$user->setLastLogin(new \DateTime('now'));
+
+		$at = new AccessToken();
+		$at->setToken( self::DUMMY_ACCESS_TOKEN );
+		$at->setExpirationDate( (new \DateTime('now'))->add(new \DateInterval('PT1H')) );
+		$at->setUser( $user );
+		
+		if ( $setMockExpectation ) {
+			$this->documentRepository
+				->expects($this->once())
+				->method('find')
+				->with( $this->equalTo(self::DUMMY_ACCESS_TOKEN) )
+				->willReturn( $at );
+		}
+
+		return $at;
 	}
 }

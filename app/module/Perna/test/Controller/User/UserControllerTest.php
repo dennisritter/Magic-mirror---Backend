@@ -24,28 +24,7 @@ class UserControllerTest extends AbstractUserControllerTestCase {
 			->with( $this->equalTo( AccessToken::class ) )
 			->willReturn( $this->documentRepository );
 	}
-
-	protected function getValidAccessToken () : AccessToken {
-		$user = new User();
-		$user->setFirstName('Max');
-		$user->setLastName('Mustermann');
-		$user->setEmail('max@mustermann.de');
-		$user->setLastLogin(new \DateTime('now'));
-
-		$at = new AccessToken();
-		$at->setToken( self::DUMMY_ACCESS_TOKEN );
-		$at->setExpirationDate( (new \DateTime('now'))->add(new \DateInterval('PT1H')) );
-		$at->setUser( $user );
-
-		$this->documentRepository
-			->expects($this->once())
-			->method('find')
-			->with( $this->equalTo(self::DUMMY_ACCESS_TOKEN) )
-			->willReturn( $at );
-
-		return $at;
-	}
-
+	
 	public function testGetSuccess () {
 		$lastLogin = (new \DateTime('now'))->sub(new \DateInterval('P23D'));
 		$at = $this->getValidAccessToken();
