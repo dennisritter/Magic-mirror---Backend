@@ -10,16 +10,9 @@ use Perna\Test\Controller\AbstractControllerTestCase;
 use Zend\Http\Request;
 use Zend\Http\Response;
 
-class WeatherLocationControllerTest extends AbstractControllerTestCase {
+class WeatherLocationControllerTest extends AbstractWeatherLocationTestCase {
 
-	const DUMMY_ID = 12345;
 	const ENDPOINT = '/v1/weather/locations/%s';
-	const DUMMY_CITY = [
-		'id' => self::DUMMY_ID,
-		'name' => 'Castrop-Rauxel',
-		'location' => [13,50],
-		'countryCode' => 'DE'
-	];
 
 	protected function successAssertions () {
 		$this->assertControllerIs( WeatherLocationController::class );
@@ -100,13 +93,7 @@ class WeatherLocationControllerTest extends AbstractControllerTestCase {
 			]);
 
 		$response = new Response();
-		$response->setContent(json_encode([
-			'geonameId' => self::DUMMY_ID,
-			'countryCode' => self::DUMMY_CITY['countryCode'],
-			'lat' => self::DUMMY_CITY['location'][0],
-			'lng' => self::DUMMY_CITY['location'][1],
-			'name' => self::DUMMY_CITY['name']
-		]));
+		$response->setContent(json_encode($this->toApiCityData(self::DUMMY_CITY)));
 		
 		$this->httpClient
 			->expects($this->once())
