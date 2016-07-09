@@ -21,14 +21,20 @@ class GeoNamesAccessService {
 	// TODO: move to config
 	const USERNAME = 'perna';
 	const API_HOST = 'http://api.geonames.org/';
+	const ENDPOINT_GET = self::API_HOST . 'getJSON';
+	const ENDPOINT_SEARCH = self::API_HOST . 'searchJSON';
+	const ENDPOINT_NEARBY = self::API_HOST . 'findNearbyPlaceNameJSON';
 
 	protected $cityHydrator;
 
 	protected $documentManager;
 
-	public function __construct ( CityHydrator $cityHydrator, DocumentManager $documentManager ) {
+	protected $httpClient;
+
+	public function __construct ( CityHydrator $cityHydrator, DocumentManager $documentManager, Client $httpClient ) {
 		$this->cityHydrator = $cityHydrator;
 		$this->documentManager = $documentManager;
+		$this->httpClient = $httpClient;
 	}
 
 	/**
@@ -85,7 +91,7 @@ class GeoNamesAccessService {
 			return $city;
 
 		$request = $this->createBasicRequest();
-		$request->setUri( self::API_HOST . 'getJSON' );
+		$request->setUri( self::ENDPOINT_GET );
 		$request->getQuery()->set('geonameId', $id);
 
 		$data = $this->getResultData( $request );
@@ -121,10 +127,8 @@ class GeoNamesAccessService {
 	 * @throws    ServiceUnavailableException If the request could not be sent or the response content could not be parsed
 	 */
 	protected function getResultData ( Request $request ) : array {
-		$client = new Client();
-
 		try {
-			$response = $client->send( $request );
+			$response = $this->httpClient->send( $request );
 		} catch ( \Exception $e ) {
 			error_log( $e->getTraceAsString() );
 			throw new ServiceUnavailableException();

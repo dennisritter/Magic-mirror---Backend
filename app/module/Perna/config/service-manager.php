@@ -80,7 +80,8 @@ return [
 		]),
 		GeoNamesAccessService::class => new Factory(GeoNamesAccessService::class, [
 			CityHydrator::class => DependencyTypes::HYDRATOR,
-			DocumentManager::class => DependencyTypes::SERVICE
+			DocumentManager::class => DependencyTypes::SERVICE,
+			Client::class => DependencyTypes::SERVICE
 		]),
 		VBBAccessService::class => new Factory(VBBAccessService::class, [
 			StationHydrator::class => DependencyTypes::HYDRATOR,
