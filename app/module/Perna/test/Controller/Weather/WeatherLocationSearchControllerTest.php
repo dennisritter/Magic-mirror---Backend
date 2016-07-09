@@ -19,18 +19,11 @@ class WeatherLocationSearchControllerTest extends AbstractWeatherLocationTestCas
 		$at = $this->getValidAccessToken();
 		$this->setRequestHeaderLine('Access-Token', $at->getToken());
 
-		$dummy2 = [
-			'id' => 54321,
-			'name' => 'Buxtehude',
-			'countryCode' => 'DE',
-			'location' => [14,60]
-		];
-
 		$response = new Response();
 		$response->setContent(json_encode([
 			'geonames' => [
 				$this->toApiCityData(self::DUMMY_CITY),
-				$this->toApiCityData($dummy2)
+				$this->toApiCityData(self::DUMMY_CITY_2)
 			]
 		]));
 
@@ -66,7 +59,7 @@ class WeatherLocationSearchControllerTest extends AbstractWeatherLocationTestCas
 		$data = $this->getSuccessResponseData();
 
 		$this->assertCount(2, $data);
-		$this->assertEquals([self::DUMMY_CITY, $dummy2], $data);
+		$this->assertEquals([self::DUMMY_CITY, self::DUMMY_CITY_2], $data);
 	}
 
 	/**
@@ -78,7 +71,7 @@ class WeatherLocationSearchControllerTest extends AbstractWeatherLocationTestCas
 		$this->setRequestHeaderLine('Access-Token', $at->getToken());
 
 		$this->httpClient->expects($this->never())->method('send');
-		
+
 		$this->dispatch(self::ENDPOINT, Request::METHOD_GET);
 		$this->getErrorResponseContent(422);
 	}
