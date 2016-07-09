@@ -94,4 +94,57 @@ class WeatherLocationNearbyControllerTest extends AbstractWeatherLocationTestCas
 		$this->dispatch(self::ENDPOINT, Request::METHOD_GET);
 		$this->getErrorResponseContent(404);
 	}
+
+	protected function abstractValidationTest (array $data) {
+		$at = $this->getValidAccessToken();
+		$this->setRequestHeaderLine('Access-Token', $at->getToken());
+
+		$this->httpClient->expects($this->never())->method('send');
+
+		/** @var Request $request */
+		$request = $this->getRequest();
+		$query = $request->getQuery();
+		foreach ( $data as $key => $value ) {
+			$query->set($key, $value);
+		}
+
+		$this->dispatch(self::ENDPOINT, Request::METHOD_GET);
+		$this->getErrorResponseContent(422);
+	}
+
+	/**
+	 * GET without coordinates
+	 * Throws validation error
+	 */
+	public function testValidationErrorNoCoordinates () {
+		$this->abstractValidationTest([]);
+	}
+
+	/**
+	 * GET without latitude
+	 * Throws validation error
+	 */
+	public function testValidationErrorNoLatitude () {
+		$this->abstractValidationTest([
+			'lng' => self::DUMMY_LNG
+		]);
+	}
+
+	/**
+	 * GET without longitude
+	 * Throws validation error
+	 */
+	public function testValidationErrorNoLongitude () {
+		$this->abstractValidationTest([
+			'lat' => self::DUMMY_LAT
+		]);
+	}
+
+	public function testAccessTokenRequired () {
+		$this->abstractTestAccessTokenRequired(self::ENDPOINT, Request::METHOD_GET);
+	}
+
+	public function testMethodsNotAllowed () {
+		$this->assertOtherMethodsNotAllowed(self::ENDPOINT, [Request::METHOD_GET]);
+	}
 }

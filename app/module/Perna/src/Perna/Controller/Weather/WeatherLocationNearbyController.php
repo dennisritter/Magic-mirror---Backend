@@ -71,13 +71,13 @@ class WeatherLocationNearbyController extends AbstractAuthenticatedApiController
 
 		$params = $this->params();
 
-		$lat = floatval( $params->fromQuery('latitude', null) );
-		$lng = floatval( $params->fromQuery('longitude', null) );
+		$lat = $params->fromQuery('latitude', null);
+		$lng = $params->fromQuery('longitude', null);
 
 		if ( $lat === null || $lng === null )
 			throw new UnprocessableEntityException("The query parameters 'latitude' and 'longitude' must be present and valid.");
 
-		$result = $this->geoNamesService->findNearestCity( $lat, $lng );
+		$result = $this->geoNamesService->findNearestCity( floatval($lat), floatval($lng) );
 		return $this->createDefaultViewModel( $this->extractObject( CityHydrator::class, $result ) );
 	}
 }
