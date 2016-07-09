@@ -31,6 +31,10 @@ class WeatherLocationControllerTest extends AbstractControllerTestCase {
 		}
 	}
 
+	/**
+	 * GET with id
+	 * City is present in database
+	 */
 	public function testGetSuccessInDb () {
 		$at = $this->getValidAccessToken( false );
 		$this->setRequestHeaderLine('Access-Token', $at->getToken());
@@ -75,6 +79,10 @@ class WeatherLocationControllerTest extends AbstractControllerTestCase {
 		$this->successAssertions();
 	}
 
+	/**
+	 * GET with id
+	 * City not present in database, must be fetched from API
+	 */
 	public function testGetSuccessFromApi () {
 		$at = $this->getValidAccessToken( false );
 		$this->setRequestHeaderLine('Access-Token', $at->getToken());
@@ -139,5 +147,58 @@ class WeatherLocationControllerTest extends AbstractControllerTestCase {
 
 		$this->dispatch(sprintf(self::ENDPOINT, self::DUMMY_ID), Request::METHOD_GET);
 		$this->successAssertions();
+	}
+
+	/**
+	 * GET with id
+	 * City neither present in database nor on API
+	 */
+	public function testGetNotFound () {
+		$at = $this->getValidAccessToken(false);
+		$this->setRequestHeaderLine('Access-Token', $at->getToken());
+
+		$this->documentRepository
+			->expects($this->exactly(2))
+			->method('find')
+			->withConsecutive(
+				[$this->equalTo(self::DUMMY_ACCESS_TOKEN)],
+				[$this->equalTo(self::DUMMY_ID)]
+			)
+			->willReturnMap([
+				[self::DUMMY_ACCESS_TOKEN, 0, null, $at],
+				[self::DUMMY_ID, 0, null, null]
+			]);
+
+		$response = new Response();
+		$response->setContent(json_encode([
+			'status' => [
+				'message' => 'foo',
+				'value' => 12
+			]
+		]));
+
+		$this->httpClient
+			->expects($this->once())
+			->method('send')
+			->willReturn($response);
+
+		$this->documentManager
+			->expects($this->never())
+			->method('persist');
+
+		$this->documentManager
+			->expects($this->never())
+			->method('flush');
+
+		$this->dispatch(sprintf(self::ENDPOINT, self::DUMMY_ID), Request::METHOD_GET);
+		$this->getErrorResponseContent(404);
+	}
+
+	public function testAccessTokenRequired () {
+		$this->abstractTestAccessTokenRequired(sprintf(self::ENDPOINT, self::DUMMY_ID), Request::METHOD_GET);
+	}
+
+	public function testAllowedMethods () {
+		$this->assertOtherMethodsNotAllowed(sprintf(self::ENDPOINT, self::DUMMY_ID), [Request::METHOD_GET]);
 	}
 }
