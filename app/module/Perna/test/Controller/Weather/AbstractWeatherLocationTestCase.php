@@ -2,6 +2,7 @@
 
 namespace Perna\Test\Controller\Weather;
 
+use Perna\Document\City;
 use Perna\Test\Controller\AbstractControllerTestCase;
 
 class AbstractWeatherLocationTestCase extends AbstractControllerTestCase {
@@ -32,5 +33,14 @@ class AbstractWeatherLocationTestCase extends AbstractControllerTestCase {
 			'lat' => $data['location'][0],
 			'lng' => $data['location'][1]
 		];
+	}
+
+	public function getDummyCityObject () {
+		$city = new City();
+		$city->setId(self::DUMMY_ID);
+		$city->setName(self::DUMMY_CITY['name']);
+		$city->setLocation(self::DUMMY_CITY['location']);
+		$city->setCountryCode(self::DUMMY_CITY['countryCode']);
+		return $city;
 	}
 }
