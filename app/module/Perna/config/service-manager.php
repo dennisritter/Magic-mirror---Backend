@@ -71,7 +71,8 @@ return [
 		WeatherDataAccessService::class => new Factory(WeatherDataAccessService::class, [
 			CurrentWeatherDataHydrator::class => DependencyTypes::HYDRATOR,
 			TemporalWeatherDataHydrator::class => DependencyTypes::HYDRATOR,
-			DailyWeatherDataHydrator::class => DependencyTypes::HYDRATOR
+			DailyWeatherDataHydrator::class => DependencyTypes::HYDRATOR,
+			Client::class => DependencyTypes::SERVICE
 		]),
 		WeatherDataService::class => new Factory(WeatherDataService::class, [
 			WeatherDataAccessService::class => DependencyTypes::SERVICE,

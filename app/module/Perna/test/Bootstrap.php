@@ -54,6 +54,7 @@ class Bootstrap {
 		$serviceManager->setService('ApplicationConfig', $config);
 		$serviceManager->get('ModuleManager')->loadModules();
 		static::$serviceManager = $serviceManager;
+		date_default_timezone_set('UTC');
 	}
 
 	public static function chroot () {
