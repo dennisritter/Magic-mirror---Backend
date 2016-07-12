@@ -200,6 +200,37 @@ class WeatherDataControllerTest extends AbstractWeatherLocationTestCase {
 	}
 
 	/**
+	 * GET with invalid location id
+	 * Throws not found error (404)
+	 */
+	public function testGetCityNotFound () {
+		$at = $this->getValidAccessToken(false);
+		$this->setRequestHeaderLine('Access-Token', $at->getToken());
+
+		$this->documentRepository
+			->expects($this->exactly(2))
+			->method('find')
+			->withConsecutive(
+				[$this->equalTo($at->getToken())],
+				[$this->equalTo(self::DUMMY_ID)]
+			)
+			->willReturnOnConsecutiveCalls($at, null);
+
+		$response = new Response();
+		$response->setStatusCode(200);
+		$response->setContent(json_encode(['hello' => 'world']));
+
+		$this->httpClient
+			->expects($this->once())
+			->method('send')
+			->with($this->isInstanceOf(Request::class))
+			->willReturn($response);
+
+		$this->dispatch(sprintf(self::ENDPOINT, self::DUMMY_ID), Request::METHOD_GET);
+		$this->getErrorResponseContent(404);
+	}
+
+	/**
 	 * Makes assertions that the response data matches the data in $cache
 	 * @param     WeatherDataCache    $cache    Cache containing the expected data
 	 */
