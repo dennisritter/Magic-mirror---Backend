@@ -14,14 +14,34 @@ use Swagger\Annotations as SWG;
  */
 class TimeModule extends Module {
 
+
+    /**
+     * @ODM\Field(
+     *     name = "viewType",
+     *     type = "string"
+     * )
+     * @var string $viewType
+     */
+    protected $viewType;
+
     public function __construct() {
         parent::__construct();
         $this->type = "time";
     }
-    
 
-    function __toString()
+    /**
+     * @return mixed
+     */
+    public function getViewType()
     {
-        return $this->id." ".$this->height." ". $this->width." ".$this->xPosition." ".$this->yPosition." ";
+        return $this->viewType;
+    }
+
+    /**
+     * @param mixed $viewType
+     */
+    public function setViewType($viewType)
+    {
+        $this->viewType = $viewType;
     }
 }

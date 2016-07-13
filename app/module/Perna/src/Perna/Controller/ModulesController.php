@@ -157,6 +157,7 @@ class ModulesController extends AbstractAuthenticatedApiController {
                 $this->moduleService->addModule($user, $module);
                 return $this->createDefaultViewModel( $this->extractObject( WeatherModuleHydrator::class, $module) );
             case 'time':
+                $data['viewType'] = $rawData['viewType'] || "analog";
                 $module = new TimeModule();
                 $this->hydrateObject(TimeModuleHydrator::class, $module, $data);
                 $this->moduleService->addModule($user, $module);
