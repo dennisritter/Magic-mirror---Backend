@@ -9,6 +9,7 @@ use Perna\Controller\LogoutController;
 use Perna\Controller\ModuleController;
 use Perna\Controller\ModulesController;
 use Perna\Controller\PublicTransport\DepartureController;
+use Perna\Controller\PublicTransport\StationsController;
 use Perna\Controller\PublicTransport\StationSearchController;
 use Perna\Controller\RefreshController;
 use Perna\Controller\RegisterController;
@@ -236,6 +237,15 @@ return [
 							'route' => '/search',
 							'defaults' => [
 								'controller' => StationSearchController::class
+							]
+						]
+					],
+					'singleStation' => [
+						'type' => Segment::class,
+						'options' => [
+							'route' => '/:id',
+							'defaults' => [
+								'controller' => StationsController::class
 							]
 						]
 					]

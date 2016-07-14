@@ -9,6 +9,7 @@ use Perna\Controller\LogoutController;
 use Perna\Controller\ModuleController;
 use Perna\Controller\ModulesController;
 use Perna\Controller\PublicTransport\DepartureController;
+use Perna\Controller\PublicTransport\StationsController;
 use Perna\Controller\PublicTransport\StationSearchController;
 use Perna\Controller\RefreshController;
 use Perna\Controller\RegisterController;
@@ -97,6 +98,10 @@ return [
 		DepartureController::class => new Factory(DepartureController::class, [
 			AuthenticationService::class => DependencyTypes::SERVICE,
 			DepartureService::class => DependencyTypes::SERVICE
+		]),
+		StationsController::class => new Factory(StationsController::class, [
+			AuthenticationService::class => DependencyTypes::SERVICE,
+			StationsService::class => DependencyTypes::SERVICE
 		])
 	]
 ];
