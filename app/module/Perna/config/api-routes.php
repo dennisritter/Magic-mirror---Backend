@@ -246,6 +246,9 @@ return [
 							'route' => '/:id',
 							'defaults' => [
 								'controller' => StationsController::class
+							],
+							'constraints' => [
+								'id' => '[0-9]+'
 							]
 						]
 					]
