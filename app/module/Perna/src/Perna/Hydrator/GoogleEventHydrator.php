@@ -12,6 +12,12 @@ use Perna\Document\GoogleEvent;
 class GoogleEventHydrator extends AbstractHydrator {
 	
 	public function extract( $object ) {
+		$attendees = [];
+		foreach ($object->getAttendees() as $attendee) {
+			if ( !empty($attendee) )
+				$attendees[] = $attendee;
+		}
+
 		/** @var GoogleEvent $object */
 		return [
 			'id' => $object->getId(),
@@ -20,7 +26,7 @@ class GoogleEventHydrator extends AbstractHydrator {
 			'transparency' => $object->getTransparency(),
 			'updated' => $this->extractDateTime( $object->getUpdated() ),
 			'summary' => $object->getSummary(),
-			'attendees' => $object->getAttendees() ?? [],
+			'attendees' => $attendees,
 			'startTime' => $this->extractDateTime( $object->getStartTime() ),
 			'endTime' => $this->extractDateTime( $object->getEndTime() ),
 			'calendarId' => $object->getCalendarId(),
@@ -55,6 +61,7 @@ class GoogleEventHydrator extends AbstractHydrator {
 
 		$allDay = $event->getStart()->getDateTime() == null;
 		$object->setAllDay($allDay);
+		
 		if ($allDay) {
 			$start = new \DateTime($event->getStart()->getDate());
 			$start->setTime(0,0,0);
