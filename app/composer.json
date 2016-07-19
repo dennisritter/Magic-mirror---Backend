@@ -1,6 +1,7 @@
 {
   "name": "perna/perna-api",
   "description": "RESTful API for Perna smart dashboard",
+  "version": "1.0.0",
   "keywords": [
     "api",
     "backend"
