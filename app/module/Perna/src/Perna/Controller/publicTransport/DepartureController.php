@@ -66,7 +66,7 @@ class DepartureController extends AbstractAuthenticatedApiController {
 		$r = $this->getRequest();
 		$products = $r->getQuery()->get('products', null);
 		$products = $products != null
-			? explode(',', trim( $products, '\t\n\r\0\x0B,' ))
+			? explode(',', trim( $products, '\t\n\r\s,' ))
 			: [];
 
 		if ( !array_key_exists('id', $params) )
