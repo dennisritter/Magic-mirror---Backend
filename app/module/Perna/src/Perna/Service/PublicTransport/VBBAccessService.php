@@ -21,6 +21,7 @@ class VBBAccessService {
 	// TODO: move to config
 	const API_KEY = 'knauft-46fb-90dd-784d999485a3';
 	const BASE = 'http://demo.hafas.de/openapi/vbb-proxy/';
+	const CRAZY_ARRAY_KEY = 'stopLocationOrCoordLocation';
 
 	/**
 	 * @var StationHydrator
@@ -66,13 +67,19 @@ class VBBAccessService {
 		$body = $response->getBody();
 		$data = json_decode( $body, true );
 
-		if ( !array_key_exists('StopLocation', $data) || !is_array( $stationData = $data['StopLocation'] ) )
+		if (!array_key_exists(self::CRAZY_ARRAY_KEY, $data) || !is_array($data[self::CRAZY_ARRAY_KEY]))
 			throw new ServiceUnavailableException();
 
+		$stationData = array_map(function ($sd) {
+			return $sd['StopLocation'];
+		}, $data[self::CRAZY_ARRAY_KEY]);
+
 		// Sort descending by station weight
-		usort( $stationData, function ( array $sd1, array $sd2 ) {
-			return $sd2['weight'] <=> $sd1['weight'];
-		} );
+		if (count($stationData) > 1) {
+			usort( $stationData, function ( array $sd1, array $sd2 ) {
+				return $sd2['weight'] <=> $sd1['weight'];
+			} );
+		}
 
 		$stations = [];
 		foreach ( $stationData as $sd ) {
