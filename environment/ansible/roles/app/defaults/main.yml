@@ -1,0 +1,3 @@
+---
+openWeatherMap:
+  citiesDumpUrl: "http://bulk.openweathermap.org/sample/city.list.json.gz"

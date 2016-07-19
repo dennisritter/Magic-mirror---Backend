@@ -1,0 +1,6 @@
+---
+mongodb:
+  install: '0'
+  user: 'root'
+  database: 'test'
+  password: 'root'

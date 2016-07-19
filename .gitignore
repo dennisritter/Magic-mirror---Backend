@@ -1,0 +1,5 @@
+/app/module/Perna/src/Perna/Hydrator/SettingsHydrator.php
+environment/.vagrant
+environment/ansible/playbook.retry
+environment/ansible/*.swp
+.idea/*

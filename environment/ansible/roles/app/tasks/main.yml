@@ -1,0 +1,15 @@
+---
+- name: Install composer
+  shell: curl -sS https://getcomposer.org/installer | sudo php -- --install-dir=/usr/local/bin --filename=composer
+  args:
+    creates: /usr/local/bin/composer
+
+- name: Install composer dependencies
+  shell: composer install
+  args:
+    chdir: /vagrant/app
+
+- name: Create / Update MongoDB schema
+  shell: ./doctrine-module odm:schema:create
+  args:
+    chdir: /vagrant/app/vendor/bin
