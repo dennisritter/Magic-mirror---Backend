@@ -23,7 +23,8 @@ class GoogleEventHydrator extends AbstractHydrator {
 			'attendees' => $object->getAttendees() ?? [],
 			'startTime' => $this->extractDateTime( $object->getStartTime() ),
 			'endTime' => $this->extractDateTime( $object->getEndTime() ),
-			'calendarId' => $object->getCalendarId()
+			'calendarId' => $object->getCalendarId(),
+			'allDay' => $object->getAllDay()
 		];
 	}
 
@@ -36,6 +37,7 @@ class GoogleEventHydrator extends AbstractHydrator {
 		$object->setAttendees( $data['attendees'] );
 		$object->setStartTime( new \DateTime( $data['startTime'] ) );
 		$object->setEndTime( new \DateTime( $data['endTime'] ) );
+		$object->setAllDay( $data['allDay'] === true );
 
 		return $object;
 	}
@@ -50,10 +52,23 @@ class GoogleEventHydrator extends AbstractHydrator {
 			/** @var \Google_Service_Calendar_EventAttendee $attendee */
 			return $attendee->getDisplayName();
 		}, $event->getAttendees() ) );
-		$object->setStartTime( new \DateTime($event->getStart()->getDateTime()) );
-		$object->setEndTime( new \DateTime($event->getEnd()->getDateTime()) );
-		$object->setUpdated( new \DateTime($event->getUpdated()) );
 
+		$allDay = $event->getStart()->getDateTime() == null;
+		$object->setAllDay($allDay);
+		if ($allDay) {
+			$start = new \DateTime($event->getStart()->getDate());
+			$start->setTime(0,0,0);
+			$object->setStartTime($start);
+
+			$end = new \DateTime($event->getEnd()->getDate());
+			$end->setTime(23,59,59);
+			$object->setEndTime($end);
+		} else {
+			$object->setStartTime(new \DateTime($event->getStart()->getDateTime()));
+			$object->setEndTime(new \DateTime($event->getEnd()->getDateTime()));
+		}
+
+		$object->setUpdated( new \DateTime($event->getUpdated()) );
 		$object->setEtag( trim($event->getEtag(), ' "\t\n\r') );
 
 		return $object;
