@@ -16,7 +16,7 @@
 
 - name: Add unfinished file
   file:
-    path: '{{deploy_helper.new_release_path}}/{{deploy_helper.unfinished_file_name}}'
+    path: '{{deploy_helper.new_release_path}}/{{deploy_helper.unfinished_filename}}'
     state: touch
 
 - name: Install composer dependencies
