@@ -2,10 +2,11 @@
 - name: "Remote Server Setup: Install LEMP Stack with PHP 7.0, MongoDB, nginx"
   hosts: web:&production
   become: yes
-  remote_user: root
+  remote_user: jannik
 
   vars_files:
     - vars/all.yml
+    - vars/production.yml
   roles:
     - server
     - nginx
