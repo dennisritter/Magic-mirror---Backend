@@ -1,6 +1,9 @@
 ---
-- hosts: all
-  sudo: true
+- name: "Local Development Setup: Install LEMP Stack with PHP 7.0, MongoDB, nginx"
+  hosts: web:&development
+  become: true
+  remote_user: vagrant
+
   vars_files:
     - vars/all.yml
   roles:
