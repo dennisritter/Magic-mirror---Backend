@@ -7,6 +7,7 @@ return [
 		'http://perna.dev',
 		'https://perna.dev',
 		'http://localhost:*',
+		'http://perna-app.jannikportz.de',
 		'chrome-extension://*'
 	],
 
