@@ -6,6 +6,7 @@
 
   vars_files:
     - vars/all.yml
+    - vars/dev.yml
   roles:
     - server
     - vagrant_local

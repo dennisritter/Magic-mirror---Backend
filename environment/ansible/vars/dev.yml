@@ -1,0 +1,9 @@
+---
+nginx:
+  hosts:
+    - docroot: /vagrant/app/public
+      servername: api.perna.dev
+    - docroot: /vagrant/swagger-ui
+      servername: doc.api.perna.dev
+  install: '1'
+  php_socket: /var/run/php/php7.0-fpm.sock
