@@ -1,3 +1,11 @@
 ---
 - name: "Deploy Application"
   hosts: web:&production
+  become: true
+  remote_user: jannik
+
+  vars_files:
+    - vars/all.yml
+    - vars/production.yml
+  roles:
+    - deploy

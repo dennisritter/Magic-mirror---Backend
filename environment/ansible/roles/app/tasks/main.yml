@@ -1,10 +1,11 @@
 ---
 - name: Install composer dependencies
-  shell: composer install
-  args:
-    chdir: /vagrant/app
+  composer:
+    command: install
+    working_dir: '{{project_root}}/app'
 
 - name: Create / Update MongoDB schema
   shell: ./doctrine-module odm:schema:create
   args:
     chdir: /vagrant/app/vendor/bin
+    chdir: '{{project_root}}/app/vendor/bin'

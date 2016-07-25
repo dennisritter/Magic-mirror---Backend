@@ -12,13 +12,23 @@
   git:
     repo: '{{deploy.git_repository}}'
     dest: '{{deploy_helper.new_release_path}}'
+    accept_hostkey: true
 
 - name: Add unfinished file
   file:
     path: '{{deploy_helper.new_release_path}}/{{deploy_helper.unfinished_file_name}}'
     state: touch
 
-# Perform app stuff
+- name: Install composer dependencies
+  composer:
+    command: install
+    working_dir: '{{deploy_helper.new_release_path}}/app'
+
+- name: Create / Update MongoDB schema
+  shell: ./doctrine-module odm:schema:create
+  args:
+    chdir: /vagrant/app/vendor/bin
+    chdir: '{{deploy_helper.new_release_path}}/app/vendor/bin'
 
 - name: Finilize deploy
   deploy_helper:
