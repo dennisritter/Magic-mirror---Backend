@@ -28,8 +28,3 @@
 - name: Set default system language pack
   shell: locale-gen {{server.locale}}
   become: yes
-
-- name: Install composer
-  shell: curl -sS https://getcomposer.org/installer | sudo php -- --install-dir=/usr/local/bin --filename=composer
-  args:
-    creates: /usr/local/bin/composer

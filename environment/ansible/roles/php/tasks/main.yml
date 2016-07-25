@@ -21,6 +21,11 @@
   with_items: '{{php.packages}}'
   when: php.packages is defined
 
+- name: Install composer
+  shell: curl -sS https://getcomposer.org/installer | sudo php -- --install-dir=/usr/local/bin --filename=composer
+  args:
+    creates: /usr/local/bin/composer
+
 - include: xdebug.yml
 - include: configure.yml
 - include: pecl.yml
