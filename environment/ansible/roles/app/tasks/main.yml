@@ -1,9 +1,4 @@
 ---
-- name: Install composer
-  shell: curl -sS https://getcomposer.org/installer | sudo php -- --install-dir=/usr/local/bin --filename=composer
-  args:
-    creates: /usr/local/bin/composer
-
 - name: Install composer dependencies
   shell: composer install
   args:
