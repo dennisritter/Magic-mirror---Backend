@@ -1,7 +1,7 @@
 ---
 - name: Add Nginx Repository
   apt_repository: repo='ppa:nginx/stable' state=present
-  
+
 - name: Install Nginx
   become: yes
   apt: pkg=nginx state=latest update_cache=true
@@ -10,12 +10,12 @@
   become: yes
   template: src=default.tpl dest=/etc/nginx/sites-available/{{item.servername}}.conf
   notify: restart nginx
-  with_items: nginx.hosts
+  with_items: '{{nginx.hosts}}'
 
 - name: Add nginx sites-enabled symlinks
   become: yes
   shell: ln -s /etc/nginx/sites-available/{{item.servername}}.conf /etc/nginx/sites-enabled/{{item.servername}}.conf
-  with_items: nginx.hosts
+  with_items: '{{nginx.hosts}}'
   notify: restart nginx
   args:
     creates: /etc/nginx/sites-enabled/{{item.servername}}.conf

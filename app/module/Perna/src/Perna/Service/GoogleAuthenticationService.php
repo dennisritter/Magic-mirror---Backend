@@ -26,7 +26,7 @@ class GoogleAuthenticationService {
 	const CLIENT_ID = '1004755994493-vn9p9404kf3gie85k8ehjise9duuemct.apps.googleusercontent.com';
 	const CLIENT_SECRET = 'H_s_WxHQv_ciVafulFpX_E6e';
 	const CLIENT_ACCESS_TYPE = 'offline';
-	const CLIENT_REDIRECT_URI = 'http://api.perna.dev/v1/google-auth/callback';
+	const CLIENT_REDIRECT_URI = 'http://perna-api.jannikportz.de/v1/google-auth/callback';
 
 	const SCOPES = [
 		Google_Service_Calendar::CALENDAR

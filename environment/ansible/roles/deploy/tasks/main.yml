@@ -1,0 +1,37 @@
+---
+- name: Intitialize deploy and gather facts
+  deploy_helper:
+    path: '{{deploy.path}}'
+    keep_releases: '{{deploy.keep_releases | default(3)}}'
+    current_path: current
+    releases_path: releases
+    shared_path: shared
+    state: present
+
+- name: Clone git repository
+  git:
+    repo: '{{deploy.git_repository}}'
+    dest: '{{deploy_helper.new_release_path}}'
+    accept_hostkey: true
+
+- name: Add unfinished file
+  file:
+    path: '{{deploy_helper.new_release_path}}/{{deploy_helper.unfinished_filename}}'
+    state: touch
+
+- name: Install composer dependencies
+  composer:
+    command: install
+    working_dir: '{{deploy_helper.new_release_path}}/app'
+
+- name: Create / Update MongoDB schema
+  shell: ./doctrine-module odm:schema:create
+  args:
+    chdir: /vagrant/app/vendor/bin
+    chdir: '{{deploy_helper.new_release_path}}/app/vendor/bin'
+
+- name: Finilize deploy
+  deploy_helper:
+    path: '{{deploy.path}}'
+    release: '{{deploy_helper.new_release}}'
+    state: finalize

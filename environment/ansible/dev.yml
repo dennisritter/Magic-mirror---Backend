@@ -1,0 +1,16 @@
+---
+- name: "Local Development Setup: Install LEMP Stack with PHP 7.0, MongoDB, nginx"
+  hosts: web:&development
+  become: true
+  remote_user: vagrant
+
+  vars_files:
+    - vars/all.yml
+    - vars/dev.yml
+  roles:
+    - server
+    - vagrant_local
+    - nginx
+    - mongodb
+    - php
+    - app

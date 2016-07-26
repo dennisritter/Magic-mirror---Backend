@@ -1,0 +1,12 @@
+---
+nginx:
+  hosts:
+    - docroot: /srv/www/perna-api/current/app/public
+      servername: perna-api.jannikportz.de
+  install: '1'
+  php_socket: /var/run/php/php7.0-fpm.sock
+deploy:
+  path: /srv/www/perna-api
+  keep_releases: 3
+  git_repository: git@cgmgit.beuth-hochschule.de:s58849/perna-api.git
+project_root: '{{deploy.path}}/current'
