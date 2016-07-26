@@ -6,6 +6,8 @@ use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ODM\MongoDB\PersistentCollection;
 use Perna\Document\CalendarModule;
 use Perna\Document\Module;
+use Perna\Document\PublicTransportModule;
+use Perna\Document\TimeModule;
 use Perna\Document\User;
 use Perna\Document\WeatherModule;
 use ZfrRest\Http\Exception\Client\NotFoundException;
@@ -75,6 +77,15 @@ class ModuleService {
             case "weather" :
                 /** @var WeatherModule $module */
                 $module->setLocationId( $moduledata['locationId']);
+                break;
+            case "time" :
+                /** @var TimeModule $module */
+                $module->setViewType( $moduledata['viewType'] );
+                break;
+            case "publicTransport" :
+                /** @var  PublicTransportModule $module */
+                $module->setStationName( $moduledata['stationName'] );
+                $module->setStationId( $moduledata['stationId'] );
                 break;
         }
         $this->documentManager->flush();

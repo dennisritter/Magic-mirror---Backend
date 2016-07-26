@@ -44,10 +44,16 @@ class WeatherDataAccessService {
 	 */
 	protected $dailyHydrator;
 
-	public function __construct ( CurrentWeatherDataHydrator $currentHydrator, TemporalWeatherDataHydrator $temporalHydrator, DailyWeatherDataHydrator $dailyHydrator ) {
+	/**
+	 * @var       Client
+	 */
+	protected $httpClient;
+
+	public function __construct ( CurrentWeatherDataHydrator $currentHydrator, TemporalWeatherDataHydrator $temporalHydrator, DailyWeatherDataHydrator $dailyHydrator, Client $httpClient ) {
 		$this->currentHydrator = $currentHydrator;
 		$this->temporalHydrator = $temporalHydrator;
 		$this->dailyHydrator = $dailyHydrator;
+		$this->httpClient = $httpClient;
 	}
 
 	/**
@@ -109,8 +115,7 @@ class WeatherDataAccessService {
 	 */
 	protected function fetchData ( City $location, string $endpoint ) : array {
 		$request = $this->createRequest( $location, $endpoint );
-		$client = new Client();
-		$response = $client->send( $request );
+		$response = $this->httpClient->send( $request );
 		
 		if ( !$response->isSuccess() || !$response->isOk() )
 			throw new WeatherDataAccessException("Could not fetch data at endpoint {$endpoint} for location {$location->getId()}");
@@ -133,7 +138,7 @@ class WeatherDataAccessService {
 	protected function createRequest ( City $location, string $endpoint ) : Request {
 		$request = new Request();
 		$request->setUri($endpoint);
-		$request->setMethod('GET');
+		$request->setMethod(Request::METHOD_GET);
 
 		/** @var ParametersInterface $query */
 		$query = $request->getQuery();

@@ -4,9 +4,11 @@ namespace Perna\Controller;
 
 use Perna\Document\CalendarModule;
 use Perna\Document\Module;
+use Perna\Document\PublicTransportModule;
 use Perna\Document\TimeModule;
 use Perna\Document\WeatherModule;
 use Perna\Hydrator\CalendarModuleHydrator;
+use Perna\Hydrator\PublicTransportModuleHydrator;
 use Perna\Hydrator\TimeModuleHydrator;
 use Perna\Hydrator\WeatherModuleHydrator;
 use Perna\InputFilter\ModuleInputFilter;
@@ -93,6 +95,15 @@ class ModulesController extends AbstractAuthenticatedApiController {
                     $this->hydrateObject(TimeModuleHydrator::class, $module, $item);
                     array_push( $modules, $module);
                     break;
+                case 'publicTransport' :
+                    if( !array_key_exists ( "id", $item ) ){
+                        $module = new PublicTransportModule();
+                    }else{
+                        $module = $this->moduleService->setModule( $user, $item['id'], $item );
+                    }
+                    $this->hydrateObject(PublicTransportModuleHydrator::class, $module, $item);
+                    array_push( $modules, $module);
+                    break;
             }
         }
         $this->moduleService->setModules( $modules, $user );
@@ -146,10 +157,19 @@ class ModulesController extends AbstractAuthenticatedApiController {
                 $this->moduleService->addModule($user, $module);
                 return $this->createDefaultViewModel( $this->extractObject( WeatherModuleHydrator::class, $module) );
             case 'time':
+                $data['viewType'] = $rawData['viewType'] || "analog";
                 $module = new TimeModule();
                 $this->hydrateObject(TimeModuleHydrator::class, $module, $data);
                 $this->moduleService->addModule($user, $module);
                 return $this->createDefaultViewModel( $this->extractObject( TimeModuleHydrator::class, $module) );
+            case 'publicTransport':
+                $data['stationId'] = $rawData['stationId'] || "009003201";
+                $data['stationName'] = $rawData['stationName'] || "Hauptbahnhof";
+                $data['products'] = $rawData['products'] || [];
+                $module = new PublicTransportModule();
+                $this->hydrateObject(PublicTransportModuleHydrator::class, $module, $data);
+                $this->moduleService->addModule($user, $module);
+                return $this->createDefaultViewModel( $this->extractObject( PublicTransportModuleHydrator::class, $module) );
         }
         return null;
     }
@@ -190,6 +210,9 @@ class ModulesController extends AbstractAuthenticatedApiController {
                     break;
                 case 'time':
                     array_push( $data, $this->extractObject(TimeModuleHydrator::class, $module) );
+                    break;
+                case 'publicTransport':
+                    array_push( $data, $this->extractObject(PublicTransportModuleHydrator::class, $module) );
                     break;
             }
         }

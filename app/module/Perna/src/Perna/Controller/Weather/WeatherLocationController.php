@@ -7,7 +7,6 @@ use Perna\Controller\AbstractAuthenticatedApiController;
 use Perna\Hydrator\CityHydrator;
 use Perna\Service\AuthenticationService;
 use Perna\Service\Weather\GeoNamesAccessService;
-use Perna\Service\WeatherLocationService;
 use Swagger\Annotations as SWG;
 
 class WeatherLocationController extends AbstractAuthenticatedApiController {

@@ -14,8 +14,7 @@ return [
 	      'ZfrCors',
 	      'SwaggerModule',
 	      'SwaggerUI',
-        'Perna',
-        'Application'
+        'Perna'
     ],
 
     // These are various options for the listeners attached to the ModuleManager

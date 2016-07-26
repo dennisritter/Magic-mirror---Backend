@@ -2,19 +2,19 @@
 
 use Perna\Controller\Calendar\CalendarsController;
 use Perna\Controller\Calendar\EventsController;
-use Perna\Controller\Console\ImportCitiesController;
 use Perna\Controller\GoogleAuth\AuthUrlController;
 use Perna\Controller\GoogleAuth\CallbackController;
 use Perna\Controller\LoginController;
 use Perna\Controller\LogoutController;
 use Perna\Controller\ModuleController;
 use Perna\Controller\ModulesController;
+use Perna\Controller\PublicTransport\DepartureController;
+use Perna\Controller\PublicTransport\StationsController;
 use Perna\Controller\PublicTransport\StationSearchController;
 use Perna\Controller\RefreshController;
 use Perna\Controller\RegisterController;
 use Perna\Controller\UserController;
 use Perna\Controller\Weather\WeatherDataController;
-use Perna\Controller\Weather\WeatherLocationAutocompleteController;
 use Perna\Controller\Weather\WeatherLocationController;
 use Perna\Controller\Weather\WeatherLocationNearbyController;
 use Perna\Controller\Weather\WeatherLocationSearchController;
@@ -22,16 +22,14 @@ use Perna\Factory\DependencyTypes;
 use Perna\Factory\Factory;
 use Perna\Hydrator\UserHydrator;
 use Perna\Service\AuthenticationService;
-use Perna\Service\CityImportService;
 use Perna\Service\GoogleAuthenticationService;
 use Perna\Service\GoogleCalendarService;
 use Perna\Service\ModuleService;
+use Perna\Service\PublicTransport\DepartureService;
 use Perna\Service\PublicTransport\StationsService;
-use Perna\Service\PublicTransport\VBBAccessService;
 use Perna\Service\UserService;
 use Perna\Service\Weather\GeoNamesAccessService;
 use Perna\Service\Weather\WeatherDataService;
-use Perna\Service\WeatherLocationService;
 
 return [
 	'factories' => [
@@ -81,10 +79,6 @@ return [
 			AuthenticationService::class => DependencyTypes::SERVICE,
 			GeoNamesAccessService::class => DependencyTypes::SERVICE
 		]),
-		WeatherLocationAutocompleteController::class => new Factory(WeatherLocationAutocompleteController::class, [
-			AuthenticationService::class => DependencyTypes::SERVICE,
-			WeatherLocationService::class => DependencyTypes::SERVICE
-		]),
 		WeatherDataController::class => new Factory(WeatherDataController::class, [
 			AuthenticationService::class => DependencyTypes::SERVICE,
 			WeatherDataService::class => DependencyTypes::SERVICE
@@ -98,6 +92,14 @@ return [
 			GeoNamesAccessService::class => DependencyTypes::SERVICE
 		]),
 		StationSearchController::class => new Factory(StationSearchController::class, [
+			AuthenticationService::class => DependencyTypes::SERVICE,
+		    StationsService::class => DependencyTypes::SERVICE
+		]),
+		DepartureController::class => new Factory(DepartureController::class, [
+			AuthenticationService::class => DependencyTypes::SERVICE,
+			DepartureService::class => DependencyTypes::SERVICE
+		]),
+		StationsController::class => new Factory(StationsController::class, [
 			AuthenticationService::class => DependencyTypes::SERVICE,
 			StationsService::class => DependencyTypes::SERVICE
 		])

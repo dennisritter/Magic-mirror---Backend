@@ -6,8 +6,8 @@ use Perna\Controller\AbstractAuthenticatedApiController;
 use Perna\Hydrator\CityHydrator;
 use Perna\Service\AuthenticationService;
 use Perna\Service\Weather\GeoNamesAccessService;
-use ZfrRest\Http\Exception\Client\UnprocessableEntityException;
 use Swagger\Annotations as SWG;
+use ZfrRest\Http\Exception\Client\UnprocessableEntityException;
 
 class WeatherLocationSearchController extends AbstractAuthenticatedApiController {
 

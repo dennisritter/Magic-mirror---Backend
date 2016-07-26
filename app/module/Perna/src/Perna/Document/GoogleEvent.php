@@ -104,6 +104,14 @@ class GoogleEvent {
 	protected $endTime;
 
 	/**
+	 * Flag indicating whether the event is an all day event
+	 * @SWG\Property()
+	 * @ODM\Field(type="bool")
+	 * @var       bool
+	 */
+	protected $allDay;
+
+	/**
 	 * The id of the calendar that the event belongs to
 	 * @SWG\Property()
 	 * @ODM\Field()
@@ -249,6 +257,20 @@ class GoogleEvent {
 	 */
 	public function setEndTime( $endTime ) {
 		$this->endTime = $endTime;
+	}
+
+	/**
+	 * @return boolean
+	 */
+	public function getAllDay() {
+		return $this->allDay;
+	}
+
+	/**
+	 * @param boolean $allDay
+	 */
+	public function setAllDay( $allDay ) {
+		$this->allDay = $allDay;
 	}
 
 	/**

@@ -8,12 +8,13 @@ use Perna\Controller\LoginController;
 use Perna\Controller\LogoutController;
 use Perna\Controller\ModuleController;
 use Perna\Controller\ModulesController;
+use Perna\Controller\PublicTransport\DepartureController;
+use Perna\Controller\PublicTransport\StationsController;
 use Perna\Controller\PublicTransport\StationSearchController;
 use Perna\Controller\RefreshController;
 use Perna\Controller\RegisterController;
 use Perna\Controller\UserController;
 use Perna\Controller\Weather\WeatherDataController;
-use Perna\Controller\Weather\WeatherLocationAutocompleteController;
 use Perna\Controller\Weather\WeatherLocationController;
 use Perna\Controller\Weather\WeatherLocationNearbyController;
 use Perna\Controller\Weather\WeatherLocationSearchController;
@@ -176,16 +177,6 @@ return [
 							]
 						]
 					],
-					'autocomplete' => [
-						'type' => Literal::class,
-						'options' => [
-							'route' => '/autocomplete',
-							'defaults' => [
-								'controller' => WeatherLocationAutocompleteController::class
-							]
-						]
-					],
-					
 					'resource' => [
 						'type' => Segment::class,
 						'options' => [
@@ -248,6 +239,30 @@ return [
 								'controller' => StationSearchController::class
 							]
 						]
+					],
+					'singleStation' => [
+						'type' => Segment::class,
+						'options' => [
+							'route' => '/:id',
+							'defaults' => [
+								'controller' => StationsController::class
+							],
+							'constraints' => [
+								'id' => '[0-9]+'
+							]
+						]
+					]
+				]
+			],
+			'departures' => [
+				'type' => Segment::class,
+				'options' => [
+					'route' => '/departures/:id',
+					'defaults' => [
+						'controller' => DepartureController::class
+					],
+					'constraints' => [
+						'id' => '[0-9]+'
 					]
 				]
 			]

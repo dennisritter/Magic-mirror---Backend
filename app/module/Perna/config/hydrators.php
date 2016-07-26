@@ -1,3 +1,5 @@
+
+
 <?php
 
 use Perna\Document\GoogleAccessToken;
@@ -10,6 +12,7 @@ use Perna\Hydrator\CityHydrator;
 use Perna\Hydrator\DepartureHydrator;
 use Perna\Hydrator\GoogleCalendarHydrator;
 use Perna\Hydrator\GoogleEventHydrator;
+use Perna\Hydrator\PublicTransportModuleHydrator;
 use Perna\Hydrator\StationHydrator;
 use Perna\Hydrator\TimeModuleHydrator;
 use Perna\Hydrator\UserHydrator;
@@ -32,6 +35,7 @@ return [
 		AbstractModuleHydrator::class => AbstractModuleHydrator::class,
 		CalendarModuleHydrator::class => CalendarModuleHydrator::class,
 		WeatherModuleHydrator::class => WeatherModuleHydrator::class,
+		PublicTransportModuleHydrator::class => PublicTransportModuleHydrator::class,
 		TimeModuleHydrator::class => TimeModuleHydrator::class,
 		CityHydrator::class => CityHydrator::class,
 		CurrentWeatherDataHydrator::class => CurrentWeatherDataHydrator::class,
@@ -48,3 +52,4 @@ return [
 		])
 	]
 ];
+

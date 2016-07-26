@@ -2,7 +2,9 @@
 
 namespace Perna\Service\PublicTransport;
 
+use Perna\Document\Departure;
 use Perna\Document\Station;
+use Perna\Hydrator\DepartureHydrator;
 use Perna\Hydrator\StationHydrator;
 use Zend\Http\Client;
 use Zend\Http\Request;
@@ -19,14 +21,21 @@ class VBBAccessService {
 	// TODO: move to config
 	const API_KEY = 'knauft-46fb-90dd-784d999485a3';
 	const BASE = 'http://demo.hafas.de/openapi/vbb-proxy/';
+	const CRAZY_ARRAY_KEY = 'stopLocationOrCoordLocation';
 
 	/**
 	 * @var StationHydrator
 	 */
 	protected $stationHydrator;
 
-	public function __construct ( StationHydrator $stationHydrator ) {
+	/**
+	 * @var DepartureHydrator
+	 */
+	protected $departureHydrator;
+
+	public function __construct ( StationHydrator $stationHydrator, DepartureHydrator $departureHydrator ) {
 		$this->stationHydrator = $stationHydrator;
+		$this->departureHydrator = $departureHydrator;
 	}
 
 	/**
@@ -58,13 +67,19 @@ class VBBAccessService {
 		$body = $response->getBody();
 		$data = json_decode( $body, true );
 
-		if ( !array_key_exists('StopLocation', $data) || !is_array( $stationData = $data['StopLocation'] ) )
+		if (!array_key_exists(self::CRAZY_ARRAY_KEY, $data) || !is_array($data[self::CRAZY_ARRAY_KEY]))
 			throw new ServiceUnavailableException();
 
+		$stationData = array_map(function ($sd) {
+			return $sd['StopLocation'];
+		}, $data[self::CRAZY_ARRAY_KEY]);
+
 		// Sort descending by station weight
-		usort( $stationData, function ( array $sd1, array $sd2 ) {
-			return $sd2['weight'] <=> $sd1['weight'];
-		} );
+		if (count($stationData) > 1) {
+			usort( $stationData, function ( array $sd1, array $sd2 ) {
+				return $sd2['weight'] <=> $sd1['weight'];
+			} );
+		}
 
 		$stations = [];
 		foreach ( $stationData as $sd ) {
@@ -73,6 +88,36 @@ class VBBAccessService {
 
 		return $stations;
 	}
+
+	public function getDepartures( Station $station ) : array{
+		$request = $this->createBasicRequest( 'departureBoard' );
+		$query = $request->getQuery();
+		$query->set('id', $station->getId());
+
+		$client = new Client();
+		try {
+			$response = $client->send( $request );
+		} catch ( Client\Adapter\Exception\RuntimeException $e ) {
+			throw new ServiceUnavailableException();
+		}
+
+		if ( !$response->isSuccess() )
+			throw new ServiceUnavailableException();
+
+		$body = $response->getBody();
+		$data = json_decode( $body, true )["Departure"];
+		$departures = [];
+
+		foreach ( $data as $dd ) {
+			try {
+				$dep = $this->departureHydrator->hydrate( $dd, new Departure() );
+				$departures[] = $dep;
+			} catch ( \InvalidArgumentException $e ) {}
+		}
+
+		return $departures;
+	}
+
 
 	/**
 	 * Creates a basic HTTP request for a VBB endpoint

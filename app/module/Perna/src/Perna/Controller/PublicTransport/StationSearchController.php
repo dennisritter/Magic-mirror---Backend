@@ -6,7 +6,6 @@ use Perna\Controller\AbstractAuthenticatedApiController;
 use Perna\Hydrator\StationHydrator;
 use Perna\Service\AuthenticationService;
 use Perna\Service\PublicTransport\StationsService;
-use Perna\Service\PublicTransport\VBBAccessService;
 use Swagger\Annotations as SWG;
 use ZfrRest\Http\Exception\Client\UnprocessableEntityException;
 

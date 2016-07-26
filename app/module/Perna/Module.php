@@ -4,10 +4,13 @@ namespace Perna;
 
 use Exception;
 use Swagger\Annotations as SWG;
+use Zend\Http\Headers;
+use Zend\Http\Response;
 use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
 use Zend\Uri\Uri;
 use Zend\Uri\UriFactory;
+use ZfrRest\View\Model\ResourceViewModel;
 
 /**
  * Module Class for Perna API Module
@@ -99,7 +102,26 @@ class Module {
 		$moduleRouteListener = new ModuleRouteListener();
 		$moduleRouteListener->attach($eventManager);
 
+		$eventManager->attach(MvcEvent::EVENT_DISPATCH_ERROR, [$this, 'handleDispatchError']);
+
 		UriFactory::registerScheme('chrome-extension', Uri::class);
+	}
+
+	public function handleDispatchError (MvcEvent $e) {
+		/** @var Response $response */
+		$response = $e->getResponse();
+		$response->setStatusCode(404);
+		$response->setContent(json_encode([
+			'status_code' => 404,
+			'message' => 'The endpoint you tried to call does not exist.'
+		]));
+
+		/** @var Headers $headers */
+		$headers = $response->getHeaders();
+		$headers->addHeaderLine('Content-Type', 'application/json');
+
+		$e->setResult($response);
+		$e->stopPropagation(true);
 	}
 
 	/** Returns the module config */

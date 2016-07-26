@@ -40,8 +40,8 @@ class UserController extends AbstractUserController {
 	 * )
 	 */
 	public function put () {
-		$data = $this->validateIncomingData( UserPutInputFilter::class );
 		$this->assertAccessToken();
+		$data = $this->validateIncomingData( UserPutInputFilter::class );
 		$user = $this->authenticationService->findAuthenticatedUser( $this->accessToken );
 		$this->hydrateObject( UserHydrator::class, $user, $data );
 		$password = $data["password"] ?? null;
@@ -71,6 +71,5 @@ class UserController extends AbstractUserController {
 		$this->assertAccessToken();
 		$user = $this->authenticationService->findAuthenticatedUser( $this->accessToken );
 		return $this->createDefaultViewModel( $this->userHydrator->extract( $user ) );
-
 	}
 }

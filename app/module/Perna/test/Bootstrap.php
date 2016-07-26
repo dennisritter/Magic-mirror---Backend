@@ -53,7 +53,8 @@ class Bootstrap {
 		$serviceManager->setAllowOverride( true );
 		$serviceManager->setService('ApplicationConfig', $config);
 		$serviceManager->get('ModuleManager')->loadModules();
-		static::$serviceManager = $serviceManager; var_dump($serviceManager->has('ApplicationConfig'));
+		static::$serviceManager = $serviceManager;
+		date_default_timezone_set('UTC');
 	}
 
 	public static function chroot () {
