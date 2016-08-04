@@ -10,3 +10,5 @@ deploy:
   keep_releases: 3
   git_repository: git@cgmgit.beuth-hochschule.de:s58849/perna-api.git
 project_root: '{{deploy.path}}/current'
+
+mongo_accessible: false

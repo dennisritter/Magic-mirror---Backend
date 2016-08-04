@@ -8,3 +8,5 @@ nginx:
   install: '1'
   php_socket: /var/run/php/php7.0-fpm.sock
 project_root: /vagrant
+
+mongo_accessible: true
